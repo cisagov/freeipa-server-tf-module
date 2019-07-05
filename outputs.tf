@@ -8,7 +8,7 @@ output "master_arn" {
   description = "The EC2 instance ARN corresponding to the IPA master"
 }
 
-output "availability_zone" {
+output "master_availability_zone" {
   value       = aws_instance.ipa_master.availability_zone
   description = "The AZ where the IPA master instance is deployed"
 }
