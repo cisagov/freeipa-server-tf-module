@@ -17,7 +17,7 @@ data "template_file" "set_hostname" {
   template = file("${path.module}/scripts/set_hostname.sh")
 }
 
-data "template_cloudinit_config" "freeipa_master_cloud_init_tasks" {
+data "template_cloudinit_config" "freeipa_cloud_init_tasks" {
   gzip          = true
   base64_encode = true
 

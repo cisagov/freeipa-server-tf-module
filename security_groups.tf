@@ -1,10 +1,6 @@
-data "aws_subnet" "ipa" {
-  id = var.subnet_id
-}
-
 # Security group for IPA servers
 resource "aws_security_group" "ipa_servers" {
-  vpc_id = data.aws_subnet.ipa.vpc_id
+  vpc_id = data.aws_subnet.the_subnet.vpc_id
 
   description = "Security group for IPA servers"
   tags        = var.tags

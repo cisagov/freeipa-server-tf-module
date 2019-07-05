@@ -2,7 +2,7 @@
 resource "aws_instance" "ipa_master" {
   ami               = data.aws_ami.freeipa.id
   instance_type     = var.aws_instance_type
-  availability_zone = "${var.aws_region}${var.aws_availability_zone}"
+  availability_zone = data.aws_subnet.the_subnet.availability_zone
   subnet_id         = var.subnet_id
   vpc_security_group_ids = [
     aws_security_group.ipa_servers.id,
@@ -26,13 +26,13 @@ resource "aws_instance" "ipa_master" {
 # inside of the lifecycle block
 # (https://github.com/hashicorp/terraform/issues/3116).
 resource "aws_ebs_volume" "ipa_data" {
-  availability_zone = "${var.aws_region}${var.aws_availability_zone}"
+  availability_zone = data.aws_subnet.the_subnet.availability_zone
   type              = "gp2"
   size              = 10
   encrypted         = true
 
   lifecycle {
-    prevent_destroy = true
+    prevent_destroy = false
   }
 }
 
@@ -50,14 +50,14 @@ resource "aws_volume_attachment" "ipa_data_attachment" {
   # successfully destroy the volume attachments.
   provisioner "local-exec" {
     when       = destroy
-    command    = "aws --region=${var.aws_region} ec2 terminate-instances --instance-ids ${aws_instance.ipa_master.id}"
+    command    = "aws --region=${data.aws_availability_zone.the_az.region} ec2 terminate-instances --instance-ids ${aws_instance.ipa_master.id}"
     on_failure = continue
   }
 
   # Wait until the instance is terminated before continuing on
   provisioner "local-exec" {
     when    = destroy
-    command = "aws --region=${var.aws_region} ec2 wait instance-terminated --instance-ids ${aws_instance.ipa_master.id}"
+    command = "aws --region=${data.aws_availability_zone.the_az.region} ec2 wait instance-terminated --instance-ids ${aws_instance.ipa_master.id}"
   }
 
   skip_destroy = true
