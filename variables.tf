@@ -22,6 +22,11 @@ variable "subnet_id" {
 # These parameters have reasonable defaults.
 # ------------------------------------------------------------------------------
 
+variable "aws_instance_type" {
+  description = "The AWS instance type to deploy (e.g. t3.micro)"
+  default     = "t3.micro"
+}
+
 variable "tags" {
   type        = map(string)
   description = "Tags to apply to all AWS resources created"
