@@ -13,6 +13,10 @@ variable "trusted_cidr_blocks" {
   description = "A list of the CIDR blocks that are allowed to access the IPA servers (e.g. [\"10.10.0.0/16\", \"10.11.0.0/16\"])"
 }
 
+variable "zone_name" {
+  description = "The name corresponding to the Route53 zone where the kerberos-related DNS records should be created (e.g. local or example.com)"
+}
+
 # ------------------------------------------------------------------------------
 # Optional parameters
 #
