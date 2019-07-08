@@ -18,7 +18,7 @@ data "aws_ami" "freeipa" {
   filter {
     name = "name"
     values = [
-      "freeipa-hvm-*-x86_64-ebs",
+      "freeipa-server-hvm-*-x86_64-ebs",
     ]
   }
 
