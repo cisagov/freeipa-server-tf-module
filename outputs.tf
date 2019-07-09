@@ -18,6 +18,11 @@ output "master_private_ip" {
   description = "The private IP of the IPA master instance"
 }
 
+output "master_public_ip" {
+  value       = aws_instance.ipa_master.public_ip
+  description = "The public IP of the IPA master instance"
+}
+
 output "master_subnet_id" {
   value       = aws_instance.ipa_master.subnet_id
   description = "The ID of the subnet where the IPA master instance is deployed"
