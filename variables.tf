@@ -46,8 +46,8 @@ variable "associate_public_ip_address" {
 }
 
 variable "aws_instance_type" {
-  description = "The AWS instance type to deploy (e.g. t3.micro)"
-  default     = "t3.micro"
+  description = "The AWS instance type to deploy (e.g. t3.medium).  Two gigs of RAM is a minimum requirement."
+  default     = "t3.small"
 }
 
 variable "tags" {
