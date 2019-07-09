@@ -15,6 +15,12 @@ set -o nounset
 set -o errexit
 set -o pipefail
 
+ip_address=$(ip --family inet address show dev eth0 | \
+                 grep inet | \
+                 sed "s/^ *//" | \
+                 cut --delimiter=' ' --fields=2 | \
+                 cut --delimiter='/' --fields=1)
+
 # There are several items below that look like shell variables but are
 # actually replaced by the Terraform templating engine.  Hence we can
 # ignore the "undefined variable" warnings from shellcheck.
@@ -25,7 +31,7 @@ ipa-server-install --realm="${realm}" \
                    --ds-password="${directory_service_pw}" \
                    --admin-password="${admin_pw}" \
                    --hostname="${hostname}" \
-                   --ip-address="${ip_address}" \
+                   --ip-address="$ip_address" \
                    --setup-dns \
                    --forwarder="${dns_forwarder}" \
                    --debug \
