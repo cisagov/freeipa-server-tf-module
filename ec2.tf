@@ -1,14 +1,16 @@
 # The IPA master EC2 instance
 resource "aws_instance" "ipa_master" {
-  ami               = data.aws_ami.freeipa.id
-  instance_type     = var.aws_instance_type
-  availability_zone = data.aws_subnet.the_subnet.availability_zone
-  subnet_id         = var.subnet_id
+  ami                         = data.aws_ami.freeipa.id
+  ebs_optimized               = true
+  instance_type               = var.aws_instance_type
+  availability_zone           = data.aws_subnet.the_subnet.availability_zone
+  subnet_id                   = var.subnet_id
+  associate_public_ip_address = var.associate_public_ip_address
   vpc_security_group_ids = [
     aws_security_group.ipa_servers.id,
   ]
 
-  user_data_base64 = data.template_cloudinit_config.freeipa_cloud_init_tasks.rendered
+  user_data_base64 = data.template_cloudinit_config.cloud_init_tasks.rendered
 
   tags        = var.tags
   volume_tags = var.tags
