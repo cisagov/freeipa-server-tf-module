@@ -16,6 +16,10 @@ resource "aws_subnet" "the_subnet" {
   availability_zone = "us-west-1a"
 }
 
+#-------------------------------------------------------------------------------
+# Set up external access and routing in the VPC.
+#-------------------------------------------------------------------------------
+
 # The internet gateway for the VPC
 resource "aws_internet_gateway" "the_igw" {
   vpc_id = aws_vpc.the_vpc.id
