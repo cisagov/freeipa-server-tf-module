@@ -18,6 +18,11 @@ output "master_private_ip" {
   description = "The private IP of the IPA master instance"
 }
 
+output "master_public_ip" {
+  value       = module.ipa.master_public_ip
+  description = "The public IP of the IPA master instance"
+}
+
 output "master_subnet_id" {
   value       = module.ipa.master_subnet_id
   description = "The ID of the subnet where the IPA master instance is deployed"
