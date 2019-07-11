@@ -2,28 +2,25 @@
 
 [![Build Status](https://travis-ci.com/cisagov/freeipa-server-tf-module.svg?branch=develop)](https://travis-ci.com/cisagov/freeipa-server-tf-module)
 
-This is a generic skeleton project that can be used to quickly get a
-new [cisagov](https://github.com/cisagov) [Terraform
-module](https://www.terraform.io/docs/modules/index.html) GitHub
-repository started.  This skeleton project contains [licensing
-information](LICENSE), as well as [pre-commit
-hooks](https://pre-commit.com) and a [Travis
-CI](https://travis-ci.com) configuration appropriate for the major
-languages that we use.
-
-See [here](https://www.terraform.io/docs/modules/index.html) for more
-details on Terraform modules and the standard module structure.
+A Terraform module for deploying a FreeIPA master server into a VPC.
 
 ## Usage ##
 
 ```hcl
-module "example" {
+module "ipa" {
   source = "github.com/cisagov/freeipa-server-tf-module"
 
-  aws_region            = "us-west-1"
-  aws_availability_zone = "b"
-  subnet_id             = "subnet-0123456789abcdef0"
-
+  directory_service_pw = "thepassword"
+  admin_pw             = "thepassword"
+  domain               = "example.com"
+  hostname             = "ipa.example.com"
+  realm                = "EXAMPLE.COM"
+  subnet_id            = aws_subnet.the_subnet.id
+  trusted_cidr_blocks = [
+    "10.99.49.0/24",
+    "10.99.52.0/24"
+  ]
+  associate_public_ip_address = true
   tags = {
     Key1 = "Value1"
     Key2 = "Value2"
@@ -33,26 +30,35 @@ module "example" {
 
 ## Examples ##
 
-* [Deploying into the default VPC](https://github.com/cisagov/freeipa-server-tf-module/tree/develop/examples/default_vpc)
+* [Basic usage](https://github.com/cisagov/freeipa-server-tf-module/tree/develop/examples/basic_usage)
 
 ## Inputs ##
 
 | Name | Description | Type | Default | Required |
 |------|-------------|:----:|:-------:|:--------:|
-| aws_region | The AWS region to deploy into (e.g. us-east-1) | string | | yes |
-| aws_availability_zone | The AWS availability zone to deploy into (e.g. a, b, c, etc.) | string | | yes |
-| subnet_id | The ID of the AWS subnet to deploy into (e.g. subnet-0123456789abcdef0) | string | | yes |
+| admin_pw | The admin password for the IPA server's Kerberos admin role | string | | yes |
+| directory_service_pw | The password for the IPA server's directory service | string | | yes |
+| domain | The domain for the IPA server (e.g. `example.com`) | string | | yes |
+| hostname | The hostname of the IPA server (e.g. `ipa.example.com`) | string | | yes |
+| realm | The realm for the IPA server (e.g. `EXAMPLE.COM`) | string | | yes |
+| subnet_id | The ID of the AWS subnet to deploy into (e.g. `subnet-0123456789abcdef0`) | string | | yes |
+| trusted_cidr_blocks | A list of the CIDR blocks that are allowed to access the IPA servers (e.g. `[10.10.0.0/16, 10.11.0.0/16]`) | list(string) | | yes |
+| associate_public_ip_address | Whether or not to associate a public IP address with the IPA server | bool | `false` | no |
+| aws_instance_type | The AWS instance type to deploy (e.g. t3.medium).  Two gigs of RAM is a minimum requirement. | string | `t3.small` | no |
 | tags | Tags to apply to all AWS resources created | map(string) | `{}` | no |
 
 ## Outputs ##
 
 | Name | Description |
 |------|-------------|
-| id | The EC2 instance ID |
-| arn | The EC2 instance ARN |
-| availability_zone | The AZ where the EC2 instance is deployed |
-| private_ip | The private IP of the EC2 instance |
-| subnet_id | The ID of the subnet where the EC2 instance is deployed |
+| id | The EC2 instance ID corresponding to the IPA master |
+| arn | The EC2 instance ARN corresponding to the IPA master |
+| availability_zone | The AZ where the IPA master instance is deployed |
+| private_ip | The private IP of the IPA master instance |
+| public_ip | The public IP of the IPA master instance |
+| subnet_id | The ID of the subnet where the IPA master instance is deployed |
+| security_group_id | The ID of the IPA server security group |
+| security_group_arn | The ARN of the IPA server security group |
 
 ## Contributing ##
 
