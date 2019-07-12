@@ -7,8 +7,6 @@
 # service
 # domain - the domain for the IPA server (e.g. example.com)
 # hostname - the hostname of the IPA server (e.g. ipa.example.com)
-# dns_forwarder - An IP address where the IPA server should forward
-# DNS queries that it cannpt answer (e.g. 8.8.8.8)
 # realm - the realm for the IPA server (e.g. EXAMPLE.COM)
 
 set -o nounset
@@ -32,7 +30,6 @@ ipa-server-install --realm="${realm}" \
                    --admin-password="${admin_pw}" \
                    --hostname="${hostname}" \
                    --ip-address="$ip_address" \
-                   --setup-dns \
-                   --forwarder="${dns_forwarder}" \
+                   --no-ntp \
                    --debug \
                    --unattended

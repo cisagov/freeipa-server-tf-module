@@ -30,11 +30,7 @@ data "template_cloudinit_config" "cloud_init_tasks" {
         admin_pw             = var.admin_pw
         domain               = var.domain
         hostname             = var.hostname
-        # The DNS is at the second address of the main CIDR block of
-        # the VPC.  See
-        # https://docs.aws.amazon.com/vpc/latest/userguide/VPC_Subnets.html#vpc-sizing-ipv4
-        dns_forwarder = cidrhost(data.aws_vpc.the_vpc.cidr_block, 2)
-        realm         = var.realm
+        realm                = var.realm
     })
   }
 }
