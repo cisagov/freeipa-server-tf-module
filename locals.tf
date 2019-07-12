@@ -18,4 +18,9 @@ locals {
     123, # NTP
     464, # kpasswd
   ]
+
+  tcp_and_udp = [
+    "tcp",
+    "udp"
+  ]
 }

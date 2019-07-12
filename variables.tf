@@ -20,6 +20,18 @@ variable "hostname" {
   description = "The hostname of the IPA server (e.g. ipa.example.com)"
 }
 
+variable "private_zone_id" {
+  description = "The zone ID corresponding to the private Route53 zone where the kerberos-related DNS records should be created (e.g. ZKX36JXQ8W82L)"
+}
+
+variable "private_reverse_zone_id" {
+  description = "The zone ID corresponding to the private Route53 reverse zone where the PTR records for the kerberos-related A records should be created (e.g. ZKX36JXQ8W82L)"
+}
+
+variable "public_zone_id" {
+  description = "The zone ID corresponding to the public Route53 zone where the kerberos-related DNS records should be created (e.g. ZKX36JXQ8W82L)"
+}
+
 variable "realm" {
   description = "The realm for the IPA server (e.g. EXAMPLE.COM)"
 }

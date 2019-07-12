@@ -13,7 +13,7 @@ resource "aws_vpc" "the_vpc" {
 resource "aws_subnet" "the_subnet" {
   vpc_id            = aws_vpc.the_vpc.id
   cidr_block        = "10.99.49.0/24"
-  availability_zone = "us-west-1a"
+  availability_zone = "us-west-1b"
 }
 
 #-------------------------------------------------------------------------------
@@ -37,18 +37,51 @@ resource "aws_route" "route_external_traffic_through_internet_gateway" {
   gateway_id             = aws_internet_gateway.the_igw.id
 }
 
+
+#-------------------------------------------------------------------------------
+# Create a private Route53 zone.
+#-------------------------------------------------------------------------------
+resource "aws_route53_zone" "private_zone" {
+  name = "cyber.dhs.gov"
+
+  vpc {
+    vpc_id = aws_vpc.the_vpc.id
+  }
+}
+
+#-------------------------------------------------------------------------------
+# Create a private Route53 reverse zone.
+#-------------------------------------------------------------------------------
+resource "aws_route53_zone" "private_reverse_zone" {
+  name = "49.99.10.in-addr.arpa"
+
+  vpc {
+    vpc_id = aws_vpc.the_vpc.id
+  }
+}
+
+#-------------------------------------------------------------------------------
+# Create a data resource for the existing public Route53 zone.
+#-------------------------------------------------------------------------------
+data "aws_route53_zone" "public_zone" {
+  name = "cyber.dhs.gov."
+}
+
 #-------------------------------------------------------------------------------
 # Configure the example module.
 #-------------------------------------------------------------------------------
 module "ipa" {
   source = "../../"
 
-  directory_service_pw = "thepassword"
-  admin_pw             = "thepassword"
-  domain               = "cal.cyber.dhs.gov"
-  hostname             = "ipa.cal.cyber.dhs.gov"
-  realm                = "CAL.CYBER.DHS.GOV"
-  subnet_id            = aws_subnet.the_subnet.id
+  directory_service_pw    = "thepassword"
+  admin_pw                = "thepassword"
+  domain                  = "cal2.cyber.dhs.gov"
+  hostname                = "ipa.cal2.cyber.dhs.gov"
+  private_zone_id         = aws_route53_zone.private_zone.zone_id
+  private_reverse_zone_id = aws_route53_zone.private_reverse_zone.zone_id
+  public_zone_id          = data.aws_route53_zone.public_zone.zone_id
+  realm                   = "CAL2.CYBER.DHS.GOV"
+  subnet_id               = aws_subnet.the_subnet.id
   trusted_cidr_blocks = [
     "10.99.49.0/24",
     "108.31.3.53/32"
