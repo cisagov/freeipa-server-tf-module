@@ -40,6 +40,9 @@ module "ipa" {
 | directory_service_pw | The password for the IPA server's directory service | string | | yes |
 | domain | The domain for the IPA server (e.g. `example.com`) | string | | yes |
 | hostname | The hostname of the IPA server (e.g. `ipa.example.com`) | string | | yes |
+| private_zone_id | The zone ID corresponding to the private Route53 zone where the kerberos-related DNS records should be created (e.g. `ZKX36JXQ8W82L`) | string | | yes |
+| private_reverse_zone_id | The zone ID corresponding to the private Route53 reverse zone where the PTR records for the kerberos-related A records should be created (e.g. `ZKX36JXQ8W82L`) | string | | yes |
+| public_zone_id | The zone ID corresponding to the public Route53 zone where the kerberos-related DNS records should be created (e.g. `ZKX36JXQ8W82L`) | string | | yes |
 | realm | The realm for the IPA server (e.g. `EXAMPLE.COM`) | string | | yes |
 | subnet_id | The ID of the AWS subnet to deploy into (e.g. `subnet-0123456789abcdef0`) | string | | yes |
 | trusted_cidr_blocks | A list of the CIDR blocks that are allowed to access the IPA servers (e.g. `[10.10.0.0/16, 10.11.0.0/16]`) | list(string) | | yes |
