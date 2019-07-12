@@ -76,13 +76,3 @@ resource "aws_route53_record" "ldap_public_SRV" {
     "0 100 389 ipa.${var.domain}",
   ]
 }
-
-resource "aws_route53_record" "ntp_public_SRV" {
-  zone_id = var.public_zone_id
-  name    = "_ntp._udp.${var.domain}"
-  type    = "SRV"
-  ttl     = 86400
-  records = [
-    "0 100 123 ipa.${var.domain}",
-  ]
-}
