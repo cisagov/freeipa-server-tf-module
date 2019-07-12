@@ -90,4 +90,5 @@ module "ipa" {
   tags = {
     Testing = true
   }
+  ttl = 60
 }

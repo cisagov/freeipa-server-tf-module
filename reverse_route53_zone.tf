@@ -12,7 +12,7 @@ resource "aws_route53_record" "master_private_PTR" {
   )
 
   type = "PTR"
-  ttl  = 300
+  ttl  = var.ttl
   records = [
     "ipa.${var.domain}"
   ]
