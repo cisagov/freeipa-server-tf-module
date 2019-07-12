@@ -10,17 +10,21 @@ A Terraform module for deploying a FreeIPA master server into a VPC.
 module "ipa" {
   source = "github.com/cisagov/freeipa-server-tf-module"
 
-  directory_service_pw = "thepassword"
-  admin_pw             = "thepassword"
-  domain               = "example.com"
-  hostname             = "ipa.example.com"
-  realm                = "EXAMPLE.COM"
-  subnet_id            = aws_subnet.the_subnet.id
-  trusted_cidr_blocks = [
+  admin_pw                = "thepassword"
+  directory_service_pw    = "thepassword"
+  domain                  = "example.com"
+  hostname                = "ipa.example.com"
+  private_zone_ip         = "ZKX36JXQ8W82L"
+  private_reverse_zone_ip = "ZLY47KYR9X93M"
+  public_zone_ip          = "ZJW25IWP7V71K"
+  realm                   = "EXAMPLE.COM"
+  subnet_id               = aws_subnet.the_subnet.id
+  trusted_cidr_blocks     = [
     "10.99.49.0/24",
     "10.99.52.0/24"
   ]
   associate_public_ip_address = true
+  aws_instance_type = "t3.large"
   tags = {
     Key1 = "Value1"
     Key2 = "Value2"
