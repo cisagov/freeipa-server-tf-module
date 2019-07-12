@@ -53,6 +53,7 @@ module "ipa" {
 | associate_public_ip_address | Whether or not to associate a public IP address with the IPA server | bool | `false` | no |
 | aws_instance_type | The AWS instance type to deploy (e.g. t3.medium).  Two gigs of RAM is a minimum requirement. | string | `t3.small` | no |
 | tags | Tags to apply to all AWS resources created | map(string) | `{}` | no |
+| ttl | The TTL value to use for Route53 DNS records (e.g. 86400).  A smaller value may be useful when the DNS records are changing often, for example when testing. | string | `86400` | no |
 
 ## Outputs ##
 
