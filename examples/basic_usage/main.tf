@@ -3,17 +3,23 @@ provider "aws" {
 }
 
 #-------------------------------------------------------------------------------
-# Create a subnet inside a VPC.
+# Create two subnets inside a VPC.
 #-------------------------------------------------------------------------------
 resource "aws_vpc" "the_vpc" {
-  cidr_block           = "10.99.49.0/24"
+  cidr_block           = "10.99.48.0/23"
   enable_dns_hostnames = true
 }
 
-resource "aws_subnet" "the_subnet" {
+resource "aws_subnet" "master_subnet" {
+  vpc_id            = aws_vpc.the_vpc.id
+  cidr_block        = "10.99.48.0/24"
+  availability_zone = "us-west-1b"
+}
+
+resource "aws_subnet" "replica_subnet" {
   vpc_id            = aws_vpc.the_vpc.id
   cidr_block        = "10.99.49.0/24"
-  availability_zone = "us-west-1b"
+  availability_zone = "us-west-1c"
 }
 
 #-------------------------------------------------------------------------------
@@ -75,18 +81,21 @@ module "ipa" {
 
   directory_service_pw    = "thepassword"
   admin_pw                = "thepassword"
-  domain                  = "cal2.cyber.dhs.gov"
-  hostname                = "ipa.cal2.cyber.dhs.gov"
+  domain                  = "cal23.cyber.dhs.gov"
+  hostname                = "ipa.cal23.cyber.dhs.gov"
+  master_subnet_id        = aws_subnet.master_subnet.id
   private_zone_id         = aws_route53_zone.private_zone.zone_id
   private_reverse_zone_id = aws_route53_zone.private_reverse_zone.zone_id
   public_zone_id          = data.aws_route53_zone.public_zone.zone_id
-  realm                   = "CAL2.CYBER.DHS.GOV"
-  subnet_id               = aws_subnet.the_subnet.id
+  realm                   = "CAL23.CYBER.DHS.GOV"
   trusted_cidr_blocks = [
     "10.99.49.0/24",
     "108.31.3.53/32"
   ]
   associate_public_ip_address = true
+  replica_subnet_ids = [
+    aws_subnet.replica_subnet.id
+  ]
   tags = {
     Testing = true
   }

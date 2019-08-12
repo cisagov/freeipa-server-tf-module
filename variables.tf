@@ -20,6 +20,10 @@ variable "hostname" {
   description = "The hostname of the IPA server (e.g. ipa.example.com)"
 }
 
+variable "master_subnet_id" {
+  description = "The ID of the AWS subnet into which to deploy the master IPA server (e.g. subnet-0123456789abcdef0)"
+}
+
 variable "private_zone_id" {
   description = "The zone ID corresponding to the private Route53 zone where the kerberos-related DNS records should be created (e.g. ZKX36JXQ8W82L)"
 }
@@ -36,10 +40,6 @@ variable "realm" {
   description = "The realm for the IPA server (e.g. EXAMPLE.COM)"
 }
 
-variable "subnet_id" {
-  description = "The ID of the AWS subnet to deploy into (e.g. subnet-0123456789abcdef0)"
-}
-
 variable "trusted_cidr_blocks" {
   type        = list(string)
   description = "A list of the CIDR blocks that are allowed to access the IPA servers (e.g. [\"10.10.0.0/16\", \"10.11.0.0/16\"])"
@@ -53,13 +53,19 @@ variable "trusted_cidr_blocks" {
 
 variable "associate_public_ip_address" {
   type        = bool
-  description = "Whether or not to associate a public IP address with the IPA server"
+  description = "Whether or not to associate a public IP address with the IPA server and replicas"
   default     = false
 }
 
 variable "aws_instance_type" {
   description = "The AWS instance type to deploy (e.g. t3.medium).  Two gigs of RAM is a minimum requirement."
   default     = "t3.small"
+}
+
+variable "replica_subnet_ids" {
+  type        = list(string)
+  description = "The IDs of the AWS subnets into which to deploy the replica IPA servers (e.g. subnet-0123456789abcdef0)"
+  default     = []
 }
 
 variable "tags" {

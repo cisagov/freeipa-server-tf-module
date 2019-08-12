@@ -14,17 +14,21 @@ module "ipa" {
   directory_service_pw    = "thepassword"
   domain                  = "example.com"
   hostname                = "ipa.example.com"
+  master_subnet_id        = aws_subnet.master_subnet.id
   private_zone_ip         = "ZKX36JXQ8W82L"
   private_reverse_zone_ip = "ZLY47KYR9X93M"
   public_zone_ip          = "ZJW25IWP7V71K"
   realm                   = "EXAMPLE.COM"
-  subnet_id               = aws_subnet.the_subnet.id
   trusted_cidr_blocks     = [
     "10.99.49.0/24",
     "10.99.52.0/24"
   ]
   associate_public_ip_address = true
-  aws_instance_type = "t3.large"
+  aws_instance_type           = "t3.large"
+  replica_subnet_ids          = [
+    "subnet-0123456789abcdef0",
+    "subnet-0123456789abcdef1",
+  ]
   tags = {
     Key1 = "Value1"
     Key2 = "Value2"
@@ -44,14 +48,15 @@ module "ipa" {
 | directory_service_pw | The password for the IPA server's directory service | string | | yes |
 | domain | The domain for the IPA server (e.g. `example.com`) | string | | yes |
 | hostname | The hostname of the IPA server (e.g. `ipa.example.com`) | string | | yes |
+| master_subnet_id | The ID of the AWS subnet into which to deploy the master IPA server (e.g. `subnet-0123456789abcdef0`) | string | | yes |
 | private_zone_id | The zone ID corresponding to the private Route53 zone where the kerberos-related DNS records should be created (e.g. `ZKX36JXQ8W82L`) | string | | yes |
 | private_reverse_zone_id | The zone ID corresponding to the private Route53 reverse zone where the PTR records for the kerberos-related A records should be created (e.g. `ZKX36JXQ8W82L`) | string | | yes |
 | public_zone_id | The zone ID corresponding to the public Route53 zone where the kerberos-related DNS records should be created (e.g. `ZKX36JXQ8W82L`) | string | | yes |
 | realm | The realm for the IPA server (e.g. `EXAMPLE.COM`) | string | | yes |
-| subnet_id | The ID of the AWS subnet to deploy into (e.g. `subnet-0123456789abcdef0`) | string | | yes |
 | trusted_cidr_blocks | A list of the CIDR blocks that are allowed to access the IPA servers (e.g. `[10.10.0.0/16, 10.11.0.0/16]`) | list(string) | | yes |
 | associate_public_ip_address | Whether or not to associate a public IP address with the IPA server | bool | `false` | no |
 | aws_instance_type | The AWS instance type to deploy (e.g. t3.medium).  Two gigs of RAM is a minimum requirement. | string | `t3.small` | no |
+| replica_subnet_ids | The IDs of the AWS subnets into which to deploy the replica IPA servers (e.g. `subnet-0123456789abcdef0`) | list(string) | `{}` | no |
 | tags | Tags to apply to all AWS resources created | map(string) | `{}` | no |
 | ttl | The TTL value to use for Route53 DNS records (e.g. 86400).  A smaller value may be useful when the DNS records are changing often, for example when testing. | string | `86400` | no |
 
@@ -59,12 +64,18 @@ module "ipa" {
 
 | Name | Description |
 |------|-------------|
-| id | The EC2 instance ID corresponding to the IPA master |
-| arn | The EC2 instance ARN corresponding to the IPA master |
-| availability_zone | The AZ where the IPA master instance is deployed |
-| private_ip | The private IP of the IPA master instance |
-| public_ip | The public IP of the IPA master instance |
-| subnet_id | The ID of the subnet where the IPA master instance is deployed |
+| master_id | The EC2 instance ID corresponding to the IPA master |
+| master_arn | The EC2 instance ARN corresponding to the IPA master |
+| master_availability_zone | The AZ where the IPA master instance is deployed |
+| master_private_ip | The private IP of the IPA master instance |
+| master_public_ip | The public IP of the IPA master instance |
+| master_subnet_id | The ID of the subnet where the IPA master instance is deployed |
+| replica_ids | The EC2 instance IDs corresponding to the IPA replicas |
+| replica_arns | The EC2 instance ARNs corresponding to the IPA replicas |
+| replica_availability_zones | The AZ where the IPA replica instances are deployed |
+| replica_private_ips | The private IPs of the IPA replica instances |
+| replica_public_ips | The public IPs of the IPA replica instances |
+| replica_subnet_ids | The IDs of the subnets where the IPA replica instances are deployed |
 | security_group_id | The ID of the IPA server security group |
 | security_group_arn | The ARN of the IPA server security group |
 
