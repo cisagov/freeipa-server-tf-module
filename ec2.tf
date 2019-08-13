@@ -7,6 +7,7 @@ resource "aws_instance" "ipa_master" {
   subnet_id                   = var.master_subnet_id
   associate_public_ip_address = var.associate_public_ip_address
   vpc_security_group_ids = [
+    aws_security_group.ipa_clients.id,
     aws_security_group.ipa_servers.id,
   ]
 
@@ -28,10 +29,11 @@ resource "aws_instance" "ipa_replicas" {
   subnet_id                   = var.replica_subnet_ids[count.index]
   associate_public_ip_address = var.associate_public_ip_address
   vpc_security_group_ids = [
+    aws_security_group.ipa_clients.id,
     aws_security_group.ipa_servers.id,
   ]
 
-  user_data_base64 = data.template_cloudinit_config.replica_cloud_init_tasks.rendered
+  user_data_base64 = data.template_cloudinit_config.replica_cloud_init_tasks[count.index].rendered
 
   tags        = var.tags
   volume_tags = var.tags
