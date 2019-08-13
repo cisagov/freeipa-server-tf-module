@@ -3,11 +3,8 @@
 # Input variables are:
 # admin_pw - the admin password for the IPA server's Kerberos admin
 # role
-# directory_service_pw - the password for the IPA server's directory
-# service
-# domain - the domain for the IPA server (e.g. example.com)
-# hostname - the hostname of the IPA server (e.g. ipa.example.com)
-# realm - the realm for the IPA server (e.g. EXAMPLE.COM)
+# hostname - the hostname of the IPA master server
+# (e.g. ipa.example.com)
 
 set -o nounset
 set -o errexit
@@ -43,9 +40,7 @@ done
 # ignore the "undefined variable" warnings from shellcheck.
 #
 # shellcheck disable=SC2154
-ipa-replica-install --realm="${realm}" \
-                    --domain="${domain}" \
-                    --ds-password="${directory_service_pw}" \
+ipa-replica-install --setup-ca \
                     --admin-password="${admin_pw}" \
                     --hostname="${hostname}" \
                     --ip-address="$ip_address" \
