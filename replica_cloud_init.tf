@@ -1,6 +1,8 @@
 # cloud-init commands for configuring a freeipa replica
 
 data "template_cloudinit_config" "replica_cloud_init_tasks" {
+  count = length(var.replica_hostnames)
+
   gzip          = true
   base64_encode = true
 
@@ -8,11 +10,8 @@ data "template_cloudinit_config" "replica_cloud_init_tasks" {
     content_type = "text/x-shellscript"
     content = templatefile(
       "${path.module}/scripts/setup_freeipa_replica.sh", {
-        directory_service_pw = var.directory_service_pw
-        admin_pw             = var.admin_pw
-        domain               = var.domain
-        hostname             = var.hostname
-        realm                = var.realm
+        admin_pw = var.admin_pw
+        hostname = var.replica_hostnames[count.index]
     })
   }
 }
