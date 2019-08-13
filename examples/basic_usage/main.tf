@@ -56,9 +56,17 @@ resource "aws_route53_zone" "private_zone" {
 }
 
 #-------------------------------------------------------------------------------
-# Create a private Route53 reverse zone.
+# Create private Route53 reverse zones.
 #-------------------------------------------------------------------------------
-resource "aws_route53_zone" "private_reverse_zone" {
+resource "aws_route53_zone" "master_private_reverse_zone" {
+  name = "48.99.10.in-addr.arpa"
+
+  vpc {
+    vpc_id = aws_vpc.the_vpc.id
+  }
+}
+
+resource "aws_route53_zone" "replica_private_reverse_zone" {
   name = "49.99.10.in-addr.arpa"
 
   vpc {
@@ -79,20 +87,26 @@ data "aws_route53_zone" "public_zone" {
 module "ipa" {
   source = "../../"
 
-  directory_service_pw    = "thepassword"
-  admin_pw                = "thepassword"
-  domain                  = "cal23.cyber.dhs.gov"
-  hostname                = "ipa.cal23.cyber.dhs.gov"
-  master_subnet_id        = aws_subnet.master_subnet.id
-  private_zone_id         = aws_route53_zone.private_zone.zone_id
-  private_reverse_zone_id = aws_route53_zone.private_reverse_zone.zone_id
-  public_zone_id          = data.aws_route53_zone.public_zone.zone_id
-  realm                   = "CAL23.CYBER.DHS.GOV"
+  directory_service_pw           = "thepassword"
+  admin_pw                       = "thepassword"
+  domain                         = "cal23.cyber.dhs.gov"
+  master_hostname                = "ipa.cal23.cyber.dhs.gov"
+  master_subnet_id               = aws_subnet.master_subnet.id
+  private_zone_id                = aws_route53_zone.private_zone.zone_id
+  master_private_reverse_zone_id = aws_route53_zone.master_private_reverse_zone.zone_id
+  public_zone_id                 = data.aws_route53_zone.public_zone.zone_id
+  realm                          = "CAL23.CYBER.DHS.GOV"
   trusted_cidr_blocks = [
-    "10.99.49.0/24",
+    "10.99.48.0/23",
     "108.31.3.53/32"
   ]
   associate_public_ip_address = true
+  replica_hostnames = [
+    "ipa-replica1.cal23.cyber.dhs.gov"
+  ]
+  replica_private_reverse_zone_ids = [
+    aws_route53_zone.replica_private_reverse_zone.zone_id
+  ]
   replica_subnet_ids = [
     aws_subnet.replica_subnet.id
   ]

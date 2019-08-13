@@ -1,3 +1,13 @@
+output "client_security_group_arn" {
+  value       = module.ipa.client_security_group_arn
+  description = "The ARN of the IPA client security group"
+}
+
+output "client_security_group_id" {
+  value       = module.ipa.client_security_group_id
+  description = "The ID of the IPA client security group"
+}
+
 output "master_id" {
   value       = module.ipa.master_id
   description = "The EC2 instance ID corresponding to the IPA master"
@@ -58,12 +68,12 @@ output "replica_subnet_ids" {
   description = "The IDs of the subnets where the IPA replica instances are deployed"
 }
 
-output "security_group_id" {
-  value       = module.ipa.security_group_id
-  description = "The ID of the IPA server security group"
+output "server_security_group_arn" {
+  value       = module.ipa.server_security_group_arn
+  description = "The ARN of the IPA server security group"
 }
 
-output "security_group_arn" {
-  value       = module.ipa.security_group_arn
-  description = "The ARN of the IPA server security group"
+output "server_security_group_id" {
+  value       = module.ipa.server_security_group_id
+  description = "The ID of the IPA server security group"
 }
