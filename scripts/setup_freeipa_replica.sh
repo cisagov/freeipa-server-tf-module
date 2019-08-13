@@ -3,7 +3,7 @@
 # Input variables are:
 # admin_pw - the admin password for the IPA server's Kerberos admin
 # role
-# hostname - the hostname of the IPA master server
+# hostname - the hostname of this IPA replica server
 # (e.g. ipa.example.com)
 
 set -o nounset
