@@ -11,6 +11,18 @@ resource "aws_route53_record" "master_public_A" {
   ]
 }
 
+resource "aws_route53_record" "replica_public_A" {
+  count = length(data.aws_subnet.replica_subnets)
+
+  zone_id = var.public_zone_id
+  name    = format("ipa-replica%d.${var.domain}", count.index + 1)
+  type    = "A"
+  ttl     = var.ttl
+  records = [
+    aws_instance.ipa_replicas[count.index].public_ip,
+  ]
+}
+
 resource "aws_route53_record" "ca_public_A" {
   zone_id = var.public_zone_id
   name    = "ipa-ca.${var.domain}"
