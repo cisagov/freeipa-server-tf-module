@@ -11,7 +11,7 @@ data "template_cloudinit_config" "master_cloud_init_tasks" {
         directory_service_pw = var.directory_service_pw
         admin_pw             = var.admin_pw
         domain               = var.domain
-        hostname             = var.hostname
+        hostname             = var.master_hostname
         realm                = var.realm
     })
   }
