@@ -16,8 +16,12 @@ variable "domain" {
   description = "The domain for the IPA server (e.g. example.com)"
 }
 
-variable "hostname" {
-  description = "The hostname of the IPA server (e.g. ipa.example.com)"
+variable "master_hostname" {
+  description = "The hostname of the IPA master (e.g. ipa.example.com)"
+}
+
+variable "master_private_reverse_zone_id" {
+  description = "The zone ID corresponding to the private Route53 reverse zone where the PTR records related to the kerberos master should be created (e.g. ZKX36JXQ8W82L)"
 }
 
 variable "master_subnet_id" {
@@ -26,10 +30,6 @@ variable "master_subnet_id" {
 
 variable "private_zone_id" {
   description = "The zone ID corresponding to the private Route53 zone where the kerberos-related DNS records should be created (e.g. ZKX36JXQ8W82L)"
-}
-
-variable "private_reverse_zone_id" {
-  description = "The zone ID corresponding to the private Route53 reverse zone where the PTR records for the kerberos-related A records should be created (e.g. ZKX36JXQ8W82L)"
 }
 
 variable "public_zone_id" {
@@ -62,9 +62,19 @@ variable "aws_instance_type" {
   default     = "t3.small"
 }
 
+variable "replica_hostnames" {
+  type        = list(string)
+  description = "The hostnames of the IPA replicas (e.g. `[ipa-replica1.example.com]`)"
+}
+
+variable "replica_private_reverse_zone_ids" {
+  type        = list(string)
+  description = "The zone IDs corresponding to the private Route53 reverse zones where the PTR records related to the kerberos replicas should be created (e.g. [ZKX36JXQ8W82L])"
+}
+
 variable "replica_subnet_ids" {
   type        = list(string)
-  description = "The IDs of the AWS subnets into which to deploy the replica IPA servers (e.g. subnet-0123456789abcdef0)"
+  description = "The IDs of the AWS subnets into which to deploy the replica IPA servers (e.g. [subnet-0123456789abcdef0])"
   default     = []
 }
 

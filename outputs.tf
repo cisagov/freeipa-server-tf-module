@@ -1,6 +1,11 @@
-output "master_id" {
-  value       = aws_instance.ipa_master.id
-  description = "The EC2 instance ID corresponding to the IPA master"
+output "client_security_group_arn" {
+  value       = aws_security_group.ipa_clients.arn
+  description = "The ARN of the IPA client security group"
+}
+
+output "client_security_group_id" {
+  value       = aws_security_group.ipa_clients.id
+  description = "The ID of the IPA client security group"
 }
 
 output "master_arn" {
@@ -11,6 +16,11 @@ output "master_arn" {
 output "master_availability_zone" {
   value       = aws_instance.ipa_master.availability_zone
   description = "The AZ where the IPA master instance is deployed"
+}
+
+output "master_id" {
+  value       = aws_instance.ipa_master.id
+  description = "The EC2 instance ID corresponding to the IPA master"
 }
 
 output "master_private_ip" {
@@ -28,14 +38,14 @@ output "master_subnet_id" {
   description = "The ID of the subnet where the IPA master instance is deployed"
 }
 
-output "replica_ids" {
-  value       = aws_instance.ipa_replicas[*].id
-  description = "The EC2 instance IDs corresponding to the IPA replicas"
-}
-
 output "replica_arns" {
   value       = aws_instance.ipa_replicas[*].arn
   description = "The EC2 instance ARNs corresponding to the IPA replicas"
+}
+
+output "replica_ids" {
+  value       = aws_instance.ipa_replicas[*].id
+  description = "The EC2 instance IDs corresponding to the IPA replicas"
 }
 
 output "replica_availability_zones" {
@@ -58,12 +68,12 @@ output "replica_subnet_ids" {
   description = "The IDs of the subnets where the IPA replica instances are deployed"
 }
 
-output "security_group_id" {
-  value       = aws_security_group.ipa_servers.id
-  description = "The ID of the IPA server security group"
-}
-
-output "security_group_arn" {
+output "server_security_group_arn" {
   value       = aws_security_group.ipa_servers.arn
   description = "The ARN of the IPA server security group"
+}
+
+output "server_security_group_id" {
+  value       = aws_security_group.ipa_servers.id
+  description = "The ID of the IPA server security group"
 }
