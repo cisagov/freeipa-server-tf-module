@@ -115,6 +115,7 @@ module "ipa_replica1" {
   associate_public_ip_address = true
   hostname                    = "ipa-replica1.cal23.cyber.dhs.gov"
   is_master                   = false
+  master_hostname             = "ipa.cal23.cyber.dhs.gov"
   private_reverse_zone_id     = aws_route53_zone.replica_private_reverse_zone.zone_id
   private_zone_id             = aws_route53_zone.private_zone.zone_id
   public_zone_id              = data.aws_route53_zone.public_zone.zone_id
