@@ -72,15 +72,16 @@ module "ipa_replica" {
 | admin_pw | The admin password for the Kerberos admin role | string | | yes |
 | associate_public_ip_address | Whether or not to associate a public IP address with the IPA server | bool | `false` | no |
 | aws_instance_type | The AWS instance type to deploy (e.g. t3.medium).  Two gigs of RAM is a minimum requirement. | string | `t3.small` | no |
-| directory_service_pw | The password for the IPA server's directory service.  Only required if this is a master IPA server (i.e. if is_master is true). | string | `N/A` | no |
-| domain | The domain for the IPA server (e.g. `example.com`).  Only required if this is a master IPA server (i.e. if is_master is true). | string | `N/A` | no |
+| directory_service_pw | The password for the IPA server's directory service.  Only required if this is a master IPA server (i.e. if is_master is true). | string | Empty string | no |
+| domain | The domain for the IPA server (e.g. `example.com`).  Only required if this is a master IPA server (i.e. if is_master is true). | string | Empty string | no |
 | hostname | The hostname of this IPA server (e.g. `ipa.example.com`) | string | | yes |
 | is_master | Indicates whether this IPA server is a master (true) or a replica (false) | bool | | yes |
+| master_hostname | The hostname of the IPA master (e.g. ipa.example.com).  Only necessary if creating a replica IPA server and you want the replica to delay installation until the master is available. | string | Empty string | no |
 | private_reverse_zone_id | The zone ID corresponding to the private Route53 reverse zone where the PTR records related to this IPA server should be created (e.g. `ZKX36JXQ8W82L`) | string | | yes |
 | private_zone_id | The zone ID corresponding to the private Route53 zone where the kerberos-related DNS records should be created (e.g. `ZKX36JXQ8W82L`) | string | | yes |
-| public_zone_id | The zone ID corresponding to the public Route53 zone where the kerberos-related DNS records should be created (e.g. `ZKX36JXQ8W82L`) | string | `N/A` | no |
-| realm | The realm for the IPA server (e.g. `EXAMPLE.COM`).  Only required if this is a master IPA server (i.e. if is_master is true). | string | `N/A` | no |
-| server_security_group_id | The ID for the IPA server security group (e.g. sg-0123456789abcdef0).  Only required if this is a replica IPA server (i.e. if is_master is false). | string | `N/A` | no |
+| public_zone_id | The zone ID corresponding to the public Route53 zone where the kerberos-related DNS records should be created (e.g. `ZKX36JXQ8W82L`) | string | Empty string | no |
+| realm | The realm for the IPA server (e.g. `EXAMPLE.COM`).  Only required if this is a master IPA server (i.e. if is_master is true). | string | Empty string | no |
+| server_security_group_id | The ID for the IPA server security group (e.g. sg-0123456789abcdef0).  Only required if this is a replica IPA server (i.e. if is_master is false). | string | Empty string | no |
 | subnet_id | The ID of the AWS subnet into which to deploy this IPA server (e.g. `subnet-0123456789abcdef0`) | string | | yes |
 | tags | Tags to apply to all AWS resources created | map(string) | `{}` | no |
 | trusted_cidr_blocks | A list of the CIDR blocks that are allowed to access the IPA servers (e.g. `[10.10.0.0/16, 10.11.0.0/16]`).  Only used if this is a master IPA server (i.e. if is_master is true). | list(string) | `[]` | no |
