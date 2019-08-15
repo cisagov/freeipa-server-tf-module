@@ -49,27 +49,32 @@ variable "aws_instance_type" {
 
 variable "directory_service_pw" {
   description = "The password for the IPA server's directory service.  Only required if this is a master IPA server (i.e. if is_master is true)."
-  default     = "N/A"
+  default     = ""
 }
 
 variable "domain" {
   description = "The domain for the IPA server (e.g. example.com).  Only required if this is a master IPA server (i.e. if is_master is true)."
-  default     = "N/A"
+  default     = ""
+}
+
+variable "master_hostname" {
+  description = "The hostname of the IPA master (e.g. ipa.example.com).  Only necessary if creating a replica IPA server and you want the replica to delay installation until the master is available."
+  default     = ""
 }
 
 variable "public_zone_id" {
   description = "The zone ID corresponding to the public Route53 zone where the kerberos-related DNS records should be created (e.g. ZKX36JXQ8W82L).  Only required if a public IP address is associated with the IPA server (i.e. if associate_public_ip_address is true)."
-  default     = "N/A"
+  default     = ""
 }
 
 variable "realm" {
   description = "The realm for the IPA server (e.g. EXAMPLE.COM).  Only required if this is a master IPA server (i.e. if is_master is true)."
-  default     = "N/A"
+  default     = ""
 }
 
 variable "server_security_group_id" {
   description = "The ID for the IPA server security group (e.g. sg-0123456789abcdef0).  Only required if this is a replica IPA server (i.e. if is_master is false)."
-  default     = "N/A"
+  default     = ""
 }
 
 variable "tags" {
