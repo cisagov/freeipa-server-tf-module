@@ -2,37 +2,62 @@
 
 [![Build Status](https://travis-ci.com/cisagov/freeipa-server-tf-module.svg?branch=develop)](https://travis-ci.com/cisagov/freeipa-server-tf-module)
 
-A Terraform module for deploying a FreeIPA master server into a VPC.
+A Terraform module for deploying a FreeIPA server (master or replica)
+into a VPC.
 
 ## Usage ##
 
+Master IPA server:
+
 ```hcl
-module "ipa" {
+module "ipa_master" {
   source = "github.com/cisagov/freeipa-server-tf-module"
 
-  admin_pw                = "thepassword"
-  directory_service_pw    = "thepassword"
-  domain                  = "example.com"
-  hostname                = "ipa.example.com"
-  master_subnet_id        = aws_subnet.master_subnet.id
-  private_zone_ip         = "ZKX36JXQ8W82L"
-  private_reverse_zone_ip = "ZLY47KYR9X93M"
-  public_zone_ip          = "ZJW25IWP7V71K"
-  realm                   = "EXAMPLE.COM"
-  trusted_cidr_blocks     = [
-    "10.99.49.0/24",
-    "10.99.52.0/24"
-  ]
+  admin_pw                    = "thepassword"
   associate_public_ip_address = true
   aws_instance_type           = "t3.large"
-  replica_subnet_ids          = [
-    "subnet-0123456789abcdef0",
-    "subnet-0123456789abcdef1",
-  ]
-  tags = {
+  directory_service_pw        = "thepassword"
+  domain                      = "example.com"
+  hostname                    = "ipa.example.com"
+  is_master                   = true
+  private_reverse_zone_id     = "ZLY47KYR9X93M"
+  private_zone_id             = "ZKX36JXQ8W82L"
+  public_zone_id              = "ZJW25IWP7V71K"
+  realm                       = "EXAMPLE.COM"
+  subnet_id                   = aws_subnet.master_subnet.id
+  tags                        = {
     Key1 = "Value1"
     Key2 = "Value2"
   }
+  trusted_cidr_blocks         = [
+    "10.99.49.0/24",
+    "10.99.52.0/24"
+  ]
+  ttl                         = 60
+}
+```
+
+Replica IPA server:
+
+```hcl
+module "ipa_replica" {
+  source = "github.com/cisagov/freeipa-server-tf-module"
+
+  admin_pw                    = "thepassword"
+  associate_public_ip_address = true
+  aws_instance_type           = "t3.large"
+  hostname                    = "ipa-replica1.example.com"
+  is_master                   = false
+  private_reverse_zone_id     = "ZLY47KYR9X93M"
+  private_zone_id             = "ZKX36JXQ8W82L"
+  public_zone_id              = "ZJW25IWP7V71K"
+  server_security_group_id    = module.ipa_master.server_security_group_id
+  subnet_id                   = aws_subnet.replica_subnet.id
+  tags                        = {
+    Key1 = "Value1"
+    Key2 = "Value2"
+  }
+  ttl                         = 60
 }
 ```
 
@@ -44,44 +69,29 @@ module "ipa" {
 
 | Name | Description | Type | Default | Required |
 |------|-------------|:----:|:-------:|:--------:|
-| admin_pw | The admin password for the IPA server's Kerberos admin role | string | | yes |
-| directory_service_pw | The password for the IPA server's directory service | string | | yes |
-| domain | The domain for the IPA server (e.g. `example.com`) | string | | yes |
-| master_hostname | The hostname of the IPA master (e.g. `ipa.example.com`) | string | | yes |
-| master_private_reverse_zone_id | The zone ID corresponding to the private Route53 reverse zone where the PTR records related to the kerberos master should be created (e.g. `ZKX36JXQ8W82L`) | string | | yes |
-| master_subnet_id | The ID of the AWS subnet into which to deploy the master IPA server (e.g. `subnet-0123456789abcdef0`) | string | | yes |
-| private_zone_id | The zone ID corresponding to the private Route53 zone where the kerberos-related DNS records should be created (e.g. `ZKX36JXQ8W82L`) | string | | yes |
-| public_zone_id | The zone ID corresponding to the public Route53 zone where the kerberos-related DNS records should be created (e.g. `ZKX36JXQ8W82L`) | string | | yes |
-| realm | The realm for the IPA server (e.g. `EXAMPLE.COM`) | string | | yes |
-| trusted_cidr_blocks | A list of the CIDR blocks that are allowed to access the IPA servers (e.g. `[10.10.0.0/16, 10.11.0.0/16]`) | list(string) | | yes |
+| admin_pw | The admin password for the Kerberos admin role | string | | yes |
 | associate_public_ip_address | Whether or not to associate a public IP address with the IPA server | bool | `false` | no |
 | aws_instance_type | The AWS instance type to deploy (e.g. t3.medium).  Two gigs of RAM is a minimum requirement. | string | `t3.small` | no |
-| replica_hostnames | The hostnames of the IPA replicas (e.g. `[ipa-replica1.example.com]`) | string | | no |
-| replica_private_reverse_zone_ids | The zone IDs corresponding to the private Route53 reverse zones where the PTR records related to the kerberos replicas should be created (e.g. `[ZKX36JXQ8W82L]`) | list(string) | `{}` | no |
-| replica_subnet_ids | The IDs of the AWS subnets into which to deploy the replica IPA servers (e.g. `[subnet-0123456789abcdef0]`) | list(string) | `{}` | no |
+| directory_service_pw | The password for the IPA server's directory service.  Only required if this is a master IPA server (i.e. if is_master is true). | string | `N/A` | no |
+| domain | The domain for the IPA server (e.g. `example.com`).  Only required if this is a master IPA server (i.e. if is_master is true). | string | `N/A` | no |
+| hostname | The hostname of this IPA server (e.g. `ipa.example.com`) | string | | yes |
+| is_master | Indicates whether this IPA server is a master (true) or a replica (false) | bool | | yes |
+| private_reverse_zone_id | The zone ID corresponding to the private Route53 reverse zone where the PTR records related to this IPA server should be created (e.g. `ZKX36JXQ8W82L`) | string | | yes |
+| private_zone_id | The zone ID corresponding to the private Route53 zone where the kerberos-related DNS records should be created (e.g. `ZKX36JXQ8W82L`) | string | | yes |
+| public_zone_id | The zone ID corresponding to the public Route53 zone where the kerberos-related DNS records should be created (e.g. `ZKX36JXQ8W82L`) | string | `N/A` | no |
+| realm | The realm for the IPA server (e.g. `EXAMPLE.COM`).  Only required if this is a master IPA server (i.e. if is_master is true). | string | `N/A` | no |
+| server_security_group_id | The ID for the IPA server security group (e.g. sg-0123456789abcdef0).  Only required if this is a replica IPA server (i.e. if is_master is false). | string | `N/A` | no |
+| subnet_id | The ID of the AWS subnet into which to deploy this IPA server (e.g. `subnet-0123456789abcdef0`) | string | | yes |
 | tags | Tags to apply to all AWS resources created | map(string) | `{}` | no |
+| trusted_cidr_blocks | A list of the CIDR blocks that are allowed to access the IPA servers (e.g. `[10.10.0.0/16, 10.11.0.0/16]`).  Only used if this is a master IPA server (i.e. if is_master is true). | list(string) | `[]` | no |
 | ttl | The TTL value to use for Route53 DNS records (e.g. 86400).  A smaller value may be useful when the DNS records are changing often, for example when testing. | string | `86400` | no |
 
 ## Outputs ##
 
 | Name | Description |
 |------|-------------|
-| client_security_group_id | The ID of the IPA client security group |
-| client_security_group_arn | The ARN of the IPA client security group |
-| master_arn | The EC2 instance ARN corresponding to the IPA master |
-| master_availability_zone | The AZ where the IPA master instance is deployed |
-| master_id | The EC2 instance ID corresponding to the IPA master |
-| master_private_ip | The private IP of the IPA master instance |
-| master_public_ip | The public IP of the IPA master instance |
-| master_subnet_id | The ID of the subnet where the IPA master instance is deployed |
-| replica_arns | The EC2 instance ARNs corresponding to the IPA replicas |
-| replica_availability_zones | The AZ where the IPA replica instances are deployed |
-| replica_ids | The EC2 instance IDs corresponding to the IPA replicas |
-| replica_private_ips | The private IPs of the IPA replica instances |
-| replica_public_ips | The public IPs of the IPA replica instances |
-| replica_subnet_ids | The IDs of the subnets where the IPA replica instances are deployed |
+| id | The EC2 instance ID corresponding to the IPA server |
 | server_security_group_id | The ID of the IPA server security group |
-| server_security_group_arn | The ARN of the IPA server security group |
 
 ## Contributing ##
 

@@ -84,32 +84,42 @@ data "aws_route53_zone" "public_zone" {
 #-------------------------------------------------------------------------------
 # Configure the example module.
 #-------------------------------------------------------------------------------
-module "ipa" {
+module "ipa_master" {
   source = "../../"
 
-  directory_service_pw           = "thepassword"
-  admin_pw                       = "thepassword"
-  domain                         = "cal23.cyber.dhs.gov"
-  master_hostname                = "ipa.cal23.cyber.dhs.gov"
-  master_subnet_id               = aws_subnet.master_subnet.id
-  private_zone_id                = aws_route53_zone.private_zone.zone_id
-  master_private_reverse_zone_id = aws_route53_zone.master_private_reverse_zone.zone_id
-  public_zone_id                 = data.aws_route53_zone.public_zone.zone_id
-  realm                          = "CAL23.CYBER.DHS.GOV"
+  admin_pw                    = "thepassword"
+  associate_public_ip_address = true
+  directory_service_pw        = "thepassword"
+  domain                      = "cal23.cyber.dhs.gov"
+  hostname                    = "ipa.cal23.cyber.dhs.gov"
+  is_master                   = true
+  private_reverse_zone_id     = aws_route53_zone.master_private_reverse_zone.zone_id
+  private_zone_id             = aws_route53_zone.private_zone.zone_id
+  public_zone_id              = data.aws_route53_zone.public_zone.zone_id
+  realm                       = "CAL23.CYBER.DHS.GOV"
+  subnet_id                   = aws_subnet.master_subnet.id
+  tags = {
+    Testing = true
+  }
   trusted_cidr_blocks = [
     "10.99.48.0/23",
     "108.31.3.53/32"
   ]
+  ttl = 60
+}
+
+module "ipa_replica1" {
+  source = "../../"
+
+  admin_pw                    = "thepassword"
   associate_public_ip_address = true
-  replica_hostnames = [
-    "ipa-replica1.cal23.cyber.dhs.gov"
-  ]
-  replica_private_reverse_zone_ids = [
-    aws_route53_zone.replica_private_reverse_zone.zone_id
-  ]
-  replica_subnet_ids = [
-    aws_subnet.replica_subnet.id
-  ]
+  hostname                    = "ipa-replica1.cal23.cyber.dhs.gov"
+  is_master                   = false
+  private_reverse_zone_id     = aws_route53_zone.replica_private_reverse_zone.zone_id
+  private_zone_id             = aws_route53_zone.private_zone.zone_id
+  public_zone_id              = data.aws_route53_zone.public_zone.zone_id
+  server_security_group_id    = module.ipa_master.server_security_group_id
+  subnet_id                   = aws_subnet.replica_subnet.id
   tags = {
     Testing = true
   }
