@@ -10,7 +10,7 @@ resource "aws_security_group" "ipa_servers" {
 
 # TCP ingress rules for IPA
 resource "aws_security_group_rule" "ipa_tcp_ingress_trusted" {
-  count = (var.is_master ? 1 : 0) * length(local.ipa_tcp_ports)
+  count = var.is_master ? length(local.ipa_tcp_ports) : 0
 
   security_group_id = aws_security_group.ipa_servers[0].id
   type              = "ingress"
@@ -20,7 +20,7 @@ resource "aws_security_group_rule" "ipa_tcp_ingress_trusted" {
   to_port           = local.ipa_tcp_ports[count.index]
 }
 resource "aws_security_group_rule" "ipa_tcp_ingress_self" {
-  count = (var.is_master ? 1 : 0) * length(local.ipa_tcp_ports)
+  count = var.is_master ? length(local.ipa_tcp_ports) : 0
 
   security_group_id = aws_security_group.ipa_servers[0].id
   type              = "ingress"
@@ -32,7 +32,7 @@ resource "aws_security_group_rule" "ipa_tcp_ingress_self" {
 
 # TCP egress rules for IPA
 resource "aws_security_group_rule" "ipa_tcp_egress" {
-  count = (var.is_master ? 1 : 0) * length(local.ipa_tcp_ports)
+  count = var.is_master ? length(local.ipa_tcp_ports) : 0
 
   security_group_id = aws_security_group.ipa_servers[0].id
   type              = "egress"
@@ -44,7 +44,7 @@ resource "aws_security_group_rule" "ipa_tcp_egress" {
 
 # UDP ingress rules for IPA
 resource "aws_security_group_rule" "ipa_udp_ingress_trusted" {
-  count = (var.is_master ? 1 : 0) * length(local.ipa_udp_ports)
+  count = var.is_master ? length(local.ipa_udp_ports) : 0
 
   security_group_id = aws_security_group.ipa_servers[0].id
   type              = "ingress"
@@ -54,7 +54,7 @@ resource "aws_security_group_rule" "ipa_udp_ingress_trusted" {
   to_port           = local.ipa_udp_ports[count.index]
 }
 resource "aws_security_group_rule" "ipa_udp_ingress_self" {
-  count = (var.is_master ? 1 : 0) * length(local.ipa_udp_ports)
+  count = var.is_master ? length(local.ipa_udp_ports) : 0
 
   security_group_id = aws_security_group.ipa_servers[0].id
   type              = "ingress"
@@ -66,7 +66,7 @@ resource "aws_security_group_rule" "ipa_udp_ingress_self" {
 
 # UDP egress rules for IPA
 resource "aws_security_group_rule" "ipa_udp_egress" {
-  count = (var.is_master ? 1 : 0) * length(local.ipa_udp_ports)
+  count = var.is_master ? length(local.ipa_udp_ports) : 0
 
   security_group_id = aws_security_group.ipa_servers[0].id
   type              = "egress"

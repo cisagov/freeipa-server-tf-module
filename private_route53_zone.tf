@@ -24,7 +24,7 @@ resource "aws_route53_record" "ca_private_A" {
 }
 
 resource "aws_route53_record" "private_SRV" {
-  count = (var.is_master ? 1 : 0) * length(local.tcp_and_udp)
+  count = var.is_master ? length(local.tcp_and_udp) : 0
 
   zone_id = var.private_zone_id
   name    = "_kerberos-master._${local.tcp_and_udp[count.index]}.${var.domain}"
@@ -36,7 +36,7 @@ resource "aws_route53_record" "private_SRV" {
 }
 
 resource "aws_route53_record" "server_private_SRV" {
-  count = (var.is_master ? 1 : 0) * length(local.tcp_and_udp)
+  count = var.is_master ? length(local.tcp_and_udp) : 0
 
   zone_id = var.private_zone_id
   name    = "_kerberos._${local.tcp_and_udp[count.index]}.${var.domain}"
@@ -60,7 +60,7 @@ resource "aws_route53_record" "kerberos_private_TXT" {
 }
 
 resource "aws_route53_record" "password_private_SRV" {
-  count = (var.is_master ? 1 : 0) * length(local.tcp_and_udp)
+  count = var.is_master ? length(local.tcp_and_udp) : 0
 
   zone_id = var.private_zone_id
   name    = "_kpasswd._${local.tcp_and_udp[count.index]}.${var.domain}"
