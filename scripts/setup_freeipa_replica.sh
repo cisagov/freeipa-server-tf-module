@@ -4,6 +4,8 @@
 # admin_pw - the admin password for the IPA server's Kerberos admin
 # role
 # hostname - the hostname of this IPA replica server
+# (e.g. ipa-replica.example.com)
+# master_hostname - the hostname of the IPA master server
 # (e.g. ipa.example.com)
 
 set -o nounset
@@ -34,6 +36,22 @@ do
     sleep 30
     ptr=$(get_ptr "$ip_address")
 done
+
+# If the user gave a value for the IPA master hostname then wait until
+# the master is up and running before installing.
+#
+# master_hostname below looks like a shell variable but is actually
+# replaced by the Terraform templating engine.  Hence we can ignore
+# the "undefined variable" warning from shellcheck.
+#
+# shellcheck disable=SC2154
+if [ "${master_hostname}" != "" ]
+then
+   until ipa-replica-conncheck --replica="${master_hostname}"
+   do
+       sleep 60
+   done
+fi
 
 # There are several items below that look like shell variables but are
 # actually replaced by the Terraform templating engine.  Hence we can

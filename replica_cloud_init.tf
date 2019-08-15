@@ -8,8 +8,9 @@ data "template_cloudinit_config" "replica_cloud_init_tasks" {
     content_type = "text/x-shellscript"
     content = templatefile(
       "${path.module}/scripts/setup_freeipa_replica.sh", {
-        admin_pw = var.admin_pw
-        hostname = var.hostname
+        admin_pw        = var.admin_pw
+        hostname        = var.hostname
+        master_hostname = var.master_hostname
     })
   }
 }
