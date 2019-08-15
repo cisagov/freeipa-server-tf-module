@@ -45,5 +45,4 @@ ipa-replica-install --setup-ca \
                     --hostname="${hostname}" \
                     --ip-address="$ip_address" \
                     --no-ntp \
-                    --debug \
                     --unattended
