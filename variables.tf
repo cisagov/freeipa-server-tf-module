@@ -43,8 +43,8 @@ variable "associate_public_ip_address" {
 }
 
 variable "aws_instance_type" {
-  description = "The AWS instance type to deploy (e.g. t3.medium).  Two gigabytes of RAM is a minimum requirement."
-  default     = "t3.small"
+  description = "The AWS instance type to deploy (e.g. t3.medium).  Two gigabytes of RAM is given as a minimum requirement for FreeIPA, but I have had intermittent problems when creating t3.small replicas."
+  default     = "t3.medium"
 }
 
 variable "directory_service_pw" {

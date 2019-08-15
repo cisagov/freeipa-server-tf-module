@@ -71,7 +71,7 @@ module "ipa_replica" {
 |------|-------------|:----:|:-------:|:--------:|
 | admin_pw | The admin password for the Kerberos admin role | string | | yes |
 | associate_public_ip_address | Whether or not to associate a public IP address with the IPA server | bool | `false` | no |
-| aws_instance_type | The AWS instance type to deploy (e.g. t3.medium).  Two gigs of RAM is a minimum requirement. | string | `t3.small` | no |
+| aws_instance_type | The AWS instance type to deploy (e.g. t3.medium).  Two gigs of RAM is a minimum requirement. | string | `t3.medium` | no |
 | directory_service_pw | The password for the IPA server's directory service.  Only required if this is a master IPA server (i.e. if is_master is true). | string | Empty string | no |
 | domain | The domain for the IPA server (e.g. `example.com`).  Only required if this is a master IPA server (i.e. if is_master is true). | string | Empty string | no |
 | hostname | The hostname of this IPA server (e.g. `ipa.example.com`) | string | | yes |
