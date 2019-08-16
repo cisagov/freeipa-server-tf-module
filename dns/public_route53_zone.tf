@@ -33,7 +33,7 @@ resource "aws_route53_record" "public_SRV" {
   type    = "SRV"
   ttl     = var.ttl
   records = [
-    "0 100 88 ipa.${var.hostname}",
+    "0 100 88 ${var.hostname}",
   ]
 }
 
