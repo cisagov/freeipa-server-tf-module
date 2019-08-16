@@ -82,7 +82,7 @@ data "aws_route53_zone" "public_zone" {
 }
 
 #-------------------------------------------------------------------------------
-# Configure the example module.
+# Configure the master and replica modules.
 #-------------------------------------------------------------------------------
 module "ipa_master" {
   source = "../../"
