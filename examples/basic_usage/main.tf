@@ -87,6 +87,11 @@ data "aws_route53_zone" "public_zone" {
 module "ipa_master" {
   source = "../../"
 
+  providers = {
+    aws     = "aws"
+    aws.dns = "aws"
+  }
+
   admin_pw                    = "thepassword"
   associate_public_ip_address = true
   directory_service_pw        = "thepassword"
@@ -110,6 +115,11 @@ module "ipa_master" {
 
 module "ipa_replica1" {
   source = "../../"
+
+  providers = {
+    aws     = "aws"
+    aws.dns = "aws"
+  }
 
   admin_pw                    = "thepassword"
   associate_public_ip_address = true

@@ -4,6 +4,8 @@
 resource "aws_route53_record" "public_A" {
   count = var.associate_public_ip_address ? 1 : 0
 
+  provider = aws.dns
+
   zone_id = var.public_zone_id
   name    = var.hostname
   type    = "A"
@@ -15,6 +17,8 @@ resource "aws_route53_record" "public_A" {
 
 resource "aws_route53_record" "ca_public_A" {
   count = var.associate_public_ip_address && var.is_master ? 1 : 0
+
+  provider = aws.dns
 
   zone_id = var.public_zone_id
   name    = "ipa-ca.${var.domain}"
@@ -28,6 +32,8 @@ resource "aws_route53_record" "ca_public_A" {
 resource "aws_route53_record" "public_SRV" {
   count = var.associate_public_ip_address && var.is_master ? length(local.tcp_and_udp) : 0
 
+  provider = aws.dns
+
   zone_id = var.public_zone_id
   name    = "_kerberos-master._${local.tcp_and_udp[count.index]}.${var.domain}"
   type    = "SRV"
@@ -39,6 +45,8 @@ resource "aws_route53_record" "public_SRV" {
 
 resource "aws_route53_record" "server_public_SRV" {
   count = var.associate_public_ip_address && var.is_master ? length(local.tcp_and_udp) : 0
+
+  provider = aws.dns
 
   zone_id = var.public_zone_id
   name    = "_kerberos._${local.tcp_and_udp[count.index]}.${var.domain}"
@@ -52,6 +60,8 @@ resource "aws_route53_record" "server_public_SRV" {
 resource "aws_route53_record" "kerberos_public_TXT" {
   count = var.associate_public_ip_address && var.is_master ? 1 : 0
 
+  provider = aws.dns
+
   zone_id = var.public_zone_id
   name    = "_kerberos.${var.domain}"
   type    = "TXT"
@@ -64,6 +74,8 @@ resource "aws_route53_record" "kerberos_public_TXT" {
 resource "aws_route53_record" "password_public_SRV" {
   count = var.associate_public_ip_address && var.is_master ? length(local.tcp_and_udp) : 0
 
+  provider = aws.dns
+
   zone_id = var.public_zone_id
   name    = "_kpasswd._${local.tcp_and_udp[count.index]}.${var.domain}"
   type    = "SRV"
@@ -75,6 +87,8 @@ resource "aws_route53_record" "password_public_SRV" {
 
 resource "aws_route53_record" "ldap_public_SRV" {
   count = var.associate_public_ip_address && var.is_master ? 1 : 0
+
+  provider = aws.dns
 
   zone_id = var.public_zone_id
   name    = "_ldap._tcp.${var.domain}"
