@@ -1,32 +1,34 @@
 #-------------------------------------------------------------------------------
 # Create some DNS records.
 #-------------------------------------------------------------------------------
-resource "aws_route53_record" "private_A" {
-  zone_id = var.private_zone_id
+resource "aws_route53_record" "A" {
+  count = var.do_it ? 1 : 0
+
+  zone_id = var.zone_id
   name    = var.hostname
   type    = "A"
   ttl     = var.ttl
   records = [
-    var.private_ip,
+    var.ip,
   ]
 }
 
-resource "aws_route53_record" "ca_private_A" {
-  count = var.is_master ? 1 : 0
+resource "aws_route53_record" "ca_A" {
+  count = var.do_it && var.is_master ? 1 : 0
 
-  zone_id = var.private_zone_id
+  zone_id = var.zone_id
   name    = "ipa-ca.${var.domain}"
   type    = "A"
   ttl     = var.ttl
   records = [
-    var.private_ip,
+    var.ip,
   ]
 }
 
-resource "aws_route53_record" "private_SRV" {
-  count = var.is_master ? length(local.tcp_and_udp) : 0
+resource "aws_route53_record" "SRV" {
+  count = var.do_it && var.is_master ? length(local.tcp_and_udp) : 0
 
-  zone_id = var.private_zone_id
+  zone_id = var.zone_id
   name    = "_kerberos-master._${local.tcp_and_udp[count.index]}.${var.domain}"
   type    = "SRV"
   ttl     = var.ttl
@@ -35,10 +37,10 @@ resource "aws_route53_record" "private_SRV" {
   ]
 }
 
-resource "aws_route53_record" "server_private_SRV" {
-  count = var.is_master ? length(local.tcp_and_udp) : 0
+resource "aws_route53_record" "server_SRV" {
+  count = var.do_it && var.is_master ? length(local.tcp_and_udp) : 0
 
-  zone_id = var.private_zone_id
+  zone_id = var.zone_id
   name    = "_kerberos._${local.tcp_and_udp[count.index]}.${var.domain}"
   type    = "SRV"
   ttl     = var.ttl
@@ -47,10 +49,10 @@ resource "aws_route53_record" "server_private_SRV" {
   ]
 }
 
-resource "aws_route53_record" "kerberos_private_TXT" {
-  count = var.is_master ? 1 : 0
+resource "aws_route53_record" "kerberos_TXT" {
+  count = var.do_it && var.is_master ? 1 : 0
 
-  zone_id = var.private_zone_id
+  zone_id = var.zone_id
   name    = "_kerberos.${var.domain}"
   type    = "TXT"
   ttl     = var.ttl
@@ -59,10 +61,10 @@ resource "aws_route53_record" "kerberos_private_TXT" {
   ]
 }
 
-resource "aws_route53_record" "password_private_SRV" {
-  count = var.is_master ? length(local.tcp_and_udp) : 0
+resource "aws_route53_record" "password_SRV" {
+  count = var.do_it && var.is_master ? length(local.tcp_and_udp) : 0
 
-  zone_id = var.private_zone_id
+  zone_id = var.zone_id
   name    = "_kpasswd._${local.tcp_and_udp[count.index]}.${var.domain}"
   type    = "SRV"
   ttl     = var.ttl
@@ -71,10 +73,10 @@ resource "aws_route53_record" "password_private_SRV" {
   ]
 }
 
-resource "aws_route53_record" "ldap_private_SRV" {
-  count = var.is_master ? 1 : 0
+resource "aws_route53_record" "ldap_SRV" {
+  count = var.do_it && var.is_master ? 1 : 0
 
-  zone_id = var.private_zone_id
+  zone_id = var.zone_id
   name    = "_ldap._tcp.${var.domain}"
   type    = "SRV"
   ttl     = var.ttl
