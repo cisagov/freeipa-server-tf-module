@@ -69,6 +69,7 @@ module "ipa_replica" {
 
 | Name | Description | Type | Default | Required |
 |------|-------------|:----:|:-------:|:--------:|
+| admin_pw | The ID of the AWS account that owns the FreeIPA server AMI | string | `344440683180` | no |
 | admin_pw | The admin password for the Kerberos admin role | string | | yes |
 | associate_public_ip_address | Whether or not to associate a public IP address with the IPA server | bool | `false` | no |
 | aws_instance_type | The AWS instance type to deploy (e.g. t3.medium).  Two gigs of RAM is a minimum requirement. | string | `t3.medium` | no |

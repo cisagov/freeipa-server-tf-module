@@ -36,6 +36,11 @@ variable "subnet_id" {
 # dependent on the values of the other parameters.
 # ------------------------------------------------------------------------------
 
+variable "ami_owner_account_id" {
+  description = "The ID of the AWS account that owns the FreeIPA server AMI"
+  default     = "344440683180" # CISA NCATS CyHy production (Raytheon) account
+}
+
 variable "associate_public_ip_address" {
   type        = bool
   description = "Whether or not to associate a public IP address with the IPA server"
