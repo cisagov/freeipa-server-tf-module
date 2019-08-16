@@ -16,11 +16,6 @@ locals {
     464, # kpasswd
   ]
 
-  tcp_and_udp = [
-    "tcp",
-    "udp"
-  ]
-
   # If this is a master IPA server then we will create the security
   # group.  Otherwise it is passed in.
   server_security_group_id = var.is_master ? aws_security_group.ipa_servers[0].id : var.server_security_group_id
