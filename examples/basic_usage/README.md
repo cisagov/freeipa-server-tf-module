@@ -14,4 +14,3 @@ Note that this example may create resources which cost money. Run
 |------|-------------|
 | ipa_server_security_group_id | The ID corresponding to the IPA server security group |
 | master_id | The EC2 instance ID corresponding to the IPA master |
-| replica_id | The EC2 instance ID corresponding to the IPA replica |

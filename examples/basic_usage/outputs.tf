@@ -7,8 +7,3 @@ output "master_id" {
   value       = module.ipa_master.id
   description = "The EC2 instance ID corresponding to the IPA master"
 }
-
-output "replica_id" {
-  value       = module.ipa_replica1.id
-  description = "The EC2 instance ID corresponding to the IPA replica"
-}
