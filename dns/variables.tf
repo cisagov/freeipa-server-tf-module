@@ -22,7 +22,7 @@ variable "private_reverse_zone_id" {
 }
 
 variable "private_zone_id" {
-  description = "The zone ID corresponding to the private Route53 zone where the kerberos-related DNS records should be created (e.g. ZKX36JXQ8W82L)"
+  description = "The zone ID corresponding to the private Route53 zone where the Kerberos-related DNS records should be created (e.g. ZKX36JXQ8W82L)"
 }
 
 # ------------------------------------------------------------------------------
@@ -44,7 +44,7 @@ variable "domain" {
 }
 
 variable "public_zone_id" {
-  description = "The zone ID corresponding to the public Route53 zone where the kerberos-related DNS records should be created (e.g. ZKX36JXQ8W82L).  Only required if a public IP address is associated with the IPA server (i.e. if associate_public_ip_address is true)."
+  description = "The zone ID corresponding to the public Route53 zone where the Kerberos-related DNS records should be created (e.g. ZKX36JXQ8W82L).  Only required if a public IP address is associated with the IPA server (i.e. if associate_public_ip_address is true)."
   default     = ""
 }
 

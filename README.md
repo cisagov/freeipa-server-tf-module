@@ -79,8 +79,8 @@ module "ipa_replica" {
 | is_master | Indicates whether this IPA server is a master (true) or a replica (false) | bool | | yes |
 | master_hostname | The hostname of the IPA master (e.g. ipa.example.com).  Only necessary if creating a replica IPA server and you want the replica to delay installation until the master is available. | string | Empty string | no |
 | private_reverse_zone_id | The zone ID corresponding to the private Route53 reverse zone where the PTR records related to this IPA server should be created (e.g. `ZKX36JXQ8W82L`) | string | | yes |
-| private_zone_id | The zone ID corresponding to the private Route53 zone where the kerberos-related DNS records should be created (e.g. `ZKX36JXQ8W82L`) | string | | yes |
-| public_zone_id | The zone ID corresponding to the public Route53 zone where the kerberos-related DNS records should be created (e.g. `ZKX36JXQ8W82L`) | string | Empty string | no |
+| private_zone_id | The zone ID corresponding to the private Route53 zone where the Kerberos-related DNS records should be created (e.g. `ZKX36JXQ8W82L`) | string | | yes |
+| public_zone_id | The zone ID corresponding to the public Route53 zone where the Kerberos-related DNS records should be created (e.g. `ZKX36JXQ8W82L`) | string | Empty string | no |
 | realm | The realm for the IPA server (e.g. `EXAMPLE.COM`).  Only required if this is a master IPA server (i.e. if is_master is true). | string | Empty string | no |
 | server_security_group_id | The ID for the IPA server security group (e.g. sg-0123456789abcdef0).  Only required if this is a replica IPA server (i.e. if is_master is false). | string | Empty string | no |
 | subnet_id | The ID of the AWS subnet into which to deploy this IPA server (e.g. `subnet-0123456789abcdef0`) | string | | yes |

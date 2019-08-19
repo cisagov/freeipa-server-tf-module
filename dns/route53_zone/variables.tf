@@ -22,7 +22,7 @@ variable "is_master" {
 }
 
 variable "zone_id" {
-  description = "The zone ID corresponding to the Route53 zone where the kerberos-related DNS records should be created (e.g. ZKX36JXQ8W82L)"
+  description = "The zone ID corresponding to the Route53 zone where the Kerberos-related DNS records should be created (e.g. ZKX36JXQ8W82L)"
 }
 
 # ------------------------------------------------------------------------------
