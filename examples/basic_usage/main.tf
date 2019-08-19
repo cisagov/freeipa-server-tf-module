@@ -3,17 +3,23 @@ provider "aws" {
 }
 
 #-------------------------------------------------------------------------------
-# Create a subnet inside a VPC.
+# Create two subnets inside a VPC.
 #-------------------------------------------------------------------------------
 resource "aws_vpc" "the_vpc" {
-  cidr_block           = "10.99.49.0/24"
+  cidr_block           = "10.99.48.0/23"
   enable_dns_hostnames = true
 }
 
-resource "aws_subnet" "the_subnet" {
+resource "aws_subnet" "master_subnet" {
+  vpc_id            = aws_vpc.the_vpc.id
+  cidr_block        = "10.99.48.0/24"
+  availability_zone = "us-west-1b"
+}
+
+resource "aws_subnet" "replica_subnet" {
   vpc_id            = aws_vpc.the_vpc.id
   cidr_block        = "10.99.49.0/24"
-  availability_zone = "us-west-1b"
+  availability_zone = "us-west-1c"
 }
 
 #-------------------------------------------------------------------------------
@@ -50,9 +56,17 @@ resource "aws_route53_zone" "private_zone" {
 }
 
 #-------------------------------------------------------------------------------
-# Create a private Route53 reverse zone.
+# Create private Route53 reverse zones.
 #-------------------------------------------------------------------------------
-resource "aws_route53_zone" "private_reverse_zone" {
+resource "aws_route53_zone" "master_private_reverse_zone" {
+  name = "48.99.10.in-addr.arpa"
+
+  vpc {
+    vpc_id = aws_vpc.the_vpc.id
+  }
+}
+
+resource "aws_route53_zone" "replica_private_reverse_zone" {
   name = "49.99.10.in-addr.arpa"
 
   vpc {
@@ -68,25 +82,55 @@ data "aws_route53_zone" "public_zone" {
 }
 
 #-------------------------------------------------------------------------------
-# Configure the example module.
+# Configure the master and replica modules.
 #-------------------------------------------------------------------------------
-module "ipa" {
+module "ipa_master" {
   source = "../../"
 
-  directory_service_pw    = "thepassword"
-  admin_pw                = "thepassword"
-  domain                  = "cal2.cyber.dhs.gov"
-  hostname                = "ipa.cal2.cyber.dhs.gov"
-  private_zone_id         = aws_route53_zone.private_zone.zone_id
-  private_reverse_zone_id = aws_route53_zone.private_reverse_zone.zone_id
-  public_zone_id          = data.aws_route53_zone.public_zone.zone_id
-  realm                   = "CAL2.CYBER.DHS.GOV"
-  subnet_id               = aws_subnet.the_subnet.id
+  providers = {
+    aws     = "aws"
+    aws.dns = "aws"
+  }
+
+  admin_pw                    = "thepassword"
+  associate_public_ip_address = true
+  directory_service_pw        = "thepassword"
+  domain                      = "cal23.cyber.dhs.gov"
+  hostname                    = "ipa.cal23.cyber.dhs.gov"
+  is_master                   = true
+  private_reverse_zone_id     = aws_route53_zone.master_private_reverse_zone.zone_id
+  private_zone_id             = aws_route53_zone.private_zone.zone_id
+  public_zone_id              = data.aws_route53_zone.public_zone.zone_id
+  realm                       = "CAL23.CYBER.DHS.GOV"
+  subnet_id                   = aws_subnet.master_subnet.id
+  tags = {
+    Testing = true
+  }
   trusted_cidr_blocks = [
-    "10.99.49.0/24",
+    "10.99.48.0/23",
     "108.31.3.53/32"
   ]
+  ttl = 60
+}
+
+module "ipa_replica1" {
+  source = "../../"
+
+  providers = {
+    aws     = "aws"
+    aws.dns = "aws"
+  }
+
+  admin_pw                    = "thepassword"
   associate_public_ip_address = true
+  hostname                    = "ipa-replica1.cal23.cyber.dhs.gov"
+  is_master                   = false
+  master_hostname             = "ipa.cal23.cyber.dhs.gov"
+  private_reverse_zone_id     = aws_route53_zone.replica_private_reverse_zone.zone_id
+  private_zone_id             = aws_route53_zone.private_zone.zone_id
+  public_zone_id              = data.aws_route53_zone.public_zone.zone_id
+  server_security_group_id    = module.ipa_master.server_security_group_id
+  subnet_id                   = aws_subnet.replica_subnet.id
   tags = {
     Testing = true
   }

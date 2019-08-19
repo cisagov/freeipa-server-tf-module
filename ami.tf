@@ -1,12 +1,5 @@
 # ------------------------------------------------------------------------------
-# Deploy the AMI from cisagov/freeipa-packer in AWS.
-# ------------------------------------------------------------------------------
-
-# The AWS account ID being used
-data "aws_caller_identity" "current" {}
-
-# ------------------------------------------------------------------------------
-# Automatically look up the latest pre-built example AMI from
+# Automatically look up the latest pre-built FreeIPA AMI from
 # cisagov/freeipa-packer.
 #
 # NOTE: This Terraform data source must return at least one AMI result
@@ -32,6 +25,7 @@ data "aws_ami" "freeipa" {
     values = ["ebs"]
   }
 
-  owners      = [data.aws_caller_identity.current.account_id] # This is us
+  # This is the CyHy production (Raytheon) account
+  owners      = [var.ami_owner_account_id]
   most_recent = true
 }

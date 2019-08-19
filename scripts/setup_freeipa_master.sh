@@ -50,5 +50,5 @@ ipa-server-install --realm="${realm}" \
                    --hostname="${hostname}" \
                    --ip-address="$ip_address" \
                    --no-ntp \
-                   --debug \
+                   --no_hbac_allow \
                    --unattended

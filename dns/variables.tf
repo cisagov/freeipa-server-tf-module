@@ -4,10 +4,6 @@
 # You must provide a value for each of these parameters.
 # ------------------------------------------------------------------------------
 
-variable "admin_pw" {
-  description = "The password for the Kerberos admin role"
-}
-
 variable "hostname" {
   description = "The hostname of this IPA server (e.g. ipa.example.com)"
 }
@@ -15,6 +11,10 @@ variable "hostname" {
 variable "is_master" {
   type        = bool
   description = "Indicates whether this IPA server is a master (true) or a replica (false)"
+}
+
+variable "private_ip" {
+  description = "The private IP of this IPA server (e.g. 10.11.1.5)"
 }
 
 variable "private_reverse_zone_id" {
@@ -25,10 +25,6 @@ variable "private_zone_id" {
   description = "The zone ID corresponding to the private Route53 zone where the Kerberos-related DNS records should be created (e.g. ZKX36JXQ8W82L)"
 }
 
-variable "subnet_id" {
-  description = "The ID of the AWS subnet into which to deploy this IPA server (e.g. subnet-0123456789abcdef0)"
-}
-
 # ------------------------------------------------------------------------------
 # Optional parameters
 #
@@ -36,34 +32,14 @@ variable "subnet_id" {
 # dependent on the values of the other parameters.
 # ------------------------------------------------------------------------------
 
-variable "ami_owner_account_id" {
-  description = "The ID of the AWS account that owns the FreeIPA server AMI"
-  default     = "344440683180" # CISA NCATS CyHy production (Raytheon) account
-}
-
 variable "associate_public_ip_address" {
   type        = bool
   description = "Whether or not to associate a public IP address with the IPA server"
   default     = false
 }
 
-variable "aws_instance_type" {
-  description = "The AWS instance type to deploy (e.g. t3.medium).  Two gigabytes of RAM is given as a minimum requirement for FreeIPA, but I have had intermittent problems when creating t3.small replicas."
-  default     = "t3.medium"
-}
-
-variable "directory_service_pw" {
-  description = "The password for the IPA server's directory service.  Only required if this is a master IPA server (i.e. if is_master is true)."
-  default     = ""
-}
-
 variable "domain" {
   description = "The domain for the IPA server (e.g. example.com).  Only required if this is a master IPA server (i.e. if is_master is true)."
-  default     = ""
-}
-
-variable "master_hostname" {
-  description = "The hostname of the IPA master (e.g. ipa.example.com).  Only necessary if creating a replica IPA server and you want the replica to delay installation until the master is available."
   default     = ""
 }
 
@@ -72,13 +48,8 @@ variable "public_zone_id" {
   default     = ""
 }
 
-variable "realm" {
-  description = "The realm for the IPA server (e.g. EXAMPLE.COM).  Only required if this is a master IPA server (i.e. if is_master is true)."
-  default     = ""
-}
-
-variable "server_security_group_id" {
-  description = "The ID for the IPA server security group (e.g. sg-0123456789abcdef0).  Only required if this is a replica IPA server (i.e. if is_master is false)."
+variable "public_ip" {
+  description = "The public IP of this IPA server (e.g. 10.11.1.5), if one exists"
   default     = ""
 }
 
@@ -86,12 +57,6 @@ variable "tags" {
   type        = map(string)
   description = "Tags to apply to all AWS resources created"
   default     = {}
-}
-
-variable "trusted_cidr_blocks" {
-  type        = list(string)
-  description = "A list of the CIDR blocks that are allowed to access the IPA servers (e.g. [\"10.10.0.0/16\", \"10.11.0.0/16\"]).  Only used if this is a master IPA server (i.e. if is_master is true)."
-  default     = []
 }
 
 variable "ttl" {
