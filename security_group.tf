@@ -31,7 +31,7 @@ resource "aws_security_group_rule" "ipa_tcp_ingress_self" {
 }
 
 # TCP egress rules for IPA
-resource "aws_security_group_rule" "ipa_tcp_egress" {
+resource "aws_security_group_rule" "ipa_tcp_egress_self" {
   count = var.is_master ? length(local.ipa_tcp_ports) : 0
 
   security_group_id = aws_security_group.ipa_servers[0].id
@@ -65,7 +65,7 @@ resource "aws_security_group_rule" "ipa_udp_ingress_self" {
 }
 
 # UDP egress rules for IPA
-resource "aws_security_group_rule" "ipa_udp_egress" {
+resource "aws_security_group_rule" "ipa_udp_egress_self" {
   count = var.is_master ? length(local.ipa_udp_ports) : 0
 
   security_group_id = aws_security_group.ipa_servers[0].id
