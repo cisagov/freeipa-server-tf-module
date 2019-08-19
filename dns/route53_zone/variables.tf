@@ -5,20 +5,15 @@
 # ------------------------------------------------------------------------------
 
 variable "domain" {
-  description = "The domain for the IPA server (e.g. example.com)"
+  description = "The domain for the IPA master (e.g. example.com)"
 }
 
 variable "hostname" {
-  description = "The hostname of this IPA server (e.g. ipa.example.com)"
+  description = "The hostname of the IPA master (e.g. ipa.example.com)"
 }
 
 variable "ip" {
-  description = "The IP of this IPA server (e.g. 10.11.1.5)"
-}
-
-variable "is_master" {
-  type        = bool
-  description = "Indicates whether this IPA server is a master (true) or a replica (false)"
+  description = "The IP of the IPA master (e.g. 10.11.1.5)"
 }
 
 variable "zone_id" {

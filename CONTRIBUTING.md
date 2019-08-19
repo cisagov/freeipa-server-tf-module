@@ -15,7 +15,7 @@ all of which should be in this repository.
 
 If you want to report a bug or request a new feature, the most direct
 method is to [create an
-issue](https://github.com/cisagov/freeipa-server-tf-module/issues) in
+issue](https://github.com/cisagov/freeipa-master-tf-module/issues) in
 this repository.  We recommend that you first search through existing
 issues (both open and closed) to check if your particular issue has
 already been reported.  If it has then you might want to add a comment
@@ -25,7 +25,7 @@ one.
 ## Pull requests ##
 
 If you choose to [submit a pull
-request](https://github.com/cisagov/freeipa-server-tf-module/pulls),
+request](https://github.com/cisagov/freeipa-master-tf-module/pulls),
 you will notice that our continuous integration (CI) system runs a
 fairly extensive set of linters and syntax checkers.  Your pull
 request may fail these checks, and that's OK.  If you want you can
@@ -78,9 +78,9 @@ can create and configure the Python virtual environment with these
 commands:
 
 ```console
-cd freeipa-server-tf-module
-pyenv virtualenv <python_version_to_use> freeipa-server-tf-module
-pyenv local freeipa-server-tf-module
+cd freeipa-master-tf-module
+pyenv virtualenv <python_version_to_use> freeipa-master-tf-module
+pyenv local freeipa-master-tf-module
 pip install -r requirements-dev.txt
 ```
 

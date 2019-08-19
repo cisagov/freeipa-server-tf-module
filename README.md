@@ -1,17 +1,14 @@
-# freeipa-server-tf-module #
+# freeipa-master-tf-module #
 
-[![Build Status](https://travis-ci.com/cisagov/freeipa-server-tf-module.svg?branch=develop)](https://travis-ci.com/cisagov/freeipa-server-tf-module)
+[![Build Status](https://travis-ci.com/cisagov/freeipa-master-tf-module.svg?branch=develop)](https://travis-ci.com/cisagov/freeipa-master-tf-module)
 
-A Terraform module for deploying a FreeIPA server (master or replica)
-into a VPC.
+A Terraform module for deploying a FreeIPA master into a VPC.
 
 ## Usage ##
 
-Master IPA server:
-
 ```hcl
 module "ipa_master" {
-  source = "github.com/cisagov/freeipa-server-tf-module"
+  source = "github.com/cisagov/freeipa-master-tf-module"
 
   admin_pw                    = "thepassword"
   associate_public_ip_address = true
@@ -19,7 +16,6 @@ module "ipa_master" {
   directory_service_pw        = "thepassword"
   domain                      = "example.com"
   hostname                    = "ipa.example.com"
-  is_master                   = true
   private_reverse_zone_id     = "ZLY47KYR9X93M"
   private_zone_id             = "ZKX36JXQ8W82L"
   public_zone_id              = "ZJW25IWP7V71K"
@@ -37,62 +33,35 @@ module "ipa_master" {
 }
 ```
 
-Replica IPA server:
-
-```hcl
-module "ipa_replica" {
-  source = "github.com/cisagov/freeipa-server-tf-module"
-
-  admin_pw                    = "thepassword"
-  associate_public_ip_address = true
-  aws_instance_type           = "t3.large"
-  hostname                    = "ipa-replica1.example.com"
-  is_master                   = false
-  private_reverse_zone_id     = "ZLY47KYR9X93M"
-  private_zone_id             = "ZKX36JXQ8W82L"
-  public_zone_id              = "ZJW25IWP7V71K"
-  server_security_group_id    = module.ipa_master.server_security_group_id
-  subnet_id                   = aws_subnet.replica_subnet.id
-  tags                        = {
-    Key1 = "Value1"
-    Key2 = "Value2"
-  }
-  ttl                         = 60
-}
-```
-
 ## Examples ##
 
-* [Basic usage](https://github.com/cisagov/freeipa-server-tf-module/tree/develop/examples/basic_usage)
+* [Basic usage](https://github.com/cisagov/freeipa-master-tf-module/tree/develop/examples/basic_usage)
 
 ## Inputs ##
 
 | Name | Description | Type | Default | Required |
 |------|-------------|:----:|:-------:|:--------:|
-| ami_owner_account_id | The ID of the AWS account that owns the FreeIPA server AMI | string | `344440683180` | no |
 | admin_pw | The admin password for the Kerberos admin role | string | | yes |
-| associate_public_ip_address | Whether or not to associate a public IP address with the IPA server | bool | `false` | no |
-| aws_instance_type | The AWS instance type to deploy (e.g. t3.medium).  Two gigs of RAM is a minimum requirement. | string | `t3.medium` | no |
-| directory_service_pw | The password for the IPA server's directory service.  Only required if this is a master IPA server (i.e. if is_master is true). | string | Empty string | no |
-| domain | The domain for the IPA server (e.g. `example.com`).  Only required if this is a master IPA server (i.e. if is_master is true). | string | Empty string | no |
-| hostname | The hostname of this IPA server (e.g. `ipa.example.com`) | string | | yes |
-| is_master | Indicates whether this IPA server is a master (true) or a replica (false) | bool | | yes |
-| master_hostname | The hostname of the IPA master (e.g. ipa.example.com).  Only necessary if creating a replica IPA server and you want the replica to delay installation until the master is available. | string | Empty string | no |
-| private_reverse_zone_id | The zone ID corresponding to the private Route53 reverse zone where the PTR records related to this IPA server should be created (e.g. `ZKX36JXQ8W82L`) | string | | yes |
+| ami_owner_account_id | The ID of the AWS account that owns the FreeIPA server AMI | string | `344440683180` | no |
+| associate_public_ip_address | Whether or not to associate a public IP address with the IPA master | bool | `false` | no |
+| aws_instance_type | The AWS instance type to deploy (e.g. t3.medium).  Two gigabytes of RAM is given as a minimum requirement for FreeIPA, but I have had intermittent problems when creating t3.small replicas. | string | `t3.medium` | no |
+| directory_service_pw | The password for the IPA master's directory service | string | | yes |
+| domain | The domain for the IPA master (e.g. `example.com`) | string | | yes |
+| hostname | The hostname of the IPA master (e.g. `ipa.example.com`) | string | | yes |
+| private_reverse_zone_id | The zone ID corresponding to the private Route53 reverse zone where the PTR records related to the IPA master should be created (e.g. `ZKX36JXQ8W82L`) | string | | yes |
 | private_zone_id | The zone ID corresponding to the private Route53 zone where the Kerberos-related DNS records should be created (e.g. `ZKX36JXQ8W82L`) | string | | yes |
-| public_zone_id | The zone ID corresponding to the public Route53 zone where the Kerberos-related DNS records should be created (e.g. `ZKX36JXQ8W82L`) | string | Empty string | no |
-| realm | The realm for the IPA server (e.g. `EXAMPLE.COM`).  Only required if this is a master IPA server (i.e. if is_master is true). | string | Empty string | no |
-| server_security_group_id | The ID for the IPA server security group (e.g. sg-0123456789abcdef0).  Only required if this is a replica IPA server (i.e. if is_master is false). | string | Empty string | no |
-| subnet_id | The ID of the AWS subnet into which to deploy this IPA server (e.g. `subnet-0123456789abcdef0`) | string | | yes |
+| public_zone_id | The zone ID corresponding to the public Route53 zone where the Kerberos-related DNS records should be created (e.g. `ZKX36JXQ8W82L`).  Only required if a public IP address is associated with the IPA master (i.e. if associate_public_ip_address is true). | string | Empty string | no |
+| realm | The realm for the IPA server (e.g. `EXAMPLE.COM`) | string | | yes |
+| subnet_id | The ID of the AWS subnet into which to deploy the IPA master (e.g. `subnet-0123456789abcdef0`) | string | | yes |
 | tags | Tags to apply to all AWS resources created | map(string) | `{}` | no |
-| trusted_cidr_blocks | A list of the CIDR blocks that are allowed to access the IPA servers (e.g. `[10.10.0.0/16, 10.11.0.0/16]`).  Only used if this is a master IPA server (i.e. if is_master is true). | list(string) | `[]` | no |
+| trusted_cidr_blocks | A list of the CIDR blocks outside the VPC that are allowed to access the IPA master (e.g. `[10.10.0.0/16, 10.11.0.0/16]`) | list(string) | `[]` | no |
 | ttl | The TTL value to use for Route53 DNS records (e.g. 86400).  A smaller value may be useful when the DNS records are changing often, for example when testing. | string | `86400` | no |
 
 ## Outputs ##
 
 | Name | Description |
 |------|-------------|
-| id | The EC2 instance ID corresponding to the IPA server |
+| id | The EC2 instance ID corresponding to the IPA master |
 | server_security_group_id | The ID of the IPA server security group |
 
 ## Contributing ##
