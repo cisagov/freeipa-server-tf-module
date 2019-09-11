@@ -49,7 +49,7 @@ variable "subnet_id" {
 
 variable "ami_owner_account_id" {
   description = "The ID of the AWS account that owns the FreeIPA server AMI"
-  default     = "344440683180" # CISA NCATS CyHy production (Raytheon) account
+  default     = "563873274798" # CISA NCATS Playground account
 }
 
 variable "associate_public_ip_address" {
