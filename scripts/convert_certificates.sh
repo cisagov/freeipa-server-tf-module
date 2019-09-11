@@ -6,6 +6,6 @@ set -o pipefail
 
 openssl pkcs12 -export \
         -out /etc/ipa/cert.p12 \
-        -in /etc/ipa/cert.pem \
+        -in /etc/ipa/fullchain.pem \
         -inkey /etc/ipa/privkey.pem \
         -passout pass:zooble
