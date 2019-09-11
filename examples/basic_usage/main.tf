@@ -1,5 +1,12 @@
 provider "aws" {
-  region = "us-west-1"
+  region  = "us-east-2"
+  profile = "playground"
+}
+
+provider "aws" {
+  region  = "us-east-1"
+  profile = "default"
+  alias   = "public_dns"
 }
 
 #-------------------------------------------------------------------------------
@@ -13,7 +20,7 @@ resource "aws_vpc" "the_vpc" {
 resource "aws_subnet" "master_subnet" {
   vpc_id            = aws_vpc.the_vpc.id
   cidr_block        = "10.99.48.0/24"
-  availability_zone = "us-west-1b"
+  availability_zone = "us-east-2a"
 }
 
 #-------------------------------------------------------------------------------
@@ -64,6 +71,8 @@ resource "aws_route53_zone" "master_private_reverse_zone" {
 # Create a data resource for the existing public Route53 zone.
 #-------------------------------------------------------------------------------
 data "aws_route53_zone" "public_zone" {
+  provider = aws.public_dns
+
   name = "cyber.dhs.gov."
 }
 
@@ -74,12 +83,13 @@ module "ipa_master" {
   source = "../../"
 
   providers = {
-    aws     = "aws"
-    aws.dns = "aws"
+    aws            = "aws"
+    aws.public_dns = "aws.public_dns"
   }
 
   admin_pw                    = "thepassword"
   associate_public_ip_address = true
+  cert_read_role_arn          = "arn:aws:iam::351049339218:role/ReadCert-ipa.cal23.cyber.dhs.gov"
   directory_service_pw        = "thepassword"
   domain                      = "cal23.cyber.dhs.gov"
   hostname                    = "ipa.cal23.cyber.dhs.gov"
