@@ -5,6 +5,23 @@ data "template_cloudinit_config" "cloud_init_tasks" {
   base64_encode = true
 
   part {
+    content_type = "text/cloud-config"
+    filename     = "download-certificates.yml"
+    content = templatefile(
+      "${path.module}/scripts/download-certificates.tpl.yml", {
+        cert_bucket_name   = "cool-certificates"
+        cert_read_role_arn = var.cert_read_role_arn
+        server_fqdn        = var.hostname
+    })
+  }
+
+  part {
+    content_type = "text/x-shellscript"
+    content = templatefile(
+    "${path.module}/scripts/convert_certificates.sh", {})
+  }
+
+  part {
     content_type = "text/x-shellscript"
     content = templatefile(
       "${path.module}/scripts/setup_freeipa.sh", {
