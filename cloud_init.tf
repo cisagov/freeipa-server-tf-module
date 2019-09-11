@@ -5,10 +5,9 @@ data "template_cloudinit_config" "cloud_init_tasks" {
   base64_encode = true
 
   part {
-    content_type = "text/cloud-config"
-    filename     = "download-certificates.yml"
+    content_type = "text/x-shellscript"
     content = templatefile(
-      "${path.module}/cloud-init/download-certificates.tpl.yml", {
+      "${path.module}/cloud-init/download-certificates.py", {
         cert_bucket_name   = "cool-certificates"
         cert_read_role_arn = var.cert_read_role_arn
         server_fqdn        = var.hostname
