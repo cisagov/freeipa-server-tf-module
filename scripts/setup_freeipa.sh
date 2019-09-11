@@ -49,6 +49,10 @@ ipa-server-install --realm="${realm}" \
                    --admin-password="${admin_pw}" \
                    --hostname="${hostname}" \
                    --ip-address="$ip_address" \
+                   --http_pkcs12=/etc/ipa/cert.p12 \
+                   --http_pin="zooble" \
+                   --dirsrv_pkcs12=/etc/ipa/cert.p12 \
+                   --dirsrv_pin="zooble" \
                    --no-ntp \
                    --no_hbac_allow \
                    --unattended
