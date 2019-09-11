@@ -56,6 +56,12 @@ data "aws_iam_policy_document" "assume_delegated_role_policy_doc" {
   }
 }
 
+# The delegated role policy for our role
+resource "aws_iam_role_policy" "assume_delegated_role_policy" {
+  role   = aws_iam_role.ipa.id
+  policy = "${data.aws_iam_policy_document.assume_delegated_role_policy_doc.json}"
+}
+
 # The instance profile to be used by the IPA master EC2 instance.
 resource "aws_iam_instance_profile" "ipa" {
   role = aws_iam_role.ipa.name
