@@ -1,5 +1,5 @@
 write_files:
-  - path: /root/download-certificates.py
+  - path: /etc/ipa/download-certificates.py
     permissions: '0700'
     owner: root:root
     content: |
@@ -42,4 +42,4 @@ write_files:
           with open(dst, "wb") as f:
               f.write(obj["Body"].read())
 runcmd:
-  - /root/download-certificates.py
+  - /etc/ipa/download-certificates.py
