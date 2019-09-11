@@ -5,7 +5,8 @@ module "dns" {
   source = "./dns"
 
   providers = {
-    aws = "aws.dns"
+    aws            = "aws"
+    aws.public_dns = "aws.public_dns"
   }
 
   associate_public_ip_address = var.associate_public_ip_address
