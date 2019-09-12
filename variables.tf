@@ -8,6 +8,10 @@ variable "admin_pw" {
   description = "The password for the Kerberos admin role"
 }
 
+variable "cert_pw" {
+  description = "The password used to protect the PKCS#12 certificates"
+}
+
 variable "cert_read_role_arn" {
   description = "The ARN of the delegated role that allows the relevent certificates to be read from the appropriate S3 bucket"
 }

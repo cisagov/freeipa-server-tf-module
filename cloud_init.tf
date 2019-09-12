@@ -17,15 +17,18 @@ data "template_cloudinit_config" "cloud_init_tasks" {
   part {
     content_type = "text/x-shellscript"
     content = templatefile(
-    "${path.module}/cloud-init/convert_certificates.sh", {})
+      "${path.module}/cloud-init/convert_certificates.sh", {
+        cert_pw = var.cert_pw
+    })
   }
 
   part {
     content_type = "text/x-shellscript"
     content = templatefile(
       "${path.module}/cloud-init/setup_freeipa.sh", {
-        directory_service_pw = var.directory_service_pw
         admin_pw             = var.admin_pw
+        cert_pw              = var.cert_pw
+        directory_service_pw = var.directory_service_pw
         domain               = var.domain
         hostname             = var.hostname
         realm                = var.realm

@@ -3,6 +3,7 @@
 # Input variables are:
 # admin_pw - the admin password for the IPA server's Kerberos admin
 # role
+# cert_pw - the password associated with the PKCS#12 certificate
 # directory_service_pw - the password for the IPA server's directory
 # service
 # domain - the domain for the IPA server (e.g. example.com)
@@ -50,9 +51,9 @@ ipa-server-install --realm="${realm}" \
                    --hostname="${hostname}" \
                    --ip-address="$ip_address" \
                    --http-cert-file=/etc/ipa/cert.p12 \
-                   --http-pin="zooble" \
+                   --http-pin="${cert_pw}" \
                    --dirsrv-cert-file=/etc/ipa/cert.p12 \
-                   --dirsrv-pin="zooble" \
+                   --dirsrv-pin="${cert_pw}" \
                    --ca-cert-file=/etc/ipa/isrgrootx1.pem  \
                    --ca-cert-file=/etc/ipa/letsencryptauthorityx3.pem \
                    --no-ntp \
