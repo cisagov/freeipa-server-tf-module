@@ -8,6 +8,10 @@ variable "admin_pw" {
   description = "The password for the Kerberos admin role"
 }
 
+variable "cert_bucket_name" {
+  description = "The name of the AWS S3 bucket where certificates are stored"
+}
+
 variable "cert_pw" {
   description = "The password used to protect the PKCS#12 certificates"
 }

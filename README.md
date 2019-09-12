@@ -13,6 +13,7 @@ module "ipa_master" {
   admin_pw                    = "thepassword"
   associate_public_ip_address = true
   aws_instance_type           = "t3.large"
+  cert_bucket_name            = "certbucket"
   cert_pw                     = "lemmy"
   cert_read_role_arn          = "arn:aws:iam::123456789012:role/ReadCert-example.com"
   directory_service_pw        = "thepassword"
@@ -47,6 +48,7 @@ module "ipa_master" {
 | ami_owner_account_id | The ID of the AWS account that owns the FreeIPA server AMI | string | `344440683180` | no |
 | associate_public_ip_address | Whether or not to associate a public IP address with the IPA master | bool | `false` | no |
 | aws_instance_type | The AWS instance type to deploy (e.g. t3.medium).  Two gigabytes of RAM is given as a minimum requirement for FreeIPA, but I have had intermittent problems when creating t3.small replicas. | string | `t3.medium` | no |
+| cert_bucket_name | The name of the AWS S3 bucket where certificates are stored | string | | yes |
 | cert_pw | The password used to protect the PKCS#12 certificates | string | | yes |
 | cert_read_role_arn | The ARN of the delegated role that allows the relevent certificates to be read from the appropriate S3 bucket | string | | yes |
 | directory_service_pw | The password for the IPA master's directory service | string | | yes |

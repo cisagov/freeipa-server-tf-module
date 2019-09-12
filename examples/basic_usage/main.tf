@@ -89,6 +89,7 @@ module "ipa_master" {
 
   admin_pw                    = "thepassword"
   associate_public_ip_address = true
+  cert_bucket_name            = "cool-certificates"
   cert_pw                     = "lemmy"
   cert_read_role_arn          = "arn:aws:iam::351049339218:role/ReadCert-ipa.cal23.cyber.dhs.gov"
   directory_service_pw        = "thepassword"
