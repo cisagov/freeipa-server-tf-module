@@ -6,6 +6,17 @@ resource "aws_security_group" "ipa_servers" {
   tags        = var.tags
 }
 
+# Allow HTTPS out anywhere.  This is needed to retrieve certificates
+# from S3.
+resource "aws_security_group_rule" "ipa_https_egress" {
+  security_group_id = aws_security_group.ipa_servers.id
+  type              = "egress"
+  protocol          = "tcp"
+  cidr_blocks       = ["0.0.0.0/0"]
+  from_port         = 443
+  to_port           = 443
+}
+
 # TCP ingress rules for IPA
 resource "aws_security_group_rule" "ipa_tcp_ingress_trusted" {
   count = length(local.ipa_tcp_ports)
