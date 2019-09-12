@@ -16,6 +16,7 @@ data "aws_iam_policy_document" "assume_role_doc" {
 # The S3 certificate access role to be used by the IPA master EC2
 # instance
 resource "aws_iam_role" "ipa" {
+  name               = "ipa_master_instance_role_${terraform.workspace}"
   assume_role_policy = data.aws_iam_policy_document.assume_role_doc.json
 }
 
@@ -40,5 +41,6 @@ resource "aws_iam_role_policy" "assume_delegated_role_policy" {
 
 # The instance profile to be used by the IPA master EC2 instance.
 resource "aws_iam_instance_profile" "ipa" {
+  name = "ipa_master_instance_profile_${terraform.workspace}"
   role = aws_iam_role.ipa.name
 }
