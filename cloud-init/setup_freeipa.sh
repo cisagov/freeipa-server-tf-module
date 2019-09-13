@@ -54,8 +54,6 @@ ipa-server-install --realm="${realm}" \
                    --http-pin="${cert_pw}" \
                    --dirsrv-cert-file=/etc/ipa/cert.p12 \
                    --dirsrv-pin="${cert_pw}" \
-                   --ca-cert-file=/etc/ipa/isrgrootx1.pem  \
-                   --ca-cert-file=/etc/ipa/letsencryptauthorityx3.pem \
                    --no-ntp \
                    --no-pkinit \
                    --no_hbac_allow \
