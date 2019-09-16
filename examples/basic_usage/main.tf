@@ -9,6 +9,12 @@ provider "aws" {
   alias   = "public_dns"
 }
 
+provider "aws" {
+  region  = "us-east-1"
+  profile = "certreadrole-role"
+  alias   = "cert_read_role"
+}
+
 #-------------------------------------------------------------------------------
 # Create a subnet inside a VPC.
 #-------------------------------------------------------------------------------
@@ -77,6 +83,23 @@ data "aws_route53_zone" "public_zone" {
 }
 
 #-------------------------------------------------------------------------------
+# Create a role that allows the master to read its certs from S3.
+#-------------------------------------------------------------------------------
+module "certreadrole" {
+  source = "github.com/cisagov/cert-read-role-tf-module"
+
+  providers = {
+    aws = "aws.cert_read_role"
+  }
+
+  account_ids = [
+    "563873274798" # The playground account ID
+  ]
+  cert_bucket_name = "cool-certificates"
+  hostname         = "ipa.cal23.cyber.dhs.gov"
+}
+
+#-------------------------------------------------------------------------------
 # Configure the master module.
 #-------------------------------------------------------------------------------
 module "ipa_master" {
@@ -91,7 +114,7 @@ module "ipa_master" {
   associate_public_ip_address = true
   cert_bucket_name            = "cool-certificates"
   cert_pw                     = "lemmy"
-  cert_read_role_arn          = "arn:aws:iam::351049339218:role/ReadCert-ipa.cal23.cyber.dhs.gov"
+  cert_read_role_arn          = module.certreadrole.arn
   directory_service_pw        = "thepassword"
   domain                      = "cal23.cyber.dhs.gov"
   hostname                    = "ipa.cal23.cyber.dhs.gov"
