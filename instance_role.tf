@@ -39,6 +39,12 @@ resource "aws_iam_role_policy" "assume_delegated_role_policy" {
   policy = "${data.aws_iam_policy_document.assume_delegated_role_policy_doc.json}"
 }
 
+# Attach the CloudWatch Agent policy to this role as well
+resource "aws_iam_role_policy_attachment" "cloudwatch_agent_policy_attachment" {
+  role       = aws_iam_role.ipa.id
+  policy_arn = "arn:aws:iam::aws:policy/CloudWatchAgentServerPolicy"
+}
+
 # The instance profile to be used by the IPA master EC2 instance.
 resource "aws_iam_instance_profile" "ipa" {
   name = "ipa_master_instance_profile_${var.hostname}"
