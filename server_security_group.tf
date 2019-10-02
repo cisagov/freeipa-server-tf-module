@@ -8,7 +8,7 @@ resource "aws_security_group" "ipa_servers" {
 
 # Allow HTTPS out anywhere.  This is needed to retrieve certificates
 # from S3.
-resource "aws_security_group_rule" "ipa_https_egress" {
+resource "aws_security_group_rule" "ipa_server_https_egress" {
   security_group_id = aws_security_group.ipa_servers.id
   type              = "egress"
   protocol          = "tcp"
@@ -18,7 +18,7 @@ resource "aws_security_group_rule" "ipa_https_egress" {
 }
 
 # TCP ingress rules for IPA
-resource "aws_security_group_rule" "ipa_tcp_ingress_trusted" {
+resource "aws_security_group_rule" "ipa_server_tcp_ingress_trusted" {
   count = length(local.ipa_tcp_ports)
 
   security_group_id = aws_security_group.ipa_servers.id
@@ -28,7 +28,7 @@ resource "aws_security_group_rule" "ipa_tcp_ingress_trusted" {
   from_port         = local.ipa_tcp_ports[count.index]
   to_port           = local.ipa_tcp_ports[count.index]
 }
-resource "aws_security_group_rule" "ipa_tcp_ingress_self" {
+resource "aws_security_group_rule" "ipa_server_tcp_ingress_self" {
   count = length(local.ipa_tcp_ports)
 
   security_group_id = aws_security_group.ipa_servers.id
@@ -38,9 +38,19 @@ resource "aws_security_group_rule" "ipa_tcp_ingress_self" {
   from_port         = local.ipa_tcp_ports[count.index]
   to_port           = local.ipa_tcp_ports[count.index]
 }
+resource "aws_security_group_rule" "ipa_server_tcp_ingress_clients" {
+  count = length(local.ipa_tcp_ports)
+
+  security_group_id        = aws_security_group.ipa_servers.id
+  type                     = "ingress"
+  protocol                 = "tcp"
+  source_security_group_id = aws_security_group.ipa_clients.id
+  from_port                = local.ipa_tcp_ports[count.index]
+  to_port                  = local.ipa_tcp_ports[count.index]
+}
 
 # TCP egress rules for IPA
-resource "aws_security_group_rule" "ipa_tcp_egress_self" {
+resource "aws_security_group_rule" "ipa_server_tcp_egress_self" {
   count = length(local.ipa_tcp_ports)
 
   security_group_id = aws_security_group.ipa_servers.id
@@ -52,7 +62,7 @@ resource "aws_security_group_rule" "ipa_tcp_egress_self" {
 }
 
 # UDP ingress rules for IPA
-resource "aws_security_group_rule" "ipa_udp_ingress_trusted" {
+resource "aws_security_group_rule" "ipa_server_udp_ingress_trusted" {
   count = length(local.ipa_udp_ports)
 
   security_group_id = aws_security_group.ipa_servers.id
@@ -62,7 +72,7 @@ resource "aws_security_group_rule" "ipa_udp_ingress_trusted" {
   from_port         = local.ipa_udp_ports[count.index]
   to_port           = local.ipa_udp_ports[count.index]
 }
-resource "aws_security_group_rule" "ipa_udp_ingress_self" {
+resource "aws_security_group_rule" "ipa_server_udp_ingress_self" {
   count = length(local.ipa_udp_ports)
 
   security_group_id = aws_security_group.ipa_servers.id
@@ -72,9 +82,19 @@ resource "aws_security_group_rule" "ipa_udp_ingress_self" {
   from_port         = local.ipa_udp_ports[count.index]
   to_port           = local.ipa_udp_ports[count.index]
 }
+resource "aws_security_group_rule" "ipa_server_udp_ingress_clients" {
+  count = length(local.ipa_udp_ports)
+
+  security_group_id        = aws_security_group.ipa_servers.id
+  type                     = "ingress"
+  protocol                 = "udp"
+  source_security_group_id = aws_security_group.ipa_clients.id
+  from_port                = local.ipa_udp_ports[count.index]
+  to_port                  = local.ipa_udp_ports[count.index]
+}
 
 # UDP egress rules for IPA
-resource "aws_security_group_rule" "ipa_udp_egress_self" {
+resource "aws_security_group_rule" "ipa_server_udp_egress_self" {
   count = length(local.ipa_udp_ports)
 
   security_group_id = aws_security_group.ipa_servers.id

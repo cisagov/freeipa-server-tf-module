@@ -67,6 +67,7 @@ module "ipa_master" {
 
 | Name | Description |
 |------|-------------|
+| client_security_group_id | The ID of the IPA client security group |
 | id | The EC2 instance ID corresponding to the IPA master |
 | server_security_group_id | The ID of the IPA server security group |
 
