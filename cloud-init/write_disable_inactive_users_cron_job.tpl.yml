@@ -17,6 +17,9 @@ write_files:
 
       ###
       # We're running as root, so login to kerberos using the host's keytab
+      #
+      # It would be better to create a kerberos service instead, but
+      # that is left as a future improvement.
       ###
       kinit -k -t /etc/krb5.keytab
 
