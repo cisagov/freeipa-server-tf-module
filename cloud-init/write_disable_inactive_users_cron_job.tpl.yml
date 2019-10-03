@@ -81,8 +81,15 @@ write_files:
       ###
       for user in $users_to_disable
       do
-          # The ipa user-disable command may fail if the user is already
-          # disabled, but that's not really en error condition for us.
+          # The ipa user-disable command may fail if the user is
+          # already disabled, for example, but that's not really an
+          # error condition for us.  If it fails for any other reason,
+          # the reason should be discernible from the cron logs.
+          #
+          # In any event, it makes sense to disable errexit for the
+          # ipa user-disable command since, even if the disabling of a
+          # particular user fails, we want the script to proceed with
+          # attempting to disable any other inactive users.
           set +o errexit
           ipa user-disable "$user"
           set -o errexit
