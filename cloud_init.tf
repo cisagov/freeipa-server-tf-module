@@ -5,6 +5,15 @@ data "template_cloudinit_config" "cloud_init_tasks" {
   base64_encode = true
 
   part {
+    filename     = "write_disable_inactive_users_cron_job.yml"
+    content_type = "text/cloud-config"
+    content = templatefile(
+      "${path.module}/cloud-init/write_disable_inactive_users_cron_job.tpl.yml", {
+        domain = var.domain
+    })
+  }
+
+  part {
     content_type = "text/x-shellscript"
     content = templatefile(
       "${path.module}/cloud-init/download-certificates.py", {
