@@ -1,6 +1,6 @@
 ---
-# Write a shell script to disable inactive FreeIPa users.  This cron
-# job will be run daily by cron.
+# Write a shell script to disable inactive FreeIPA users.  This cron
+# job will be run daily.
 write_files:
   - path: /etc/cron.daily/disable_inactive_users.sh
     permissions: "0500"
@@ -42,7 +42,13 @@ write_files:
           # Append $tmp onto the end of $searchbase
           searchbase=$searchbase,dc=$tmp
           # Remove tmp and its trailing period from $g
-          g=${g:${#tmp} + 1}
+          #
+          # I'd like to do this more simply, but constructs with
+          # complicated braces seem to foul up the templating foo in
+          # ../cloud_init.tf.
+          length_tmp=$(expr length $tmp)
+          length_g=$(expr length $g)
+          g=$(expr substr $g $(($length_tmp + 2)) $length_g)
       done
       # There are no more dots in $g, so we just have to append the last bit
       # of $g onto $searchbase
