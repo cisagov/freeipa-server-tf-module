@@ -71,6 +71,12 @@ variable "aws_instance_type" {
   default     = "t3.medium"
 }
 
+variable "days_to_become_inactive" {
+  type        = number
+  description = "The number of days a user can go without logging in before being having his or her account disabled due to inactivity (e.g. 45)."
+  default     = 45
+}
+
 variable "public_zone_id" {
   description = "The zone ID corresponding to the public Route53 zone where the Kerberos-related DNS records should be created (e.g. ZKX36JXQ8W82L).  Only required if a public IP address is associated with the IPA master (i.e. if associate_public_ip_address is true)."
   default     = ""
@@ -89,6 +95,7 @@ variable "trusted_cidr_blocks" {
 }
 
 variable "ttl" {
+  type        = number
   description = "The TTL value to use for Route53 DNS records (e.g. 86400).  A smaller value may be useful when the DNS records are changing often, for example when testing."
   default     = 86400
 }

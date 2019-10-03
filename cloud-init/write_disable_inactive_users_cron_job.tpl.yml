@@ -9,6 +9,9 @@ write_files:
       #!/usr/bin/env bash
 
       # Input variables are:
+      # days_to_become_inactive - the number of days a user can go
+      # without logging in before having his or her account disabled
+      # due to inactivity (e.g. 45)
       # domain - the domain for the IPA server (e.g. example.com)
 
       set -o nounset
@@ -55,12 +58,15 @@ write_files:
       searchbase=$searchbase,dc=$g
 
       ###
-      # Determine the date 45 days ago, in a format that ldapsearch likes
+      # Determine the date ${days_to_become_inactive} days ago, in a
+      # format that ldapsearch likes
       ###
-      distant_past=$(date --date="$(date) -45 days" +%Y%m%d%H%M%SZ)
+      distant_past=$(date \
+                         --date="$(date) -${days_to_become_inactive} days" \
+                         +%Y%m%d%H%M%SZ)
 
       ###
-      # Query LDAP to determine all users that have not logged in for 45 days
+      # Query LDAP to determine all users that are inactive
       ###
       users_to_disable=$(ldapsearch \
                                -b "$searchbase" \

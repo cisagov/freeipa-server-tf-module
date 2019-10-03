@@ -8,7 +8,8 @@ data "template_cloudinit_config" "cloud_init_tasks" {
     content_type = "text/cloud-config"
     content = templatefile(
       "${path.module}/cloud-init/write_disable_inactive_users_cron_job.tpl.yml", {
-        domain = var.domain
+        days_to_become_inactive = var.days_to_become_inactive
+        domain                  = var.domain
     })
   }
 
