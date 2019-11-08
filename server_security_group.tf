@@ -6,6 +6,16 @@ resource "aws_security_group" "ipa_servers" {
   tags        = var.tags
 }
 
+# Allow HTTP out anywhere.  This is needed to retrieve updated
+# antivirus signatures for ClamAV via freshclam.
+resource "aws_security_group_rule" "ipa_server_http_egress" {
+  security_group_id = aws_security_group.ipa_servers.id
+  type              = "egress"
+  protocol          = "tcp"
+  cidr_blocks       = ["0.0.0.0/0"]
+  from_port         = 80
+  to_port           = 80
+}
 # Allow HTTPS out anywhere.  This is needed to retrieve certificates
 # from S3.
 resource "aws_security_group_rule" "ipa_server_https_egress" {
