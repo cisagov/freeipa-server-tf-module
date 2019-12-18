@@ -1,6 +1,6 @@
 # freeipa-master-tf-module #
 
-[![Build Status](https://travis-ci.com/cisagov/freeipa-master-tf-module.svg?branch=develop)](https://travis-ci.com/cisagov/freeipa-master-tf-module)
+[![GitHub Build Status](https://github.com/cisagov/freeipa-master-tf-module/workflows/build/badge.svg)](https://github.com/cisagov/freeipa-master-tf-module/actions)
 
 A Terraform module for deploying a FreeIPA master into a VPC.
 
