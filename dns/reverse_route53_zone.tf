@@ -14,6 +14,6 @@ resource "aws_route53_record" "private_PTR" {
   type = "PTR"
   ttl  = var.ttl
   records = [
-    "${var.hostname}"
+    var.hostname
   ]
 }
