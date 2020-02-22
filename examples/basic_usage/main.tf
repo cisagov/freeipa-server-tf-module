@@ -5,13 +5,13 @@ provider "aws" {
 
 provider "aws" {
   region  = "us-east-1"
-  profile = "default"
+  profile = "cool-olddns-route53fullaccess"
   alias   = "public_dns"
 }
 
 provider "aws" {
   region  = "us-east-1"
-  profile = "certreadrole-role"
+  profile = "cool-dns-provisioncertificatereadroles"
   alias   = "cert_read_role"
 }
 
@@ -111,6 +111,7 @@ module "ipa_master" {
   }
 
   admin_pw                    = "thepassword"
+  ami_owner_account_id        = "207871073513" # The COOL Images account
   associate_public_ip_address = true
   cert_bucket_name            = "cool-certificates"
   cert_pw                     = "lemmy"
