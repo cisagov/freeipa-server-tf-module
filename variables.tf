@@ -56,8 +56,8 @@ variable "subnet_id" {
 # ------------------------------------------------------------------------------
 
 variable "ami_owner_account_id" {
-  description = "The ID of the AWS account that owns the FreeIPA server AMI"
-  default     = "563873274798" # CISA NCATS Playground account
+  description = "The ID of the AWS account that owns the FreeIPA server AMI, or \"self\" if the AMI is owned by the same account as the provisioner."
+  default     = "self"
 }
 
 variable "associate_public_ip_address" {
