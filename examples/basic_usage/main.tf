@@ -85,6 +85,9 @@ data "aws_route53_zone" "public_zone" {
 #-------------------------------------------------------------------------------
 # Create a role that allows the master to read its certs from S3.
 #-------------------------------------------------------------------------------
+data "aws_caller_identity" "shared_services" {
+}
+
 module "certreadrole" {
   source = "github.com/cisagov/cert-read-role-tf-module"
 
@@ -93,7 +96,7 @@ module "certreadrole" {
   }
 
   account_ids = [
-    "236526679726" # The COOL Users account
+    data.aws_caller_identity.shared_services.account_id,
   ]
   cert_bucket_name = "cisa-cool-certificates"
   hostname         = "ipa.cal23.cyber.dhs.gov"
