@@ -118,7 +118,7 @@ module "ipa_master" {
   associate_public_ip_address = true
   cert_bucket_name            = "cisa-cool-certificates"
   cert_pw                     = "lemmy"
-  cert_read_role_arn          = module.certreadrole.arn
+  cert_read_role_arn          = module.certreadrole.role.arn
   directory_service_pw        = "thepassword"
   domain                      = "cal23.cyber.dhs.gov"
   hostname                    = "ipa.cal23.cyber.dhs.gov"
