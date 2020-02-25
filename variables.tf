@@ -5,47 +5,47 @@
 # ------------------------------------------------------------------------------
 
 variable "admin_pw" {
-  description = "The password for the Kerberos admin role"
+  description = "The password for the Kerberos admin role."
 }
 
 variable "cert_bucket_name" {
-  description = "The name of the AWS S3 bucket where certificates are stored"
+  description = "The name of the AWS S3 bucket where certificates are stored."
 }
 
 variable "cert_pw" {
-  description = "The password used to protect the PKCS#12 certificates"
+  description = "The password used to protect the PKCS#12 certificates."
 }
 
 variable "cert_read_role_arn" {
-  description = "The ARN of the delegated role that allows the relevent certificates to be read from the appropriate S3 bucket"
+  description = "The ARN of the delegated role that allows the relevent certificates to be read from the appropriate S3 bucket."
 }
 
 variable "directory_service_pw" {
-  description = "The password for the IPA master's directory service"
+  description = "The password for the IPA master's directory service."
 }
 
 variable "domain" {
-  description = "The domain for the IPA master (e.g. example.com)"
+  description = "The domain for the IPA master (e.g. example.com)."
 }
 
 variable "hostname" {
-  description = "The hostname of the IPA master (e.g. ipa.example.com)"
+  description = "The hostname of the IPA master (e.g. ipa.example.com)."
 }
 
 variable "private_reverse_zone_id" {
-  description = "The zone ID corresponding to the private Route53 reverse zone where the PTR records related to the IPA master should be created (e.g. ZKX36JXQ8W82L)"
+  description = "The zone ID corresponding to the private Route53 reverse zone where the PTR records related to the IPA master should be created (e.g. ZKX36JXQ8W82L)."
 }
 
 variable "private_zone_id" {
-  description = "The zone ID corresponding to the private Route53 zone where the Kerberos-related DNS records should be created (e.g. ZKX36JXQ8W82L)"
+  description = "The zone ID corresponding to the private Route53 zone where the Kerberos-related DNS records should be created (e.g. ZKX36JXQ8W82L)."
 }
 
 variable "realm" {
-  description = "The realm for the IPA server (e.g. EXAMPLE.COM)"
+  description = "The realm for the IPA server (e.g. EXAMPLE.COM)."
 }
 
 variable "subnet_id" {
-  description = "The ID of the AWS subnet into which to deploy the IPA master (e.g. subnet-0123456789abcdef0)"
+  description = "The ID of the AWS subnet into which to deploy the IPA master (e.g. subnet-0123456789abcdef0)."
 }
 
 # ------------------------------------------------------------------------------
@@ -56,13 +56,13 @@ variable "subnet_id" {
 # ------------------------------------------------------------------------------
 
 variable "ami_owner_account_id" {
-  description = "The ID of the AWS account that owns the FreeIPA server AMI"
-  default     = "563873274798" # CISA NCATS Playground account
+  description = "The ID of the AWS account that owns the FreeIPA server AMI, or \"self\" if the AMI is owned by the same account as the provisioner."
+  default     = "self"
 }
 
 variable "associate_public_ip_address" {
   type        = bool
-  description = "Whether or not to associate a public IP address with the IPA master"
+  description = "Whether or not to associate a public IP address with the IPA master."
   default     = false
 }
 
@@ -78,13 +78,13 @@ variable "public_zone_id" {
 
 variable "tags" {
   type        = map(string)
-  description = "Tags to apply to all AWS resources created"
+  description = "Tags to apply to all AWS resources created."
   default     = {}
 }
 
 variable "trusted_cidr_blocks" {
   type        = list(string)
-  description = "A list of the CIDR blocks outside the VPC that are allowed to access the IPA servers (e.g. [\"10.10.0.0/16\", \"10.11.0.0/16\"])"
+  description = "A list of the CIDR blocks outside the VPC that are allowed to access the IPA servers (e.g. [\"10.10.0.0/16\", \"10.11.0.0/16\"])."
   default     = []
 }
 

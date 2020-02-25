@@ -1,18 +1,18 @@
 provider "aws" {
-  region  = "us-east-2"
-  profile = "playground"
+  profile = "cool-sharedservices-provisionaccount"
+  region  = "us-east-1"
 }
 
 provider "aws" {
-  region  = "us-east-1"
-  profile = "default"
   alias   = "public_dns"
+  profile = "cool-olddns-route53fullaccess"
+  region  = "us-east-1"
 }
 
 provider "aws" {
-  region  = "us-east-1"
-  profile = "certreadrole-role"
   alias   = "cert_read_role"
+  profile = "cool-dns-provisioncertificatereadroles"
+  region  = "us-east-1"
 }
 
 #-------------------------------------------------------------------------------
@@ -26,7 +26,7 @@ resource "aws_vpc" "the_vpc" {
 resource "aws_subnet" "master_subnet" {
   vpc_id            = aws_vpc.the_vpc.id
   cidr_block        = "10.99.48.0/24"
-  availability_zone = "us-east-2a"
+  availability_zone = "us-east-1a"
 }
 
 #-------------------------------------------------------------------------------
@@ -85,17 +85,20 @@ data "aws_route53_zone" "public_zone" {
 #-------------------------------------------------------------------------------
 # Create a role that allows the master to read its certs from S3.
 #-------------------------------------------------------------------------------
+data "aws_caller_identity" "shared_services" {
+}
+
 module "certreadrole" {
   source = "github.com/cisagov/cert-read-role-tf-module"
 
   providers = {
-    aws = "aws.cert_read_role"
+    aws = aws.cert_read_role
   }
 
   account_ids = [
-    "563873274798" # The playground account ID
+    data.aws_caller_identity.shared_services.account_id,
   ]
-  cert_bucket_name = "cool-certificates"
+  cert_bucket_name = "cisa-cool-certificates"
   hostname         = "ipa.cal23.cyber.dhs.gov"
 }
 
@@ -106,15 +109,16 @@ module "ipa_master" {
   source = "../../"
 
   providers = {
-    aws            = "aws"
-    aws.public_dns = "aws.public_dns"
+    aws            = aws
+    aws.public_dns = aws.public_dns
   }
 
   admin_pw                    = "thepassword"
+  ami_owner_account_id        = "207871073513" # The COOL Images account
   associate_public_ip_address = true
-  cert_bucket_name            = "cool-certificates"
+  cert_bucket_name            = "cisa-cool-certificates"
   cert_pw                     = "lemmy"
-  cert_read_role_arn          = module.certreadrole.arn
+  cert_read_role_arn          = module.certreadrole.role.arn
   directory_service_pw        = "thepassword"
   domain                      = "cal23.cyber.dhs.gov"
   hostname                    = "ipa.cal23.cyber.dhs.gov"

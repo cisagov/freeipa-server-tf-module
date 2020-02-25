@@ -1,14 +1,14 @@
-output "client_security_group_id" {
-  value       = aws_security_group.ipa_clients.id
-  description = "The ID of the IPA client security group"
+output "client_security_group" {
+  value       = aws_security_group.ipa_clients
+  description = "The IPA client security group."
 }
 
-output "id" {
-  value       = aws_instance.ipa.id
-  description = "The EC2 instance ID corresponding to the IPA master"
+output "master" {
+  value       = aws_instance.ipa
+  description = "The IPA master EC2 instance."
 }
 
-output "server_security_group_id" {
-  value       = aws_security_group.ipa_servers.id
-  description = "The ID of the IPA server security group"
+output "server_security_group" {
+  value       = aws_security_group.ipa_servers
+  description = "The IPA server security group."
 }
