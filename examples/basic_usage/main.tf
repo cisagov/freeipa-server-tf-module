@@ -89,7 +89,7 @@ module "certreadrole" {
   source = "github.com/cisagov/cert-read-role-tf-module"
 
   providers = {
-    aws = "aws.cert_read_role"
+    aws = aws.cert_read_role
   }
 
   account_ids = [
@@ -106,8 +106,8 @@ module "ipa_master" {
   source = "../../"
 
   providers = {
-    aws            = "aws"
-    aws.public_dns = "aws.public_dns"
+    aws            = aws
+    aws.public_dns = aws.public_dns
   }
 
   admin_pw                    = "thepassword"
