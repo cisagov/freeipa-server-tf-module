@@ -71,6 +71,12 @@ module "ipa_master" {
 | master | The IPA master EC2 instance. |
 | server_security_group | The IPA server security group. |
 
+## Notes ##
+
+Running `pre-commit` requires running `terraform init` in every directory that
+contains Terraform code. In this repository, these are the main directory and
+every directory under `examples/`.
+
 ## Contributing ##
 
 We welcome contributions!  Please see [here](CONTRIBUTING.md) for
