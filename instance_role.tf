@@ -46,8 +46,6 @@ resource "aws_iam_role_policy_attachment" "cloudwatch_agent_policy_attachment" {
 
 # Attach the SSM Agent policy to this role as well
 resource "aws_iam_role_policy_attachment" "ssm_agent_policy_attachment" {
-  provider = aws.provisionassessment
-
   role       = aws_iam_role.ipa.id
   policy_arn = "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore"
 }
