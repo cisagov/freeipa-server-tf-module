@@ -9,21 +9,6 @@ variable "admin_pw" {
   description = "The password for the Kerberos admin role."
 }
 
-variable "cert_bucket_name" {
-  type        = string
-  description = "The name of the AWS S3 bucket where certificates are stored."
-}
-
-variable "cert_pw" {
-  type        = string
-  description = "The password used to protect the PKCS#12 certificates."
-}
-
-variable "cert_read_role_arn" {
-  type        = string
-  description = "The ARN of the delegated role that allows the relevent certificates to be read from the appropriate S3 bucket."
-}
-
 variable "directory_service_pw" {
   type        = string
   description = "The password for the IPA master's directory service."
