@@ -9,7 +9,6 @@ data "template_cloudinit_config" "cloud_init_tasks" {
     content = templatefile(
       "${path.module}/cloud-init/setup_freeipa.sh", {
         admin_pw             = var.admin_pw
-        cert_pw              = var.cert_pw
         directory_service_pw = var.directory_service_pw
         domain               = var.domain
         hostname             = var.hostname
