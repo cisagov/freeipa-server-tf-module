@@ -34,11 +34,6 @@ variable "reverse_zone_id" {
   description = "The zone ID corresponding to the private Route53 reverse zone where a PTR record related to this IPA server should be created (e.g. ZKX36JXQ8W82L)."
 }
 
-variable "reverse_zone_name" {
-  type        = string
-  description = "The name that IPA should use for the reverse zone it creates (e.g. 0.0.10.in-addr.arpa.)"
-}
-
 variable "subnet_id" {
   type        = string
   description = "The ID of the AWS subnet into which to deploy the IPA server (e.g. subnet-0123456789abcdef0)."
