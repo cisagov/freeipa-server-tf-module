@@ -1,14 +1,11 @@
 locals {
+  tcp_and_udp = {
+    tcp = "tcp",
+    udp = "udp",
+  }
+
   # The ports that the IPA servers should listen on
   ipa_ports = {
-    dns_tcp = {
-      proto = "tcp",
-      port  = 53,
-    }
-    dns_udp = {
-      proto = "udp",
-      port  = 53,
-    }
     http = {
       proto = "tcp",
       port  = 80,
@@ -21,6 +18,10 @@ locals {
       proto = "udp",
       port  = 88,
     },
+    ntp = {
+      proto = "udp",
+      port  = 123,
+    }
     https = {
       proto = "tcp",
       port  = 443,
@@ -40,10 +41,6 @@ locals {
     ldaps = {
       proto = "tcp",
       port  = 636,
-    },
-    ntp = {
-      proto = "udp",
-      port  = 123,
     }
   }
 }
