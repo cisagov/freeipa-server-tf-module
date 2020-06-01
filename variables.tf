@@ -11,27 +11,17 @@ variable "admin_pw" {
 
 variable "directory_service_pw" {
   type        = string
-  description = "The password for the IPA master's directory service."
+  description = "The password for the IPA server's directory service."
 }
 
 variable "domain" {
   type        = string
-  description = "The domain for the IPA master (e.g. example.com)."
+  description = "The domain for the IPA server (e.g. example.com)."
 }
 
 variable "hostname" {
   type        = string
-  description = "The hostname of the IPA master (e.g. ipa.example.com)."
-}
-
-variable "private_reverse_zone_id" {
-  type        = string
-  description = "The zone ID corresponding to the private Route53 reverse zone where the PTR records related to the IPA master should be created (e.g. ZKX36JXQ8W82L)."
-}
-
-variable "private_zone_id" {
-  type        = string
-  description = "The zone ID corresponding to the private Route53 zone where the Kerberos-related DNS records should be created (e.g. ZKX36JXQ8W82L)."
+  description = "The hostname of the IPA server (e.g. ipa.example.com)."
 }
 
 variable "realm" {
@@ -39,9 +29,24 @@ variable "realm" {
   description = "The realm for the IPA server (e.g. EXAMPLE.COM)."
 }
 
+variable "reverse_zone_id" {
+  type        = string
+  description = "The zone ID corresponding to the private Route53 reverse zone where a PTR record related to this IPA server should be created (e.g. ZKX36JXQ8W82L)."
+}
+
+variable "reverse_zone_name" {
+  type        = string
+  description = "The name that IPA should use for the reverse zone it creates (e.g. 0.0.10.in-addr.arpa.)"
+}
+
 variable "subnet_id" {
   type        = string
-  description = "The ID of the AWS subnet into which to deploy the IPA master (e.g. subnet-0123456789abcdef0)."
+  description = "The ID of the AWS subnet into which to deploy the IPA server (e.g. subnet-0123456789abcdef0)."
+}
+
+variable "zone_id" {
+  type        = string
+  description = "The zone ID corresponding to the private Route53 zone where an A record should be created for the IPA server (e.g. ZKX36JXQ8W82L)."
 }
 
 # ------------------------------------------------------------------------------
@@ -57,22 +62,10 @@ variable "ami_owner_account_id" {
   default     = "self"
 }
 
-variable "associate_public_ip_address" {
-  type        = bool
-  description = "Whether or not to associate a public IP address with the IPA master."
-  default     = false
-}
-
 variable "aws_instance_type" {
   type        = string
   description = "The AWS instance type to deploy (e.g. t3.medium).  Two gigabytes of RAM is given as a minimum requirement for FreeIPA, but I have had intermittent problems when creating t3.small replicas."
   default     = "t3.medium"
-}
-
-variable "public_zone_id" {
-  type        = string
-  description = "The zone ID corresponding to the public Route53 zone where the Kerberos-related DNS records should be created (e.g. ZKX36JXQ8W82L).  Only required if a public IP address is associated with the IPA master (i.e. if associate_public_ip_address is true)."
-  default     = ""
 }
 
 variable "tags" {
