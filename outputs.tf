@@ -3,9 +3,9 @@ output "client_security_group" {
   description = "The IPA client security group."
 }
 
-output "master" {
+output "server" {
   value       = aws_instance.ipa
-  description = "The IPA master EC2 instance."
+  description = "The IPA server EC2 instance."
 }
 
 output "server_security_group" {
