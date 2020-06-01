@@ -13,7 +13,6 @@ data "template_cloudinit_config" "cloud_init_tasks" {
         domain               = var.domain
         hostname             = var.hostname
         realm                = var.realm
-        reverse_zone_name    = var.reverse_zone_name
     })
   }
 }
