@@ -16,6 +16,17 @@ resource "aws_security_group_rule" "ipa_server_http_egress" {
   from_port         = 80
   to_port           = 80
 }
+# Allow HTTPS out anywhere.  This is necessary for access to AWS
+# services via the HTTPS interface.
+resource "aws_security_group_rule" "ipa_server_https_egress" {
+  security_group_id = aws_security_group.ipa_servers.id
+  type              = "egress"
+  protocol          = "tcp"
+  cidr_blocks       = ["0.0.0.0/0"]
+  from_port         = 443
+  to_port           = 443
+}
+
 
 # Ingress rules for IPA
 resource "aws_security_group_rule" "ipa_server_ingress_trusted" {
