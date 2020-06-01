@@ -38,7 +38,13 @@ interface=$(get_interface)
 ip_address=$(get_ip "$interface")
 # Replace last octet with a 2.  This gives the address of the DNS
 # server provided by AWS.
-dns_forward_ip=${ip_address%.[0-9]*}.
+#
+# We have to use two dollar signs here to make sure that the Terraform
+# templating engine does not interpret this as an interpolation.  That
+# in turn messes up shellcheck, so we disable it for this line.
+#
+# shellcheck disable=SC2125,SC1083
+dns_forward_ip=$${ip_address%.[0-9]*}.2
 
 # Wait until the IP address has a non-Amazon PTR record before
 # proceeding
