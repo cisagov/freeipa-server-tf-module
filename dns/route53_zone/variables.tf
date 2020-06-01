@@ -31,12 +31,6 @@ variable "zone_id" {
 # dependent on the values of the other parameters.
 # ------------------------------------------------------------------------------
 
-variable "do_it" {
-  type        = bool
-  description = "If false then no resources are created.  This is a workaround until Terraform modules support the count and/or for_each directives."
-  default     = true
-}
-
 variable "ttl" {
   type        = number
   description = "The TTL value to use for Route53 DNS records (e.g. 86400).  A smaller value may be useful when the DNS records are changing often, for example when testing."
