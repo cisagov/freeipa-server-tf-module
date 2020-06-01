@@ -6,26 +6,14 @@ resource "aws_security_group" "ipa_clients" {
   tags        = var.tags
 }
 
-# TCP egress rules for IPA
-resource "aws_security_group_rule" "ipa_client_tcp_egress" {
-  count = length(local.ipa_tcp_ports)
+# Egress rules for IPA
+resource "aws_security_group_rule" "ipa_client_egress" {
+  for_each = local.ipa_ports
 
   security_group_id        = aws_security_group.ipa_clients.id
   type                     = "egress"
-  protocol                 = "tcp"
+  protocol                 = each.value.proto
   source_security_group_id = aws_security_group.ipa_servers.id
-  from_port                = local.ipa_tcp_ports[count.index]
-  to_port                  = local.ipa_tcp_ports[count.index]
-}
-
-# UDP egress rules for IPA
-resource "aws_security_group_rule" "ipa_client_udp_egress" {
-  count = length(local.ipa_udp_ports)
-
-  security_group_id        = aws_security_group.ipa_clients.id
-  type                     = "egress"
-  protocol                 = "udp"
-  source_security_group_id = aws_security_group.ipa_servers.id
-  from_port                = local.ipa_udp_ports[count.index]
-  to_port                  = local.ipa_udp_ports[count.index]
+  from_port                = each.value.port
+  to_port                  = each.value.port
 }

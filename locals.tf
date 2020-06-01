@@ -1,20 +1,49 @@
 locals {
-  # The TCP ports that the IPA servers should listen on
-  ipa_tcp_ports = [
-    53,  # DNS
-    80,  # HTTP
-    88,  # kinit
-    443, # HTTPS
-    464, # kpasswd
-    389, # LDAP
-    636, # LDAPS
-  ]
-
-  # The UDP ports that the IPA servers should listen on
-  ipa_udp_ports = [
-    53,  # DNS
-    88,  # kinit
-    123, # NTP
-    464, # kpasswd
-  ]
+  # The ports that the IPA servers should listen on
+  ipa_ports = {
+    dns_tcp = {
+      proto = "tcp",
+      port  = 53,
+    }
+    dns_udp = {
+      proto = "udp",
+      port  = 53,
+    }
+    http = {
+      proto = "tcp",
+      port  = 80,
+    },
+    kinit_tcp = {
+      proto = "tcp",
+      port  = 88,
+    },
+    kinit_udp = {
+      proto = "udp",
+      port  = 88,
+    },
+    https = {
+      proto = "tcp",
+      port  = 443,
+    },
+    kpasswd_tcp = {
+      proto = "tcp",
+      port  = 464,
+    },
+    kpasswd_udp = {
+      proto = "udp",
+      port  = 464,
+    },
+    ldap = {
+      proto = "tcp",
+      port  = 389,
+    },
+    ldaps = {
+      proto = "tcp",
+      port  = 636,
+    },
+    ntp = {
+      proto = "udp",
+      port  = 123,
+    }
+  }
 }

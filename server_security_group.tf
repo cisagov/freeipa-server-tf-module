@@ -6,7 +6,7 @@ resource "aws_security_group" "ipa_servers" {
   tags        = var.tags
 }
 
-# Allow HTTP out anywhere.  This is needed to retrieve updated
+# Allow HTTP out anywhere.  This is necessary to retrieve updated
 # antivirus signatures for ClamAV via freshclam.
 resource "aws_security_group_rule" "ipa_server_http_egress" {
   security_group_id = aws_security_group.ipa_servers.id
@@ -17,90 +17,46 @@ resource "aws_security_group_rule" "ipa_server_http_egress" {
   to_port           = 80
 }
 
-# TCP ingress rules for IPA
-resource "aws_security_group_rule" "ipa_server_tcp_ingress_trusted" {
-  count = length(local.ipa_tcp_ports)
+# Ingress rules for IPA
+resource "aws_security_group_rule" "ipa_server_ingress_trusted" {
+  for_each = local.ipa_ports
 
   security_group_id = aws_security_group.ipa_servers.id
   type              = "ingress"
-  protocol          = "tcp"
+  protocol          = each.value.proto
   cidr_blocks       = var.trusted_cidr_blocks
-  from_port         = local.ipa_tcp_ports[count.index]
-  to_port           = local.ipa_tcp_ports[count.index]
+  from_port         = each.value.port
+  to_port           = each.value.port
 }
-resource "aws_security_group_rule" "ipa_server_tcp_ingress_self" {
-  count = length(local.ipa_tcp_ports)
+resource "aws_security_group_rule" "ipa_server_ingress_self" {
+  for_each = local.ipa_ports
 
   security_group_id = aws_security_group.ipa_servers.id
   type              = "ingress"
-  protocol          = "tcp"
+  protocol          = each.value.proto
   self              = true
-  from_port         = local.ipa_tcp_ports[count.index]
-  to_port           = local.ipa_tcp_ports[count.index]
+  from_port         = each.value.port
+  to_port           = each.value.port
 }
-resource "aws_security_group_rule" "ipa_server_tcp_ingress_clients" {
-  count = length(local.ipa_tcp_ports)
+resource "aws_security_group_rule" "ipa_server_ingress_clients" {
+  for_each = local.ipa_ports
 
   security_group_id        = aws_security_group.ipa_servers.id
   type                     = "ingress"
-  protocol                 = "tcp"
+  protocol                 = each.value.proto
   source_security_group_id = aws_security_group.ipa_clients.id
-  from_port                = local.ipa_tcp_ports[count.index]
-  to_port                  = local.ipa_tcp_ports[count.index]
+  from_port                = each.value.port
+  to_port                  = each.value.port
 }
 
-# TCP egress rules for IPA
-resource "aws_security_group_rule" "ipa_server_tcp_egress_self" {
-  count = length(local.ipa_tcp_ports)
+# Egress rules for IPA
+resource "aws_security_group_rule" "ipa_server_egress_self" {
+  for_each = local.ipa_ports
 
   security_group_id = aws_security_group.ipa_servers.id
   type              = "egress"
-  protocol          = "tcp"
+  protocol          = each.value.proto
   self              = true
-  from_port         = local.ipa_tcp_ports[count.index]
-  to_port           = local.ipa_tcp_ports[count.index]
-}
-
-# UDP ingress rules for IPA
-resource "aws_security_group_rule" "ipa_server_udp_ingress_trusted" {
-  count = length(local.ipa_udp_ports)
-
-  security_group_id = aws_security_group.ipa_servers.id
-  type              = "ingress"
-  protocol          = "udp"
-  cidr_blocks       = var.trusted_cidr_blocks
-  from_port         = local.ipa_udp_ports[count.index]
-  to_port           = local.ipa_udp_ports[count.index]
-}
-resource "aws_security_group_rule" "ipa_server_udp_ingress_self" {
-  count = length(local.ipa_udp_ports)
-
-  security_group_id = aws_security_group.ipa_servers.id
-  type              = "ingress"
-  protocol          = "udp"
-  self              = true
-  from_port         = local.ipa_udp_ports[count.index]
-  to_port           = local.ipa_udp_ports[count.index]
-}
-resource "aws_security_group_rule" "ipa_server_udp_ingress_clients" {
-  count = length(local.ipa_udp_ports)
-
-  security_group_id        = aws_security_group.ipa_servers.id
-  type                     = "ingress"
-  protocol                 = "udp"
-  source_security_group_id = aws_security_group.ipa_clients.id
-  from_port                = local.ipa_udp_ports[count.index]
-  to_port                  = local.ipa_udp_ports[count.index]
-}
-
-# UDP egress rules for IPA
-resource "aws_security_group_rule" "ipa_server_udp_egress_self" {
-  count = length(local.ipa_udp_ports)
-
-  security_group_id = aws_security_group.ipa_servers.id
-  type              = "egress"
-  protocol          = "udp"
-  self              = true
-  from_port         = local.ipa_udp_ports[count.index]
-  to_port           = local.ipa_udp_ports[count.index]
+  from_port         = each.value.port
+  to_port           = each.value.port
 }
