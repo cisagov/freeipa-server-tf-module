@@ -3,12 +3,13 @@
 # Input variables are:
 # admin_pw - the admin password for the IPA server's Kerberos admin
 # role
-# cert_pw - the password associated with the PKCS#12 certificate
 # directory_service_pw - the password for the IPA server's directory
 # service
 # domain - the domain for the IPA server (e.g. example.com)
 # hostname - the hostname of the IPA server (e.g. ipa.example.com)
 # realm - the realm for the IPA server (e.g. EXAMPLE.COM)
+# reverse_zone_name - the name to use for the reverse zone created by
+# IPA
 
 set -o nounset
 set -o errexit
@@ -35,6 +36,9 @@ function get_ptr {
 
 interface=$(get_interface)
 ip_address=$(get_ip "$interface")
+# Replace last octet with a 2.  This gives the address of the DNS
+# server provided by AWS.
+dns_forward_ip=${ip_address%.[0-9]*}.
 
 # Wait until the IP address has a non-Amazon PTR record before
 # proceeding
@@ -56,6 +60,8 @@ ipa-server-install --realm="${realm}" \
                    --admin-password="${admin_pw}" \
                    --hostname="${hostname}" \
                    --ip-address="$ip_address" \
-                   --no-ntp \
                    --no_hbac_allow \
+                   --setup-dns \
+                   --forwarder="$dns_forward_ip" \
+                   --reverse-zone="${reverse_zone_name}" \
                    --unattended
