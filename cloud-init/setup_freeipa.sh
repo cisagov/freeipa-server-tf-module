@@ -8,8 +8,6 @@
 # domain - the domain for the IPA server (e.g. example.com)
 # hostname - the hostname of the IPA server (e.g. ipa.example.com)
 # realm - the realm for the IPA server (e.g. EXAMPLE.COM)
-# reverse_zone_name - the name to use for the reverse zone created by
-# IPA
 
 set -o nounset
 set -o errexit
@@ -36,15 +34,6 @@ function get_ptr {
 
 interface=$(get_interface)
 ip_address=$(get_ip "$interface")
-# Replace last octet with a 2.  This gives the address of the DNS
-# server provided by AWS.
-#
-# We have to use two dollar signs here to make sure that the Terraform
-# templating engine does not interpret this as an interpolation.  That
-# in turn messes up shellcheck, so we disable it for this line.
-#
-# shellcheck disable=SC2125,SC1083
-dns_forward_ip=$${ip_address%.[0-9]*}.2
 
 # Wait until the IP address has a non-Amazon PTR record before
 # proceeding
@@ -67,7 +56,4 @@ ipa-server-install --realm="${realm}" \
                    --hostname="${hostname}" \
                    --ip-address="$ip_address" \
                    --no_hbac_allow \
-                   --setup-dns \
-                   --forwarder="$dns_forward_ip" \
-                   --reverse-zone="${reverse_zone_name}" \
                    --unattended
