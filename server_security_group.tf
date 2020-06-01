@@ -27,7 +27,6 @@ resource "aws_security_group_rule" "ipa_server_https_egress" {
   to_port           = 443
 }
 
-
 # Ingress rules for IPA
 resource "aws_security_group_rule" "ipa_server_ingress_trusted" {
   for_each = local.ipa_ports
