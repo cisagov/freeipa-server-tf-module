@@ -9,9 +9,6 @@ resource "aws_instance" "ipa" {
     aws_security_group.ipa_servers.id
   ]
   iam_instance_profile = aws_iam_instance_profile.ipa.name
-
-  user_data_base64 = data.template_cloudinit_config.cloud_init_tasks.rendered
-
-  tags        = var.tags
-  volume_tags = var.tags
+  tags                 = var.tags
+  volume_tags          = var.tags
 }
