@@ -18,10 +18,6 @@ locals {
       proto = "udp",
       port  = 88,
     },
-    ntp = {
-      proto = "udp",
-      port  = 123,
-    }
     https = {
       proto = "tcp",
       port  = 443,

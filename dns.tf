@@ -55,16 +55,6 @@ resource "aws_route53_record" "server_SRV" {
   ]
 }
 
-resource "aws_route53_record" "ntp_SRV" {
-  zone_id = var.zone_id
-  name    = "_ntp._udp.${var.domain}"
-  type    = "SRV"
-  ttl     = var.ttl
-  records = [
-    "0 100 123 ${var.hostname}",
-  ]
-}
-
 resource "aws_route53_record" "password_SRV" {
   for_each = local.tcp_and_udp
 
