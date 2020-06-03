@@ -43,14 +43,14 @@ variable "aws_instance_type" {
   default     = "t3.medium"
 }
 
+variable "security_group_ids" {
+  type        = list(string)
+  description = "A list of IDs corresponding to security groups to which the server should belong (e,g, [\"sg-51530134\", \"sg-51530245\"])."
+  default     = []
+}
+
 variable "tags" {
   type        = map(string)
   description = "Tags to apply to all AWS resources created."
   default     = {}
-}
-
-variable "trusted_cidr_blocks" {
-  type        = list(string)
-  description = "A list of the CIDR blocks outside the VPC that are allowed to access the IPA servers (e.g. [\"10.10.0.0/16\", \"10.11.0.0/16\"])."
-  default     = []
 }

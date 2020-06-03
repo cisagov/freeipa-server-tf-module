@@ -52,8 +52,4 @@ module "ipa" {
   tags = {
     Testing = true
   }
-  trusted_cidr_blocks = [
-    "108.31.3.53/32",
-    "64.69.57.0/24",
-  ]
 }

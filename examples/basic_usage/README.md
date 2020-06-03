@@ -26,6 +26,4 @@ No input.
 
 | Name | Description |
 |------|-------------|
-| ipa_client_security_group | The IPA client security group. |
 | ipa_server | The IPA server EC2 instance. |
-| ipa_server_security_group | The IPA server security group. |

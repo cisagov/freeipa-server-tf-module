@@ -2,7 +2,7 @@
 
 [![GitHub Build Status](https://github.com/cisagov/freeipa-master-tf-module/workflows/build/badge.svg)](https://github.com/cisagov/freeipa-master-tf-module/actions)
 
-A Terraform module for deploying a FreeIPA master into a VPC.
+A Terraform module for deploying a FreeIPA server.
 
 ## Usage ##
 
@@ -14,15 +14,12 @@ module "ipa_master" {
   domain              = "example.com"
   hostname            = "ipa.example.com"
   realm               = "EXAMPLE.COM"
+  security_group_ids  = ["sg-51530134", "sg-51530245"]
   subnet_id           = aws_subnet.master_subnet.id
   tags                = {
     Key1 = "Value1"
     Key2 = "Value2"
   }
-  trusted_cidr_blocks = [
-    "10.99.49.0/24",
-    "10.99.52.0/24"
-  ]
 }
 ```
 
@@ -51,17 +48,15 @@ module "ipa_master" {
 | domain | The domain for the IPA server (e.g. example.com). | `string` | n/a | yes |
 | hostname | The hostname of the IPA server (e.g. ipa.example.com). | `string` | n/a | yes |
 | realm | The realm for the IPA server (e.g. EXAMPLE.COM). | `string` | n/a | yes |
+| security_group_ids | A list of IDs corresponding to security groups to which the server should belong (e,g, ["sg-51530134", "sg-51530245"]). | `list(string)` | `[]` | no |
 | subnet_id | The ID of the AWS subnet into which to deploy the IPA server (e.g. subnet-0123456789abcdef0). | `string` | n/a | yes |
 | tags | Tags to apply to all AWS resources created. | `map(string)` | `{}` | no |
-| trusted_cidr_blocks | A list of the CIDR blocks outside the VPC that are allowed to access the IPA servers (e.g. ["10.10.0.0/16", "10.11.0.0/16"]). | `list(string)` | `[]` | no |
 
 ## Outputs ##
 
 | Name | Description |
 |------|-------------|
-| client_security_group | The IPA client security group. |
 | server | The IPA server EC2 instance. |
-| server_security_group | The IPA server security group. |
 
 ## Notes ##
 
