@@ -3,18 +3,6 @@ provider "aws" {
   region  = "us-east-1"
 }
 
-provider "aws" {
-  alias   = "public_dns"
-  profile = "cool-olddns-route53fullaccess"
-  region  = "us-east-1"
-}
-
-provider "aws" {
-  alias   = "cert_read_role"
-  profile = "cool-dns-provisioncertificatereadroles"
-  region  = "us-east-1"
-}
-
 #-------------------------------------------------------------------------------
 # Create a subnet inside a VPC.
 #-------------------------------------------------------------------------------
@@ -23,7 +11,7 @@ resource "aws_vpc" "the_vpc" {
   enable_dns_hostnames = true
 }
 
-resource "aws_subnet" "master_subnet" {
+resource "aws_subnet" "subnet" {
   vpc_id            = aws_vpc.the_vpc.id
   cidr_block        = "10.99.48.0/24"
   availability_zone = "us-east-1a"
@@ -65,7 +53,7 @@ resource "aws_route53_zone" "private_zone" {
 #-------------------------------------------------------------------------------
 # Create a private Route53 reverse zone.
 #-------------------------------------------------------------------------------
-resource "aws_route53_zone" "master_private_reverse_zone" {
+resource "aws_route53_zone" "private_reverse_zone" {
   name = "48.99.10.in-addr.arpa"
 
   vpc {
@@ -74,59 +62,18 @@ resource "aws_route53_zone" "master_private_reverse_zone" {
 }
 
 #-------------------------------------------------------------------------------
-# Create a data resource for the existing public Route53 zone.
+# Configure the server module.
 #-------------------------------------------------------------------------------
-data "aws_route53_zone" "public_zone" {
-  provider = aws.public_dns
-
-  name = "cyber.dhs.gov."
-}
-
-#-------------------------------------------------------------------------------
-# Create a role that allows the master to read its certs from S3.
-#-------------------------------------------------------------------------------
-data "aws_caller_identity" "shared_services" {
-}
-
-module "certreadrole" {
-  source = "github.com/cisagov/cert-read-role-tf-module"
-
-  providers = {
-    aws = aws.cert_read_role
-  }
-
-  account_ids = [
-    data.aws_caller_identity.shared_services.account_id,
-  ]
-  cert_bucket_name = "cisa-cool-certificates"
-  hostname         = "ipa.cal23.cyber.dhs.gov"
-}
-
-#-------------------------------------------------------------------------------
-# Configure the master module.
-#-------------------------------------------------------------------------------
-module "ipa_master" {
+module "ipa" {
   source = "../../"
 
-  providers = {
-    aws            = aws
-    aws.public_dns = aws.public_dns
-  }
-
-  admin_pw                    = "thepassword"
-  ami_owner_account_id        = "207871073513" # The COOL Images account
-  associate_public_ip_address = true
-  cert_bucket_name            = "cisa-cool-certificates"
-  cert_pw                     = "lemmy"
-  cert_read_role_arn          = module.certreadrole.role.arn
-  directory_service_pw        = "thepassword"
-  domain                      = "cal23.cyber.dhs.gov"
-  hostname                    = "ipa.cal23.cyber.dhs.gov"
-  private_reverse_zone_id     = aws_route53_zone.master_private_reverse_zone.zone_id
-  private_zone_id             = aws_route53_zone.private_zone.zone_id
-  public_zone_id              = data.aws_route53_zone.public_zone.zone_id
-  realm                       = "CAL23.CYBER.DHS.GOV"
-  subnet_id                   = aws_subnet.master_subnet.id
+  ami_owner_account_id = "207871073513" # The COOL Images account
+  domain               = "cal23.cyber.dhs.gov"
+  hostname             = "ipa.cal23.cyber.dhs.gov"
+  reverse_zone_id      = aws_route53_zone.private_reverse_zone.zone_id
+  zone_id              = aws_route53_zone.private_zone.zone_id
+  realm                = "CAL23.CYBER.DHS.GOV"
+  subnet_id            = aws_subnet.subnet.id
   tags = {
     Testing = true
   }
