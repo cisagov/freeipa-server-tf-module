@@ -4,16 +4,6 @@
 # You must provide a value for each of these parameters.
 # ------------------------------------------------------------------------------
 
-variable "admin_pw" {
-  type        = string
-  description = "The password for the Kerberos admin role."
-}
-
-variable "directory_service_pw" {
-  type        = string
-  description = "The password for the IPA server's directory service."
-}
-
 variable "domain" {
   type        = string
   description = "The domain for the IPA server (e.g. example.com)."
