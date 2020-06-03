@@ -19,19 +19,9 @@ variable "realm" {
   description = "The realm for the IPA server (e.g. EXAMPLE.COM)."
 }
 
-variable "reverse_zone_id" {
-  type        = string
-  description = "The zone ID corresponding to the private Route53 reverse zone where a PTR record related to this IPA server should be created (e.g. ZKX36JXQ8W82L)."
-}
-
 variable "subnet_id" {
   type        = string
   description = "The ID of the AWS subnet into which to deploy the IPA server (e.g. subnet-0123456789abcdef0)."
-}
-
-variable "zone_id" {
-  type        = string
-  description = "The zone ID corresponding to the private Route53 zone where an A record should be created for the IPA server (e.g. ZKX36JXQ8W82L)."
 }
 
 # ------------------------------------------------------------------------------
@@ -63,10 +53,4 @@ variable "trusted_cidr_blocks" {
   type        = list(string)
   description = "A list of the CIDR blocks outside the VPC that are allowed to access the IPA servers (e.g. [\"10.10.0.0/16\", \"10.11.0.0/16\"])."
   default     = []
-}
-
-variable "ttl" {
-  type        = number
-  description = "The TTL value to use for Route53 DNS records (e.g. 86400).  A smaller value may be useful when the DNS records are changing often, for example when testing."
-  default     = 86400
 }

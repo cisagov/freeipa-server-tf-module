@@ -13,8 +13,6 @@ module "ipa_master" {
   aws_instance_type   = "t3.large"
   domain              = "example.com"
   hostname            = "ipa.example.com"
-  reverse_zone_id     = "ZLY47KYR9X93M"
-  zone_id             = "ZKX36JXQ8W82L"
   realm               = "EXAMPLE.COM"
   subnet_id           = aws_subnet.master_subnet.id
   tags                = {
@@ -25,7 +23,6 @@ module "ipa_master" {
     "10.99.49.0/24",
     "10.99.52.0/24"
   ]
-  ttl                 = 60
 }
 ```
 
@@ -54,12 +51,9 @@ module "ipa_master" {
 | domain | The domain for the IPA server (e.g. example.com). | `string` | n/a | yes |
 | hostname | The hostname of the IPA server (e.g. ipa.example.com). | `string` | n/a | yes |
 | realm | The realm for the IPA server (e.g. EXAMPLE.COM). | `string` | n/a | yes |
-| reverse_zone_id | The zone ID corresponding to the private Route53 reverse zone where a PTR record related to this IPA server should be created (e.g. ZKX36JXQ8W82L). | `string` | n/a | yes |
 | subnet_id | The ID of the AWS subnet into which to deploy the IPA server (e.g. subnet-0123456789abcdef0). | `string` | n/a | yes |
 | tags | Tags to apply to all AWS resources created. | `map(string)` | `{}` | no |
 | trusted_cidr_blocks | A list of the CIDR blocks outside the VPC that are allowed to access the IPA servers (e.g. ["10.10.0.0/16", "10.11.0.0/16"]). | `list(string)` | `[]` | no |
-| ttl | The TTL value to use for Route53 DNS records (e.g. 86400).  A smaller value may be useful when the DNS records are changing often, for example when testing. | `number` | `86400` | no |
-| zone_id | The zone ID corresponding to the private Route53 zone where an A record should be created for the IPA server (e.g. ZKX36JXQ8W82L). | `string` | n/a | yes |
 
 ## Outputs ##
 
