@@ -14,9 +14,9 @@ variable "hostname" {
   description = "The hostname of the IPA server (e.g. ipa.example.com)."
 }
 
-variable "realm" {
+variable "ip" {
   type        = string
-  description = "The realm for the IPA server (e.g. EXAMPLE.COM)."
+  description = "The IP address to assign the IPA server (e.g. 10.10.10.4).  Note that the IP address must be contained inside the CIDR block corresponding to subnet-id, and AWS reserves the first four and very last IP addresses.  We have to assign an IP in order to break the dependency of DNS record resources on the corresponding EC2 resources; otherwise, it is impossible to update the IPA servers one by one as is required when a new AMI is created."
 }
 
 variable "subnet_id" {
@@ -27,8 +27,8 @@ variable "subnet_id" {
 # ------------------------------------------------------------------------------
 # Optional parameters
 #
-# These parameters have reasonable defaults, or their requirement is
-# dependent on the values of the other parameters.
+# These parameters have reasonable defaults, or they are only used in
+# certain cases.
 # ------------------------------------------------------------------------------
 
 variable "ami_owner_account_id" {
@@ -41,6 +41,12 @@ variable "aws_instance_type" {
   type        = string
   description = "The AWS instance type to deploy (e.g. t3.medium).  Two gigabytes of RAM is given as a minimum requirement for FreeIPA, but I have had intermittent problems when creating t3.small replicas."
   default     = "t3.medium"
+}
+
+variable "realm" {
+  type        = string
+  description = "The realm for the IPA server (e.g. EXAMPLE.COM).  Only used if this IPA server IS NOT intended to be a replica."
+  default     = "EXAMPLE.COM"
 }
 
 variable "security_group_ids" {

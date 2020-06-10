@@ -47,6 +47,7 @@ module "ipa" {
   ami_owner_account_id = "207871073513" # The COOL Images account
   domain               = "cal23.cyber.dhs.gov"
   hostname             = "ipa.cal23.cyber.dhs.gov"
+  ip                   = "10.99.48.4"
   realm                = "CAL23.CYBER.DHS.GOV"
   subnet_id            = aws_subnet.subnet.id
   tags = {
