@@ -1,6 +1,6 @@
-# freeipa-master-tf-module #
+# freeipa-server-tf-module #
 
-[![GitHub Build Status](https://github.com/cisagov/freeipa-master-tf-module/workflows/build/badge.svg)](https://github.com/cisagov/freeipa-master-tf-module/actions)
+[![GitHub Build Status](https://github.com/cisagov/freeipa-server-tf-module/workflows/build/badge.svg)](https://github.com/cisagov/freeipa-server-tf-module/actions)
 
 A Terraform module for deploying a FreeIPA server.
 
@@ -8,7 +8,7 @@ A Terraform module for deploying a FreeIPA server.
 
 ```hcl
 module "ipa0" {
-  source = "github.com/cisagov/freeipa-master-tf-module"
+  source = "github.com/cisagov/freeipa-server-tf-module"
 
   domain               = "example.com"
   hostname             = "ipa.example.com"
@@ -23,7 +23,7 @@ module "ipa0" {
 }
 
 module "ipa1" {
-  source = "github.com/cisagov/freeipa-master-tf-module"
+  source = "github.com/cisagov/freeipa-server-tf-module"
 
   domain               = "example.com"
   hostname             = "ipa.example.com"
@@ -39,7 +39,7 @@ module "ipa1" {
 
 ## Examples ##
 
-* [Basic usage](https://github.com/cisagov/freeipa-master-tf-module/tree/develop/examples/basic_usage)
+* [Basic usage](https://github.com/cisagov/freeipa-server-tf-module/tree/develop/examples/basic_usage)
 
 ## Requirements ##
 
