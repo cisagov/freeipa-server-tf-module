@@ -1,4 +1,4 @@
-# Launch an IPA master into a VPC #
+# Launch an IPA server into a VPC #
 
 ## Usage ##
 

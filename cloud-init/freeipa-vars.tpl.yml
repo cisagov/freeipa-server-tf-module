@@ -1,0 +1,9 @@
+---
+write_files:
+  - path: /var/lib/cloud/instance/freeipa-vars.sh
+    permissions: '0600'
+    owner: root:root
+    content: |
+      domain=${domain}
+      hostname=${hostname}
+      realm=${realm}
