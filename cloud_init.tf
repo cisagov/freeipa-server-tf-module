@@ -1,4 +1,4 @@
-data "template_cloudinit_config" "configure_freeipa" {
+data "cloudinit_config" "configure_freeipa" {
   gzip          = true
   base64_encode = true
 
