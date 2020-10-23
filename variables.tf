@@ -30,11 +30,6 @@ variable "subnet_id" {
 # These parameters have reasonable defaults, or they are only used in
 # certain cases.
 # ------------------------------------------------------------------------------
-variable "ami_owner_account_id" {
-  type        = string
-  description = "The ID of the AWS account that owns the Example AMI, or \"self\" if the AMI is owned by the same account as the provisioner."
-  default     = "self"
-}
 
 variable "ami_owner_account_id" {
   type        = string
