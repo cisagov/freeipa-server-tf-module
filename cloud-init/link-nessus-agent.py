@@ -17,6 +17,7 @@ NESSUS_HOSTNAME_KEY = "${nessus_hostname_key}"
 NESSUS_KEY_KEY = "${nessus_key_key}"
 NESSUS_PORT_KEY = "${nessus_port_key}"
 SSM_READ_ROLE_ARN = "${ssm_read_role_arn}"
+SSM_REGION = "${ssm_region}"
 
 # Create STS client
 sts_client = boto3.client("sts")
@@ -36,6 +37,7 @@ ssm_client = boto3.client(
     aws_access_key_id=newsession_id,
     aws_secret_access_key=newsession_key,
     aws_session_token=newsession_token,
+    region_name=SSM_REGION,
 )
 
 # Get the values of the SSM Parameter Store parameters

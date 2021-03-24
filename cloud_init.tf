@@ -1,3 +1,9 @@
+# This is used to extract the region where the IPA instance is being
+# created
+data "aws_arn" "subnet" {
+  arn = data.aws_subnet.the_subnet.arn
+}
+
 data "cloudinit_config" "configure_freeipa" {
   gzip          = true
   base64_encode = true
@@ -40,6 +46,8 @@ data "cloudinit_config" "configure_freeipa" {
         nessus_key_key      = var.nessus_key_key
         nessus_port_key     = var.nessus_port_key
         ssm_read_role_arn   = module.read_ssm_parameters.role.arn
+        # This is the region where the IPA instance is being created
+        ssm_region = data.aws_arn.subnet.region
     })
   }
 }
