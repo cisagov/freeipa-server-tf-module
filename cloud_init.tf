@@ -39,6 +39,7 @@ data "cloudinit_config" "configure_freeipa" {
         nessus_hostname_key = var.nessus_hostname_key
         nessus_key_key      = var.nessus_key_key
         nessus_port_key     = var.nessus_port_key
+        ssm_read_role_arn   = module.read_ssm_parameters.role.arn
     })
   }
 }
