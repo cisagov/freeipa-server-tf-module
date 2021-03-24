@@ -43,6 +43,30 @@ variable "aws_instance_type" {
   default     = "t3.medium"
 }
 
+variable "nessus_groups" {
+  type        = list(string)
+  description = "A list of strings, each of which is the name of a group in the CDM Tenable Nessus server that the Nessus Agent should join (e.g. [\"group1\", \"group2\"])."
+  default     = ["COOL_Fed_32"]
+}
+
+variable "nessus_hostname_key" {
+  type        = string
+  description = "The SSM Parameter Store key whose corresponding value contains the hostname of the CDM Tenable Nessus server to which the Nessus Agent should link (e.g. /cdm/nessus_hostname)."
+  default     = "/cdm/nessus_hostname"
+}
+
+variable "nessus_key_key" {
+  type        = string
+  description = "The SSM Parameter Store key whose corresponding value contains the secret key that the Nessus Agent should use when linking with the CDM Tenable Nessus server (e.g. /cdm/nessus_key)."
+  default     = "/cdm/nessus_key"
+}
+
+variable "nessus_port_key" {
+  type        = string
+  description = "The SSM Parameter Store key whose corresponding value contains the port to which the Nessus Agent should connect when linking with the CDM Tenable Nessus server (e.g. /cdm/nessus_port)."
+  default     = "/cdm/nessus_port"
+}
+
 variable "realm" {
   type        = string
   description = "The realm for the IPA server (e.g. EXAMPLE.COM).  Only used if this IPA server IS NOT intended to be a replica."
