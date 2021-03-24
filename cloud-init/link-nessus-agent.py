@@ -45,19 +45,19 @@ nessus_hostname_response = ssm_client.get_parameter(
     Name=NESSUS_HOSTNAME_KEY,
     WithDecryption=True,
 )
-nessus_hostname = nessus_hostname_response["Value"]
+nessus_hostname = nessus_hostname_response["Parameter"]["Value"]
 
 nessus_key_response = ssm_client.get_parameter(
     Name=NESSUS_KEY_KEY,
     WithDecryption=True,
 )
-nessus_key = nessus_key_response["Value"]
+nessus_key = nessus_key_response["Parameter"]["Value"]
 
 nessus_port_response = ssm_client.get_parameter(
     Name=NESSUS_PORT_KEY,
     WithDecryption=True,
 )
-nessus_port = nessus_port_response["Value"]
+nessus_port = nessus_port_response["Parameter"]["Value"]
 
 # Link the Nessus Agent
 link_cmd = [
