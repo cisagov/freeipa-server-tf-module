@@ -25,4 +25,20 @@ data "cloudinit_config" "configure_freeipa" {
     })
     merge_type = "list(append)+dict(recurse_array)+str()"
   }
+
+  # Note: The filename parameters in each part below are used to name
+  # the mime-parts of the user-data as well as the filename in the
+  # scripts directory.
+
+  part {
+    filename     = "link-nessus-agent.py"
+    content_type = "text/x-shellscript"
+    content = templatefile(
+      "${path.module}/cloud-init/link-nessus-agent.py", {
+        nessus_groups       = var.nessus_groups
+        nessus_hostname_key = var.nessus_hostname_key
+        nessus_key_key      = var.nessus_key_key
+        nessus_port_key     = var.nessus_port_key
+    })
+  }
 }
