@@ -73,6 +73,8 @@ module "ipa1" {
 | [aws_iam_role_policy_attachment.ssm_agent_policy_attachment](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role_policy_attachment) | resource |
 | [aws_instance.ipa](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/instance) | resource |
 | [aws_ami.freeipa](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/ami) | data source |
+| [aws_arn.subnet](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/arn) | data source |
+| [aws_caller_identity.main](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/caller_identity) | data source |
 | [aws_iam_policy_document.assume_delegated_role_policy_doc](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document) | data source |
 | [aws_iam_policy_document.assume_role_doc](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document) | data source |
 | [aws_subnet.the_subnet](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/subnet) | data source |
@@ -88,6 +90,7 @@ module "ipa1" {
 | domain | The domain for the IPA server (e.g. example.com). | `string` | n/a | yes |
 | hostname | The hostname of the IPA server (e.g. ipa.example.com). | `string` | n/a | yes |
 | ip | The IP address to assign the IPA server (e.g. 10.10.10.4).  Note that the IP address must be contained inside the CIDR block corresponding to subnet-id, and AWS reserves the first four and very last IP addresses.  We have to assign an IP in order to break the dependency of DNS record resources on the corresponding EC2 resources; otherwise, it is impossible to update the IPA servers one by one as is required when a new AMI is created. | `string` | n/a | yes |
+| nessus\_agent\_install\_path | The install path of Nessus Agent (e.g. /opt/nessus\_agent). | `string` | `"/opt/nessus_agent"` | no |
 | nessus\_groups | A list of strings, each of which is the name of a group in the CDM Tenable Nessus server that the Nessus Agent should join (e.g. ["group1", "group2"]). | `list(string)` | `["COOL_Fed_32"]` | no |
 | nessus\_hostname\_key | The SSM Parameter Store key whose corresponding value contains the hostname of the CDM Tenable Nessus server to which the Nessus Agent should link (e.g. /cdm/nessus\_hostname). | `string` | `"/cdm/nessus_hostname"` | no |
 | nessus\_key\_key | The SSM Parameter Store key whose corresponding value contains the secret key that the Nessus Agent should use when linking with the CDM Tenable Nessus server (e.g. /cdm/nessus\_key). | `string` | `"/cdm/nessus_key"` | no |

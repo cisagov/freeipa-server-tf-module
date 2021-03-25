@@ -43,6 +43,12 @@ variable "aws_instance_type" {
   default     = "t3.medium"
 }
 
+variable "nessus_agent_install_path" {
+  type        = string
+  description = "The install path of Nessus Agent (e.g. /opt/nessus_agent)."
+  default     = "/opt/nessus_agent"
+}
+
 variable "nessus_groups" {
   type        = list(string)
   description = "A list of strings, each of which is the name of a group in the CDM Tenable Nessus server that the Nessus Agent should join (e.g. [\"group1\", \"group2\"])."

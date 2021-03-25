@@ -41,11 +41,12 @@ data "cloudinit_config" "configure_freeipa" {
     content_type = "text/x-shellscript"
     content = templatefile(
       "${path.module}/cloud-init/link-nessus-agent.py", {
-        nessus_groups       = join(",", var.nessus_groups)
-        nessus_hostname_key = var.nessus_hostname_key
-        nessus_key_key      = var.nessus_key_key
-        nessus_port_key     = var.nessus_port_key
-        ssm_read_role_arn   = module.read_ssm_parameters.role.arn
+        nessus_agent_install_path = var.nessus_agent_install_path
+        nessus_groups             = join(",", var.nessus_groups)
+        nessus_hostname_key       = var.nessus_hostname_key
+        nessus_key_key            = var.nessus_key_key
+        nessus_port_key           = var.nessus_port_key
+        ssm_read_role_arn         = module.read_ssm_parameters.role.arn
         # This is the region where the IPA instance is being created
         ssm_region = data.aws_arn.subnet.region
     })

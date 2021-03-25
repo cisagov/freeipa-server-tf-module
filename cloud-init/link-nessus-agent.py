@@ -15,6 +15,7 @@ import subprocess  # nosec
 import boto3
 
 # Inputs from Terraform
+NESSUS_AGENT_INSTALL_PATH = "${nessus_agent_install_path}"
 NESSUS_GROUPS = "${nessus_groups}"
 NESSUS_HOSTNAME_KEY = "${nessus_hostname_key}"
 NESSUS_KEY_KEY = "${nessus_key_key}"
@@ -64,7 +65,7 @@ nessus_port = nessus_port_response["Parameter"]["Value"]
 
 # Link the Nessus Agent
 link_cmd = [
-    "/opt/nessus_agent/sbin/nessuscli",
+    f"{NESSUS_AGENT_INSTALL_PATH}/sbin/nessuscli",
     "agent",
     "link",
     f"--key={nessus_key}",
