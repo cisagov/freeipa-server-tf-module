@@ -10,13 +10,16 @@ A Terraform module for deploying a FreeIPA server.
 module "ipa0" {
   source = "github.com/cisagov/freeipa-server-tf-module"
 
-  domain               = "example.com"
-  hostname             = "ipa.example.com"
-  ip                   = "10.10.10.4"
-  realm                = "EXAMPLE.COM"
-  security_group_ids   = ["sg-51530134", "sg-51530245"]
-  subnet_id            = aws_subnet.first_subnet.id
-  tags                 = {
+  domain              = "example.com"
+  hostname            = "ipa.example.com"
+  ip                  = "10.10.10.4"
+  nessus_hostname_key = "/thulsa/doom/nessus/hostname"
+  nessus_key_key      = "/thulsa/doom/nessus/key"
+  nessus_port_key     = "/thulsa/doom/nessus/port"
+  realm               = "EXAMPLE.COM"
+  security_group_ids  = ["sg-51530134", "sg-51530245"]
+  subnet_id           = aws_subnet.first_subnet.id
+  tags                = {
     Key1 = "Value1"
     Key2 = "Value2"
   }
@@ -25,12 +28,15 @@ module "ipa0" {
 module "ipa1" {
   source = "github.com/cisagov/freeipa-server-tf-module"
 
-  domain               = "example.com"
-  hostname             = "ipa.example.com"
-  ip                   = "10.10.10.5"
-  security_group_ids   = ["sg-51530134", "sg-51530245"]
-  subnet_id            = aws_subnet.second_subnet.id
-  tags                 = {
+  domain              = "example.com"
+  hostname            = "ipa.example.com"
+  ip                  = "10.10.10.5"
+  nessus_hostname_key = "/thulsa/doom/nessus/hostname"
+  nessus_key_key      = "/thulsa/doom/nessus/key"
+  nessus_port_key     = "/thulsa/doom/nessus/port"
+  security_group_ids  = ["sg-51530134", "sg-51530245"]
+  subnet_id           = aws_subnet.second_subnet.id
+  tags                = {
     Key1 = "Value1"
     Key2 = "Value2"
   }
@@ -92,9 +98,9 @@ module "ipa1" {
 | ip | The IP address to assign the IPA server (e.g. 10.10.10.4).  Note that the IP address must be contained inside the CIDR block corresponding to subnet-id, and AWS reserves the first four and very last IP addresses.  We have to assign an IP in order to break the dependency of DNS record resources on the corresponding EC2 resources; otherwise, it is impossible to update the IPA servers one by one as is required when a new AMI is created. | `string` | n/a | yes |
 | nessus\_agent\_install\_path | The install path of Nessus Agent (e.g. /opt/nessus\_agent). | `string` | `"/opt/nessus_agent"` | no |
 | nessus\_groups | A list of strings, each of which is the name of a group in the CDM Tenable Nessus server that the Nessus Agent should join (e.g. ["group1", "group2"]). | `list(string)` | `["COOL_Fed_32"]` | no |
-| nessus\_hostname\_key | The SSM Parameter Store key whose corresponding value contains the hostname of the CDM Tenable Nessus server to which the Nessus Agent should link (e.g. /cdm/nessus\_hostname). | `string` | `"/cdm/nessus_hostname"` | no |
-| nessus\_key\_key | The SSM Parameter Store key whose corresponding value contains the secret key that the Nessus Agent should use when linking with the CDM Tenable Nessus server (e.g. /cdm/nessus\_key). | `string` | `"/cdm/nessus_key"` | no |
-| nessus\_port\_key | The SSM Parameter Store key whose corresponding value contains the port to which the Nessus Agent should connect when linking with the CDM Tenable Nessus server (e.g. /cdm/nessus\_port). | `string` | `"/cdm/nessus_port"` | no |
+| nessus\_hostname\_key | The SSM Parameter Store key whose corresponding value contains the hostname of the CDM Tenable Nessus server to which the Nessus Agent should link (e.g. /cdm/nessus/hostname). | `string` | n/a | yes |
+| nessus\_key\_key | The SSM Parameter Store key whose corresponding value contains the secret key that the Nessus Agent should use when linking with the CDM Tenable Nessus server (e.g. /cdm/nessus/key). | `string` | n/a | yes |
+| nessus\_port\_key | The SSM Parameter Store key whose corresponding value contains the port to which the Nessus Agent should connect when linking with the CDM Tenable Nessus server (e.g. /cdm/nessus/port). | `string` | n/a | yes |
 | realm | The realm for the IPA server (e.g. EXAMPLE.COM).  Only used if this IPA server IS NOT intended to be a replica. | `string` | `"EXAMPLE.COM"` | no |
 | security\_group\_ids | A list of IDs corresponding to security groups to which the server should belong (e.g. ["sg-51530134", "sg-51530245"]).  Note that these security groups must exist in the same VPC as the server. | `list(string)` | `[]` | no |
 | subnet\_id | The ID of the AWS subnet into which to deploy the IPA server (e.g. subnet-0123456789abcdef0). | `string` | n/a | yes |
