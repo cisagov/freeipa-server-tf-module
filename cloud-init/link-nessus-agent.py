@@ -14,7 +14,7 @@ import subprocess  # nosec
 # Third-Party Libraries
 import boto3
 
-# Inputs from terraform
+# Inputs from Terraform
 NESSUS_GROUPS = "${nessus_groups}"
 NESSUS_HOSTNAME_KEY = "${nessus_hostname_key}"
 NESSUS_KEY_KEY = "${nessus_key_key}"
