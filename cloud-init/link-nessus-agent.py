@@ -61,7 +61,7 @@ nessus_port = nessus_port_response["Parameter"]["Value"]
 
 # Link the Nessus Agent
 link_cmd = [
-    "/opt/nessus/sbin/nessuscli",
+    "/opt/nessus_agent/sbin/nessuscli",
     "agent",
     "link",
     f"--key={nessus_key}",
