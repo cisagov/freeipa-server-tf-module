@@ -6,7 +6,10 @@ This file is a template.  It must be processed by Terraform.
 """
 
 # Standard Python Libraries
-import subprocess
+# Bandit triggers B404 here, but we're only using subprocess.run() and
+# doing so safely.  For more details on B404 see here:
+# https://bandit.readthedocs.io/en/latest/blacklists/blacklist_imports.html#b404-import-subprocess
+import subprocess  # nosec
 
 # Third-Party Libraries
 import boto3
@@ -69,4 +72,8 @@ link_cmd = [
     f"--port={nessus_port}",
     f"--groups={NESSUS_GROUPS}",
 ]
-subprocess.run(link_cmd)
+# Bandit triggers B603 here, but we're using subprocess.run() safely
+# here, since the variable content in link_cmd comes directly from SSM
+# Parameter Store.  For more details on B603 see here:
+# https://bandit.readthedocs.io/en/latest/plugins/b603_subprocess_without_shell_equals_true.html
+subprocess.run(link_cmd)  # nosec
