@@ -11,7 +11,7 @@ module "ipa0" {
   source = "github.com/cisagov/freeipa-server-tf-module"
 
   domain              = "example.com"
-  hostname            = "ipa.example.com"
+  hostname            = "ipa0.example.com"
   ip                  = "10.10.10.4"
   nessus_hostname_key = "/thulsa/doom/nessus/hostname"
   nessus_key_key      = "/thulsa/doom/nessus/key"
@@ -29,7 +29,7 @@ module "ipa1" {
   source = "github.com/cisagov/freeipa-server-tf-module"
 
   domain              = "example.com"
-  hostname            = "ipa.example.com"
+  hostname            = "ipa1.example.com"
   ip                  = "10.10.10.5"
   nessus_hostname_key = "/thulsa/doom/nessus/hostname"
   nessus_key_key      = "/thulsa/doom/nessus/key"
