@@ -18,12 +18,28 @@ No requirements.
 |------|---------|
 | aws | n/a |
 
+## Modules ##
+
+| Name | Source | Version |
+|------|--------|---------|
+| ipa | ../../ |  |
+
+## Resources ##
+
+| Name | Type |
+|------|------|
+| [aws_default_route_table.the_route_table](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/default_route_table) | resource |
+| [aws_internet_gateway.the_igw](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/internet_gateway) | resource |
+| [aws_route.route_external_traffic_through_internet_gateway](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/route) | resource |
+| [aws_subnet.subnet](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/subnet) | resource |
+| [aws_vpc.the_vpc](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/vpc) | resource |
+
 ## Inputs ##
 
-No input.
+No inputs.
 
 ## Outputs ##
 
 | Name | Description |
 |------|-------------|
-| ipa_server | The IPA server EC2 instance. |
+| ipa\_server | The IPA server EC2 instance. |
