@@ -49,7 +49,6 @@ data "aws_iam_policy_document" "assume_role_doc" {
 # The instance role to be used by the IPA master EC2 instance
 resource "aws_iam_role" "ipa" {
   assume_role_policy = data.aws_iam_policy_document.assume_role_doc.json
-  tags               = var.tags
 }
 
 # Attach the policy to assume the delegated role to this role

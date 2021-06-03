@@ -20,6 +20,13 @@ resource "aws_instance" "ipa" {
     # Require IMDS tokens AKA require the use of IMDSv2
     http_tokens = "required"
   }
-  tags        = var.tags
-  volume_tags = var.tags
+  # volume_tags does not yet inherit the default tags from the
+  # provider.  See hashicorp/terraform-provider-aws#19188 for more
+  # details.
+  volume_tags = merge(
+    provider.aws.default_tags,
+    {
+      "Name" = "Example"
+    },
+  )
 }

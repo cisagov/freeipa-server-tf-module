@@ -1,10 +1,23 @@
+locals {
+  # Default tags to apply to all AWS resources created
+  tags = {
+    Testing = true
+  }
+}
+
 provider "aws" {
+  default_tags {
+    tags = local.tags
+  }
   profile = "cool-sharedservices-provisionaccount"
   region  = "us-east-1"
 }
 
 provider "aws" {
-  alias   = "provision_ssm_parameter_read_role"
+  alias = "provision_ssm_parameter_read_role"
+  default_tags {
+    tags = local.tags
+  }
   profile = "cool-images-provisionparameterstorereadroles"
   region  = "us-east-1"
 }
@@ -63,7 +76,4 @@ module "ipa" {
   nessus_port_key      = "/cdm/nessus_port"
   realm                = "CAL23.CYBER.DHS.GOV"
   subnet_id            = aws_subnet.subnet.id
-  tags = {
-    Testing = true
-  }
 }

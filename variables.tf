@@ -81,9 +81,3 @@ variable "security_group_ids" {
   description = "A list of IDs corresponding to security groups to which the server should belong (e.g. [\"sg-51530134\", \"sg-51530245\"]).  Note that these security groups must exist in the same VPC as the server."
   default     = []
 }
-
-variable "tags" {
-  type        = map(string)
-  description = "Tags to apply to all AWS resources created."
-  default     = {}
-}
