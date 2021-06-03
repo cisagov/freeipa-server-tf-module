@@ -1,3 +1,6 @@
+# The default tags configured for the default provider
+data "aws_default_tags" "default" {}
+
 # The IPA master EC2 instance
 resource "aws_instance" "ipa" {
   ami                         = data.aws_ami.freeipa.id
@@ -23,10 +26,5 @@ resource "aws_instance" "ipa" {
   # volume_tags does not yet inherit the default tags from the
   # provider.  See hashicorp/terraform-provider-aws#19188 for more
   # details.
-  volume_tags = merge(
-    provider.aws.default_tags,
-    {
-      "Name" = "Example"
-    },
-  )
+  volume_tags = data.aws_default_tags.default.tags
 }
