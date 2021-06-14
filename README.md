@@ -19,10 +19,6 @@ module "ipa0" {
   realm               = "EXAMPLE.COM"
   security_group_ids  = ["sg-51530134", "sg-51530245"]
   subnet_id           = aws_subnet.first_subnet.id
-  tags                = {
-    Key1 = "Value1"
-    Key2 = "Value2"
-  }
 }
 
 module "ipa1" {
@@ -36,10 +32,6 @@ module "ipa1" {
   nessus_port_key     = "/thulsa/doom/nessus/port"
   security_group_ids  = ["sg-51530134", "sg-51530245"]
   subnet_id           = aws_subnet.second_subnet.id
-  tags                = {
-    Key1 = "Value1"
-    Key2 = "Value2"
-  }
 }
 ```
 
@@ -52,14 +44,14 @@ module "ipa1" {
 | Name | Version |
 |------|---------|
 | terraform | ~> 0.12.0 |
-| aws | ~> 3.0 |
+| aws | ~> 3.38 |
 | cloudinit | ~> 2.0 |
 
 ## Providers ##
 
 | Name | Version |
 |------|---------|
-| aws | ~> 3.0 |
+| aws | ~> 3.38 |
 | cloudinit | ~> 2.0 |
 
 ## Modules ##
@@ -81,6 +73,7 @@ module "ipa1" {
 | [aws_ami.freeipa](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/ami) | data source |
 | [aws_arn.subnet](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/arn) | data source |
 | [aws_caller_identity.main](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/caller_identity) | data source |
+| [aws_default_tags.default](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/default_tags) | data source |
 | [aws_iam_policy_document.assume_delegated_role_policy_doc](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document) | data source |
 | [aws_iam_policy_document.assume_role_doc](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document) | data source |
 | [aws_subnet.the_subnet](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/subnet) | data source |
@@ -104,7 +97,6 @@ module "ipa1" {
 | realm | The realm for the IPA server (e.g. EXAMPLE.COM).  Only used if this IPA server IS NOT intended to be a replica. | `string` | `"EXAMPLE.COM"` | no |
 | security\_group\_ids | A list of IDs corresponding to security groups to which the server should belong (e.g. ["sg-51530134", "sg-51530245"]).  Note that these security groups must exist in the same VPC as the server. | `list(string)` | `[]` | no |
 | subnet\_id | The ID of the AWS subnet into which to deploy the IPA server (e.g. subnet-0123456789abcdef0). | `string` | n/a | yes |
-| tags | Tags to apply to all AWS resources created. | `map(string)` | `{}` | no |
 
 ## Outputs ##
 
