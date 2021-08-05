@@ -37,7 +37,7 @@ module "ipa1" {
 
 ## Examples ##
 
-* [Basic usage](https://github.com/cisagov/freeipa-server-tf-module/tree/develop/examples/basic_usage)
+- [Basic usage](https://github.com/cisagov/freeipa-server-tf-module/tree/develop/examples/basic_usage)
 
 ## Requirements ##
 
