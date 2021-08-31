@@ -13,6 +13,7 @@ Note that this example may create resources which cost money. Run
 | Name | Version |
 |------|---------|
 | terraform | ~> 0.13.0 |
+| aws | ~> 3.38 |
 
 ## Providers ##
 
