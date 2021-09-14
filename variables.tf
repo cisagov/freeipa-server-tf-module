@@ -76,6 +76,12 @@ variable "realm" {
   default     = "EXAMPLE.COM"
 }
 
+variable "root_disk_size" {
+  type        = number
+  description = "The size of the IPA instance's root disk in GB."
+  default     = 8
+}
+
 variable "security_group_ids" {
   type        = list(string)
   description = "A list of IDs corresponding to security groups to which the server should belong (e.g. [\"sg-51530134\", \"sg-51530245\"]).  Note that these security groups must exist in the same VPC as the server."
