@@ -12,6 +12,9 @@ resource "aws_instance" "ipa" {
   vpc_security_group_ids      = var.security_group_ids
   user_data_base64            = data.cloudinit_config.configure_freeipa.rendered
   iam_instance_profile        = aws_iam_instance_profile.ipa.name
+  root_block_device {
+    volume_size = var.root_disk_size
+  }
   # AWS Instance Meta-Data Service (IMDS) options
   metadata_options {
     # Enable IMDS (this is the default value)
