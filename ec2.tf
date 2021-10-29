@@ -14,6 +14,7 @@ resource "aws_instance" "ipa" {
   iam_instance_profile        = aws_iam_instance_profile.ipa.name
   root_block_device {
     volume_size = var.root_disk_size
+    volume_type = "gp3"
   }
   # AWS Instance Meta-Data Service (IMDS) options
   metadata_options {
