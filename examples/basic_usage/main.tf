@@ -74,6 +74,7 @@ module "ipa" {
   nessus_hostname_key  = "/cdm/nessus_hostname"
   nessus_key_key       = "/cdm/nessus_key"
   nessus_port_key      = "/cdm/nessus_port"
+  netbios_name         = "CAL23"
   realm                = "CAL23.CYBER.DHS.GOV"
   subnet_id            = aws_subnet.subnet.id
 }

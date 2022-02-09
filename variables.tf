@@ -34,6 +34,15 @@ variable "nessus_port_key" {
   description = "The SSM Parameter Store key whose corresponding value contains the port to which the Nessus Agent should connect when linking with the CDM Tenable Nessus server (e.g. /cdm/nessus/port)."
 }
 
+variable "netbios_name" {
+  type        = string
+  description = "The NETBIOS name to be used by the server (e.g. EXAMPLE).  Note that NETBIOS names are restricted to at most 15 characters.  These characters must consist only of uppercase letters, numbers, and dashes."
+  validation {
+    condition     = length(var.netbios_name) <= 15 && length(regexall("[^A-Z0-9-]", var.netbios_name)) == 0
+    error_message = "NETBIOS names are restricted to at most 15 characters.  These characters must consist only of uppercase letters, numbers, and dashes."
+  }
+}
+
 variable "subnet_id" {
   type        = string
   description = "The ID of the AWS subnet into which to deploy the IPA server (e.g. subnet-0123456789abcdef0)."

@@ -16,6 +16,7 @@ module "ipa0" {
   nessus_hostname_key = "/thulsa/doom/nessus/hostname"
   nessus_key_key      = "/thulsa/doom/nessus/key"
   nessus_port_key     = "/thulsa/doom/nessus/port"
+  netbios_name        = "EXAMPLE"
   realm               = "EXAMPLE.COM"
   security_group_ids  = ["sg-51530134", "sg-51530245"]
   subnet_id           = aws_subnet.first_subnet.id
@@ -30,6 +31,7 @@ module "ipa1" {
   nessus_hostname_key = "/thulsa/doom/nessus/hostname"
   nessus_key_key      = "/thulsa/doom/nessus/key"
   nessus_port_key     = "/thulsa/doom/nessus/port"
+  netbios_name        = "EXAMPLE"
   security_group_ids  = ["sg-51530134", "sg-51530245"]
   subnet_id           = aws_subnet.second_subnet.id
 }
@@ -94,6 +96,7 @@ module "ipa1" {
 | nessus\_hostname\_key | The SSM Parameter Store key whose corresponding value contains the hostname of the CDM Tenable Nessus server to which the Nessus Agent should link (e.g. /cdm/nessus/hostname). | `string` | n/a | yes |
 | nessus\_key\_key | The SSM Parameter Store key whose corresponding value contains the secret key that the Nessus Agent should use when linking with the CDM Tenable Nessus server (e.g. /cdm/nessus/key). | `string` | n/a | yes |
 | nessus\_port\_key | The SSM Parameter Store key whose corresponding value contains the port to which the Nessus Agent should connect when linking with the CDM Tenable Nessus server (e.g. /cdm/nessus/port). | `string` | n/a | yes |
+| netbios\_name | The NETBIOS name to be used by the server (e.g. EXAMPLE).  Note that NETBIOS names are restricted to at most 15 characters.  These characters must consist only of uppercase letters, numbers, and dashes. | `string` | n/a | yes |
 | realm | The realm for the IPA server (e.g. EXAMPLE.COM).  Only used if this IPA server IS NOT intended to be a replica. | `string` | `"EXAMPLE.COM"` | no |
 | root\_disk\_size | The size of the IPA instance's root disk in GiB. | `number` | `8` | no |
 | security\_group\_ids | A list of IDs corresponding to security groups to which the server should belong (e.g. ["sg-51530134", "sg-51530245"]).  Note that these security groups must exist in the same VPC as the server. | `list(string)` | `[]` | no |
