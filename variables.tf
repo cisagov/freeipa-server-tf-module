@@ -36,10 +36,10 @@ variable "nessus_port_key" {
 
 variable "netbios_name" {
   type        = string
-  description = "The NETBIOS name to be used by the server (e.g. EXAMPLE).  Note that NETBIOS names are restricted to at most 15 characters.  These characters must consist only of uppercase letters, numbers, and dashes."
+  description = "The NetBIOS name to be used by the server (e.g. EXAMPLE).  Note that NetBIOS names are restricted to at most 15 characters.  These characters must consist only of uppercase letters, numbers, and dashes."
   validation {
     condition     = length(var.netbios_name) <= 15 && length(regexall("[^A-Z0-9-]", var.netbios_name)) == 0
-    error_message = "NETBIOS names are restricted to at most 15 characters.  These characters must consist only of uppercase letters, numbers, and dashes."
+    error_message = "NetBIOS names are restricted to at most 15 characters.  These characters must consist only of uppercase letters, numbers, and dashes."
   }
 }
 
