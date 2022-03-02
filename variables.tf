@@ -9,9 +9,9 @@ variable "domain" {
   description = "The domain for the IPA server (e.g. example.com)."
 }
 
-variable "hostname" {
+variable "fqdn" {
   type        = string
-  description = "The hostname of the IPA server (e.g. ipa0.example.com)."
+  description = "The FQDN of the IPA server (e.g. ipa0.example.com)."
 }
 
 variable "ip" {
@@ -19,9 +19,9 @@ variable "ip" {
   description = "The IP address to assign the IPA server (e.g. 10.10.10.4).  Note that the IP address must be contained inside the CIDR block corresponding to subnet-id, and AWS reserves the first four and very last IP addresses.  We have to assign an IP in order to break the dependency of DNS record resources on the corresponding EC2 resources; otherwise, it is impossible to update the IPA servers one by one as is required when a new AMI is created."
 }
 
-variable "load_balancer_hostname" {
+variable "load_balancer_fqdn" {
   type        = string
-  description = "The hostname of the AWS load balancer in front of the FreeIPA cluster (e.g. ipa.example.com)."
+  description = "The FQDN of the AWS load balancer in front of the FreeIPA cluster (e.g. ipa.example.com)."
 }
 
 variable "nessus_hostname_key" {

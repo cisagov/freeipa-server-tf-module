@@ -25,11 +25,11 @@ data "cloudinit_config" "configure_freeipa" {
     content_type = "text/cloud-config"
     content = templatefile(
       "${path.module}/cloud-init/freeipa-vars.tpl.yml", {
-        domain                 = var.domain
-        hostname               = var.hostname
-        load_balancer_hostname = var.load_balancer_hostname
-        netbios_name           = var.netbios_name
-        realm                  = var.realm
+        domain             = var.domain
+        fqdn               = var.fqdn
+        load_balancer_fqdn = var.load_balancer_fqdn
+        netbios_name       = var.netbios_name
+        realm              = var.realm
     })
     merge_type = "list(append)+dict(recurse_array)+str()"
   }

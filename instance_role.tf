@@ -10,7 +10,7 @@ module "read_ssm_parameters" {
   # Allow the account where the instance is being created to assume
   # this role, which lives in the Images account.
   account_ids = [data.aws_caller_identity.main.account_id]
-  entity_name = var.hostname
+  entity_name = var.fqdn
   ssm_names = [
     var.nessus_hostname_key,
     var.nessus_key_key,

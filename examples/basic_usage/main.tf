@@ -67,15 +67,15 @@ module "ipa" {
     aws.provision_ssm_parameter_read_role = aws.provision_ssm_parameter_read_role
   }
 
-  ami_owner_account_id   = "207871073513" # The COOL Images account
-  domain                 = "cal23.cyber.dhs.gov"
-  hostname               = "ipa.cal23.cyber.dhs.gov"
-  ip                     = "10.99.48.4"
-  load_balancer_hostname = "ipa.cal23.cyber.dhs.gov"
-  nessus_hostname_key    = "/cdm/nessus_hostname"
-  nessus_key_key         = "/cdm/nessus_key"
-  nessus_port_key        = "/cdm/nessus_port"
-  netbios_name           = "CAL23"
-  realm                  = "CAL23.CYBER.DHS.GOV"
-  subnet_id              = aws_subnet.subnet.id
+  ami_owner_account_id = "207871073513" # The COOL Images account
+  domain               = "cal23.cyber.dhs.gov"
+  fqdn                 = "ipa.cal23.cyber.dhs.gov"
+  ip                   = "10.99.48.4"
+  load_balancer_fqdn   = "ipa.cal23.cyber.dhs.gov"
+  nessus_hostname_key  = "/cdm/nessus_hostname"
+  nessus_key_key       = "/cdm/nessus_key"
+  nessus_port_key      = "/cdm/nessus_port"
+  netbios_name         = "CAL23"
+  realm                = "CAL23.CYBER.DHS.GOV"
+  subnet_id            = aws_subnet.subnet.id
 }

@@ -5,7 +5,7 @@ write_files:
     owner: root:root
     content: |
       domain=${domain}
-      hostname=${hostname}
-      load_balancer_hostname=${load_balancer_hostname}
+      fqdn=${fqdn}
+      load_balancer_fqdn=${load_balancer_fqdn}
       netbios_name=${netbios_name}
       realm=${realm}
