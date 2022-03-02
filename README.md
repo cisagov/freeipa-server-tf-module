@@ -10,30 +10,32 @@ A Terraform module for deploying a FreeIPA server.
 module "ipa0" {
   source = "github.com/cisagov/freeipa-server-tf-module"
 
-  domain              = "example.com"
-  hostname            = "ipa0.example.com"
-  ip                  = "10.10.10.4"
-  nessus_hostname_key = "/thulsa/doom/nessus/hostname"
-  nessus_key_key      = "/thulsa/doom/nessus/key"
-  nessus_port_key     = "/thulsa/doom/nessus/port"
-  netbios_name        = "EXAMPLE"
-  realm               = "EXAMPLE.COM"
-  security_group_ids  = ["sg-51530134", "sg-51530245"]
-  subnet_id           = aws_subnet.first_subnet.id
+  domain                 = "example.com"
+  hostname               = "ipa0.example.com"
+  ip                     = "10.10.10.4"
+  load_balancer_hostname = "ipa.example.com"
+  nessus_hostname_key    = "/thulsa/doom/nessus/hostname"
+  nessus_key_key         = "/thulsa/doom/nessus/key"
+  nessus_port_key        = "/thulsa/doom/nessus/port"
+  netbios_name           = "EXAMPLE"
+  realm                  = "EXAMPLE.COM"
+  security_group_ids     = ["sg-51530134", "sg-51530245"]
+  subnet_id              = aws_subnet.first_subnet.id
 }
 
 module "ipa1" {
   source = "github.com/cisagov/freeipa-server-tf-module"
 
-  domain              = "example.com"
-  hostname            = "ipa1.example.com"
-  ip                  = "10.10.10.5"
-  nessus_hostname_key = "/thulsa/doom/nessus/hostname"
-  nessus_key_key      = "/thulsa/doom/nessus/key"
-  nessus_port_key     = "/thulsa/doom/nessus/port"
-  netbios_name        = "EXAMPLE"
-  security_group_ids  = ["sg-51530134", "sg-51530245"]
-  subnet_id           = aws_subnet.second_subnet.id
+  domain                 = "example.com"
+  hostname               = "ipa1.example.com"
+  ip                     = "10.10.10.5"
+  load_balancer_hostname = "ipa.example.com"
+  nessus_hostname_key    = "/thulsa/doom/nessus/hostname"
+  nessus_key_key         = "/thulsa/doom/nessus/key"
+  nessus_port_key        = "/thulsa/doom/nessus/port"
+  netbios_name           = "EXAMPLE"
+  security_group_ids     = ["sg-51530134", "sg-51530245"]
+  subnet_id              = aws_subnet.second_subnet.id
 }
 ```
 
@@ -91,6 +93,7 @@ module "ipa1" {
 | domain | The domain for the IPA server (e.g. example.com). | `string` | n/a | yes |
 | hostname | The hostname of the IPA server (e.g. ipa.example.com). | `string` | n/a | yes |
 | ip | The IP address to assign the IPA server (e.g. 10.10.10.4).  Note that the IP address must be contained inside the CIDR block corresponding to subnet-id, and AWS reserves the first four and very last IP addresses.  We have to assign an IP in order to break the dependency of DNS record resources on the corresponding EC2 resources; otherwise, it is impossible to update the IPA servers one by one as is required when a new AMI is created. | `string` | n/a | yes |
+| load\_balancer\_hostname | The hostname of the AWS load balancer in front of the FreeIPA cluster (e.g. ipa.example.com). | `string` | n/a | yes |
 | nessus\_agent\_install\_path | The install path of Nessus Agent (e.g. /opt/nessus\_agent). | `string` | `"/opt/nessus_agent"` | no |
 | nessus\_groups | A list of strings, each of which is the name of a group in the CDM Tenable Nessus server that the Nessus Agent should join (e.g. ["group1", "group2"]). | `list(string)` | ```[ "COOL_Fed_32" ]``` | no |
 | nessus\_hostname\_key | The SSM Parameter Store key whose corresponding value contains the hostname of the CDM Tenable Nessus server to which the Nessus Agent should link (e.g. /cdm/nessus/hostname). | `string` | n/a | yes |

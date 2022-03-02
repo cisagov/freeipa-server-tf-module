@@ -19,6 +19,11 @@ variable "ip" {
   description = "The IP address to assign the IPA server (e.g. 10.10.10.4).  Note that the IP address must be contained inside the CIDR block corresponding to subnet-id, and AWS reserves the first four and very last IP addresses.  We have to assign an IP in order to break the dependency of DNS record resources on the corresponding EC2 resources; otherwise, it is impossible to update the IPA servers one by one as is required when a new AMI is created."
 }
 
+variable "load_balancer_hostname" {
+  type        = string
+  description = "The hostname of the AWS load balancer in front of the FreeIPA cluster (e.g. ipa.example.com)."
+}
+
 variable "nessus_hostname_key" {
   type        = string
   description = "The SSM Parameter Store key whose corresponding value contains the hostname of the CDM Tenable Nessus server to which the Nessus Agent should link (e.g. /cdm/nessus/hostname)."

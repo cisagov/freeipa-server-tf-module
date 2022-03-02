@@ -6,5 +6,6 @@ write_files:
     content: |
       domain=${domain}
       hostname=${hostname}
+      load_balancer_hostname=${load_balancer_hostname}
       netbios_name=${netbios_name}
       realm=${realm}
