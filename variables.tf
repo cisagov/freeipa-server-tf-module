@@ -11,7 +11,7 @@ variable "domain" {
 
 variable "hostname" {
   type        = string
-  description = "The hostname of the IPA server (e.g. ipa.example.com)."
+  description = "The hostname of the IPA server (e.g. ipa0.example.com)."
 }
 
 variable "ip" {

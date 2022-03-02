@@ -91,7 +91,7 @@ module "ipa1" {
 | ami\_owner\_account\_id | The ID of the AWS account that owns the FreeIPA server AMI, or "self" if the AMI is owned by the same account as the provisioner. | `string` | `"self"` | no |
 | aws\_instance\_type | The AWS instance type to deploy (e.g. t3.medium).  Two gigabytes of RAM is given as a minimum requirement for FreeIPA, but I have had intermittent problems when creating t3.small replicas. | `string` | `"t3.medium"` | no |
 | domain | The domain for the IPA server (e.g. example.com). | `string` | n/a | yes |
-| hostname | The hostname of the IPA server (e.g. ipa.example.com). | `string` | n/a | yes |
+| hostname | The hostname of the IPA server (e.g. ipa0.example.com). | `string` | n/a | yes |
 | ip | The IP address to assign the IPA server (e.g. 10.10.10.4).  Note that the IP address must be contained inside the CIDR block corresponding to subnet-id, and AWS reserves the first four and very last IP addresses.  We have to assign an IP in order to break the dependency of DNS record resources on the corresponding EC2 resources; otherwise, it is impossible to update the IPA servers one by one as is required when a new AMI is created. | `string` | n/a | yes |
 | load\_balancer\_hostname | The hostname of the AWS load balancer in front of the FreeIPA cluster (e.g. ipa.example.com). | `string` | n/a | yes |
 | nessus\_agent\_install\_path | The install path of Nessus Agent (e.g. /opt/nessus\_agent). | `string` | `"/opt/nessus_agent"` | no |
