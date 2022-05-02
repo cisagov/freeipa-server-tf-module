@@ -20,6 +20,25 @@ data "cloudinit_config" "configure_freeipa" {
   # The filename parameters are only used to identify the mime-part
   # headers in the user-data.
 
+  # Set the local hostname.
+  #
+  # We need to go ahead and set the local hostname to the correct
+  # value that will eventually be obtained from DHCP, since we make
+  # liberal use of the "{local_hostname}" placeholder in our AWS
+  # CloudWatch Agent configuration.
+  part {
+    content = templatefile(
+      "${path.module}/cloud-init/set-hostname.tpl.yml", {
+        # Note that the hostname must be identical to what is set in
+        # the corresponding DNS A record.
+        fqdn     = var.hostname
+        hostname = split(".", var.hostname)[0]
+    })
+    content_type = "text/cloud-config"
+    filename     = "set-hostname.yml"
+    merge_type   = "list(append)+dict(recurse_array)+str()"
+  }
+
   part {
     filename     = "freeipa-vars.yml"
     content_type = "text/cloud-config"
