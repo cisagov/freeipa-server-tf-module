@@ -45,9 +45,9 @@ def main() -> int:
         RoleArn=SSM_READ_ROLE_ARN,
         RoleSessionName="set_crowdstrike_falcon_sensor_customer_id",
     )
-    newsession_id = stsresponse["Credentials"]["AccessKeyId"]
-    newsession_key = stsresponse["Credentials"]["SecretAccessKey"]
-    newsession_token = stsresponse["Credentials"]["SessionToken"]
+    newsession_id: str = stsresponse["Credentials"]["AccessKeyId"]
+    newsession_key: str = stsresponse["Credentials"]["SecretAccessKey"]
+    newsession_token: str = stsresponse["Credentials"]["SessionToken"]
 
     # Create a new client to access SSM Parameter Store using the
     # temporary credentials
