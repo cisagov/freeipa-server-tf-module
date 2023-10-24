@@ -12,6 +12,8 @@ module "read_ssm_parameters" {
   account_ids = [data.aws_caller_identity.main.account_id]
   entity_name = var.hostname
   ssm_names = [
+    var.crowdstrike_falcon_sensor_customer_id_key,
+    var.crowdstrike_falcon_sensor_tags_key,
     var.nessus_hostname_key,
     var.nessus_key_key,
     var.nessus_port_key,

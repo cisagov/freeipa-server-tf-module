@@ -4,6 +4,16 @@
 # You must provide a value for each of these parameters.
 # ------------------------------------------------------------------------------
 
+variable "crowdstrike_falcon_sensor_customer_id_key" {
+  type        = string
+  description = "The SSM Parameter Store key whose corresponding value contains the customer ID for CrowdStrike Falcon (e.g. /cdm/falcon/customer_id)."
+}
+
+variable "crowdstrike_falcon_sensor_tags_key" {
+  type        = string
+  description = "The SSM Parameter Store key whose corresponding value contains a comma-delimited list of tags that are to be applied to CrowdStrike Falcon (e.g. /cdm/falcon/tags)."
+}
+
 variable "domain" {
   type        = string
   description = "The domain for the IPA server (e.g. example.com)."
@@ -65,6 +75,12 @@ variable "aws_instance_type" {
   type        = string
   description = "The AWS instance type to deploy (e.g. t3.medium).  Two gigabytes of RAM is given as a minimum requirement for FreeIPA, but I have had intermittent problems when creating t3.small replicas."
   default     = "t3.medium"
+}
+
+variable "crowdstrike_falcon_sensor_install_path" {
+  type        = string
+  description = "The install path of the CrowdStrike Falcon sensor (e.g. /opt/CrowdStrike)."
+  default     = "/opt/CrowdStrike"
 }
 
 variable "nessus_agent_install_path" {

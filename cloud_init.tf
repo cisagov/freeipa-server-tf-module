@@ -52,12 +52,18 @@ data "cloudinit_config" "configure_freeipa" {
     merge_type = "list(append)+dict(recurse_array)+str()"
   }
 
+  #-------------------------------------------------------------------------------
+  # Shell script parts
+  #-------------------------------------------------------------------------------
+
   # Note: The filename parameters in each part below are used to name
   # the mime-parts of the user-data as well as the filename in the
   # scripts directory.
 
   part {
-    filename     = "link-nessus-agent.py"
+    filename = "link-nessus-agent.py"
+    # Note that text/x-python is not supported here:
+    # https://cloudinit.readthedocs.io/en/latest/explanation/format.html#mime-multi-part-archive
     content_type = "text/x-shellscript"
     content = templatefile(
       "${path.module}/cloud-init/link-nessus-agent.py", {
@@ -68,6 +74,23 @@ data "cloudinit_config" "configure_freeipa" {
         nessus_port_key           = var.nessus_port_key
         ssm_read_role_arn         = module.read_ssm_parameters.role.arn
         # This is the region where the IPA instance is being created
+        ssm_region = data.aws_arn.subnet.region
+    })
+  }
+
+  part {
+    filename = "configure-falcon-sensor.py"
+    # Note that text/x-python is not supported here:
+    # https://cloudinit.readthedocs.io/en/latest/explanation/format.html#mime-multi-part-archive
+    content_type = "text/x-shellscript"
+    content = templatefile(
+      "${path.module}/cloud-init/configure-falcon-sensor.py", {
+        falcon_customer_id_key     = var.crowdstrike_falcon_sensor_customer_id_key
+        falcon_sensor_install_path = var.crowdstrike_falcon_sensor_install_path
+        falcon_tags_key            = var.crowdstrike_falcon_sensor_tags_key
+        ssm_read_role_arn          = module.read_ssm_parameters.role.arn
+        # This is the region where the FreeIPA instance is being
+        # created
         ssm_region = data.aws_arn.subnet.region
     })
   }
