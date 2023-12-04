@@ -45,19 +45,20 @@ module "ipa1" {
 
 - [Basic usage](https://github.com/cisagov/freeipa-server-tf-module/tree/develop/examples/basic_usage)
 
+<!-- BEGIN_TF_DOCS -->
 ## Requirements ##
 
 | Name | Version |
 |------|---------|
 | terraform | ~> 1.0 |
-| aws | ~> 3.38 |
+| aws | ~> 4.9 |
 | cloudinit | ~> 2.0 |
 
 ## Providers ##
 
 | Name | Version |
 |------|---------|
-| aws | ~> 3.38 |
+| aws | ~> 4.9 |
 | cloudinit | ~> 2.0 |
 
 ## Modules ##
@@ -114,6 +115,7 @@ module "ipa1" {
 | Name | Description |
 |------|-------------|
 | server | The IPA server EC2 instance. |
+<!-- END_TF_DOCS -->
 
 ## Notes ##
 
