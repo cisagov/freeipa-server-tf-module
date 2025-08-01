@@ -14,6 +14,7 @@ module "read_ssm_parameters" {
   ssm_names = [
     var.crowdstrike_falcon_sensor_customer_id_key,
     var.crowdstrike_falcon_sensor_tags_key,
+    var.nessus_groups_key,
     var.nessus_hostname_key,
     var.nessus_key_key,
     var.nessus_port_key,
