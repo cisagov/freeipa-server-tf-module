@@ -73,6 +73,7 @@ module "ipa" {
   domain                                    = "cal23.cyber.dhs.gov"
   hostname                                  = "ipa.cal23.cyber.dhs.gov"
   ip                                        = "10.99.48.4"
+  nessus_groups_key                         = "/cdm/nessus_groups"
   nessus_hostname_key                       = "/cdm/nessus_hostname"
   nessus_key_key                            = "/cdm/nessus_key"
   nessus_port_key                           = "/cdm/nessus_port"
