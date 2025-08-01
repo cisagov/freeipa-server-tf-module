@@ -15,6 +15,7 @@ module "ipa0" {
   domain                                    = "example.com"
   hostname                                  = "ipa0.example.com"
   ip                                        = "10.10.10.4"
+  nessus_groups_key                         = "/thulsa/doom/nessus/groups"
   nessus_hostname_key                       = "/thulsa/doom/nessus/hostname"
   nessus_key_key                            = "/thulsa/doom/nessus/key"
   nessus_port_key                           = "/thulsa/doom/nessus/port"
@@ -32,6 +33,7 @@ module "ipa1" {
   domain                                    = "example.com"
   hostname                                  = "ipa1.example.com"
   ip                                        = "10.10.10.5"
+  nessus_groups_key                         = "/thulsa/doom/nessus/groups"
   nessus_hostname_key                       = "/thulsa/doom/nessus/hostname"
   nessus_key_key                            = "/thulsa/doom/nessus/key"
   nessus_port_key                           = "/thulsa/doom/nessus/port"
@@ -100,7 +102,7 @@ module "ipa1" {
 | hostname | The hostname of the IPA server (e.g. ipa.example.com). | `string` | n/a | yes |
 | ip | The IP address to assign the IPA server (e.g. 10.10.10.4).  Note that the IP address must be contained inside the CIDR block corresponding to subnet-id, and AWS reserves the first four and very last IP addresses.  We have to assign an IP in order to break the dependency of DNS record resources on the corresponding EC2 resources; otherwise, it is impossible to update the IPA servers one by one as is required when a new AMI is created. | `string` | n/a | yes |
 | nessus\_agent\_install\_path | The install path of Nessus Agent (e.g. /opt/nessus\_agent). | `string` | `"/opt/nessus_agent"` | no |
-| nessus\_groups | A list of strings, each of which is the name of a group in the CDM Tenable Nessus server that the Nessus Agent should join (e.g. ["group1", "group2"]). | `list(string)` | ```[ "COOL_Fed_32" ]``` | no |
+| nessus\_groups\_key | The SSM Parameter Store key whose corresponding value consists of a comma-delimited string containing the groups to which the Nessus Agent should belong in the CDM Tenable Nessus server (e.g. /cdm/nessus/groups). | `string` | n/a | yes |
 | nessus\_hostname\_key | The SSM Parameter Store key whose corresponding value contains the hostname of the CDM Tenable Nessus server to which the Nessus Agent should link (e.g. /cdm/nessus/hostname). | `string` | n/a | yes |
 | nessus\_key\_key | The SSM Parameter Store key whose corresponding value contains the secret key that the Nessus Agent should use when linking with the CDM Tenable Nessus server (e.g. /cdm/nessus/key). | `string` | n/a | yes |
 | nessus\_port\_key | The SSM Parameter Store key whose corresponding value contains the port to which the Nessus Agent should connect when linking with the CDM Tenable Nessus server (e.g. /cdm/nessus/port). | `string` | n/a | yes |
