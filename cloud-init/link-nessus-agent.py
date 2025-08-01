@@ -20,7 +20,7 @@ import boto3
 
 # Inputs from Terraform
 NESSUS_AGENT_INSTALL_PATH: str = "${nessus_agent_install_path}"
-NESSUS_GROUPS: str = "${nessus_groups}"
+NESSUS_GROUPS_KEY: str = "${nessus_groups_key}"
 NESSUS_HOSTNAME_KEY: str = "${nessus_hostname_key}"
 NESSUS_KEY_KEY: str = "${nessus_key_key}"
 NESSUS_PORT_KEY: str = "${nessus_port_key}"
@@ -61,6 +61,7 @@ def main() -> int:
     )
 
     # Get the values of the SSM Parameter Store parameters
+    nessus_groups: str = get_parameter(ssm_client, NESSUS_GROUPS_KEY)
     nessus_hostname: str = get_parameter(ssm_client, NESSUS_HOSTNAME_KEY)
     nessus_key: str = get_parameter(ssm_client, NESSUS_KEY_KEY)
     nessus_port: str = get_parameter(ssm_client, NESSUS_PORT_KEY)
@@ -73,7 +74,7 @@ def main() -> int:
         f"--key={nessus_key}",
         f"--host={nessus_hostname}",
         f"--port={nessus_port}",
-        f"--groups={NESSUS_GROUPS}",
+        f"--groups={nessus_groups}",
     ]
     # Bandit triggers B603 here, but we're using subprocess.run()
     # safely here, since the variable content in link_cmd comes

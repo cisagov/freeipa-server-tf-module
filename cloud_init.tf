@@ -67,7 +67,7 @@ data "cloudinit_config" "configure_freeipa" {
     content = templatefile(
       "${path.module}/cloud-init/link-nessus-agent.py", {
         nessus_agent_install_path = var.nessus_agent_install_path
-        nessus_groups             = join(",", var.nessus_groups)
+        nessus_groups_key         = var.nessus_groups_key
         nessus_hostname_key       = var.nessus_hostname_key
         nessus_key_key            = var.nessus_key_key
         nessus_port_key           = var.nessus_port_key
