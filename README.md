@@ -66,7 +66,7 @@ module "ipa1" {
 ## Modules ##
 
 | Name | Source | Version |
-|------|--------|---------|
+| ---- | ------ | ------- |
 | read\_ssm\_parameters | github.com/cisagov/ssm-read-role-tf-module | n/a |
 
 ## Resources ##
