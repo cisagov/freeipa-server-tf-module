@@ -10,7 +10,7 @@ A Terraform module for deploying a FreeIPA server.
 
 ```hcl
 module "ipa0" {
-  source = "github.com/cisagov/freeipa-server-tf-module?ref=v1.0.0"
+  source = "github.com/cisagov/freeipa-server-tf-module?ref=v2.0.0"
 
   crowdstrike_falcon_sensor_customer_id_key = "/thulsa/doom/falcon/customer_id"
   crowdstrike_falcon_sensor_tags_key        = "/thulsa/doom/falcon/tags"
@@ -30,7 +30,7 @@ module "ipa0" {
 }
 
 module "ipa1" {
-  source = "github.com/cisagov/freeipa-server-tf-module?ref=v1.0.0"
+  source = "github.com/cisagov/freeipa-server-tf-module?ref=v2.0.0"
 
   crowdstrike_falcon_sensor_customer_id_key = "/thulsa/doom/falcon/customer_id"
   crowdstrike_falcon_sensor_tags_key        = "/thulsa/doom/falcon/tags"
