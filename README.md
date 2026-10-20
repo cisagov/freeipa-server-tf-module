@@ -21,6 +21,9 @@ module "ipa0" {
   nessus_key_key                            = "/thulsa/doom/nessus/key"
   nessus_port_key                           = "/thulsa/doom/nessus/port"
   netbios_name                              = "EXAMPLE"
+  qualys_cloud_agent_activation_id_key      = "/cdm/qualys/activation_id"
+  qualys_cloud_agent_customer_id_key        = "/cdm/qualys/customer_id"
+  qualys_cloud_agent_server_uri_key         = "/cdm/qualys/server_uri"
   realm                                     = "EXAMPLE.COM"
   security_group_ids                        = ["sg-51530134", "sg-51530245"]
   subnet_id                                 = aws_subnet.first_subnet.id
@@ -38,6 +41,9 @@ module "ipa1" {
   nessus_key_key                            = "/thulsa/doom/nessus/key"
   nessus_port_key                           = "/thulsa/doom/nessus/port"
   netbios_name                              = "EXAMPLE"
+  qualys_cloud_agent_activation_id_key      = "/cdm/qualys/activation_id"
+  qualys_cloud_agent_customer_id_key        = "/cdm/qualys/customer_id"
+  qualys_cloud_agent_server_uri_key         = "/cdm/qualys/server_uri"
   security_group_ids                        = ["sg-51530134", "sg-51530245"]
   subnet_id                                 = aws_subnet.second_subnet.id
 }
