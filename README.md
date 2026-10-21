@@ -10,7 +10,7 @@ A Terraform module for deploying a FreeIPA server.
 
 ```hcl
 module "ipa0" {
-  source = "github.com/cisagov/freeipa-server-tf-module?ref=v1.0.0"
+  source = "github.com/cisagov/freeipa-server-tf-module?ref=v2.0.0"
 
   crowdstrike_falcon_sensor_customer_id_key = "/thulsa/doom/falcon/customer_id"
   crowdstrike_falcon_sensor_tags_key        = "/thulsa/doom/falcon/tags"
@@ -21,13 +21,16 @@ module "ipa0" {
   nessus_key_key                            = "/thulsa/doom/nessus/key"
   nessus_port_key                           = "/thulsa/doom/nessus/port"
   netbios_name                              = "EXAMPLE"
+  qualys_cloud_agent_activation_id_key      = "/cdm/qualys/activation_id"
+  qualys_cloud_agent_customer_id_key        = "/cdm/qualys/customer_id"
+  qualys_cloud_agent_server_uri_key         = "/cdm/qualys/server_uri"
   realm                                     = "EXAMPLE.COM"
   security_group_ids                        = ["sg-51530134", "sg-51530245"]
   subnet_id                                 = aws_subnet.first_subnet.id
 }
 
 module "ipa1" {
-  source = "github.com/cisagov/freeipa-server-tf-module?ref=v1.0.0"
+  source = "github.com/cisagov/freeipa-server-tf-module?ref=v2.0.0"
 
   crowdstrike_falcon_sensor_customer_id_key = "/thulsa/doom/falcon/customer_id"
   crowdstrike_falcon_sensor_tags_key        = "/thulsa/doom/falcon/tags"
@@ -38,6 +41,9 @@ module "ipa1" {
   nessus_key_key                            = "/thulsa/doom/nessus/key"
   nessus_port_key                           = "/thulsa/doom/nessus/port"
   netbios_name                              = "EXAMPLE"
+  qualys_cloud_agent_activation_id_key      = "/cdm/qualys/activation_id"
+  qualys_cloud_agent_customer_id_key        = "/cdm/qualys/customer_id"
+  qualys_cloud_agent_server_uri_key         = "/cdm/qualys/server_uri"
   security_group_ids                        = ["sg-51530134", "sg-51530245"]
   subnet_id                                 = aws_subnet.second_subnet.id
 }
@@ -107,6 +113,11 @@ module "ipa1" {
 | nessus\_key\_key | The SSM Parameter Store key whose corresponding value contains the secret key that the Nessus Agent should use when linking with the CDM Tenable Nessus server (e.g. /cdm/nessus/key). | `string` | n/a | yes |
 | nessus\_port\_key | The SSM Parameter Store key whose corresponding value contains the port to which the Nessus Agent should connect when linking with the CDM Tenable Nessus server (e.g. /cdm/nessus/port). | `string` | n/a | yes |
 | netbios\_name | The NetBIOS name to be used by the server (e.g. EXAMPLE).  Note that NetBIOS names are restricted to at most 15 characters.  These characters must consist only of uppercase letters, numbers, and dashes. | `string` | n/a | yes |
+| qualys\_cloud\_agent\_activation\_id\_key | The SSM Parameter Store key whose corresponding value contains the activation ID for Qualys Cloud Agent (e.g. /cdm/qualys/activation\_id). | `string` | n/a | yes |
+| qualys\_cloud\_agent\_customer\_id\_key | The SSM Parameter Store key whose corresponding value contains the customer ID for Qualys Cloud Agent (e.g. /cdm/qualys/customer\_id). | `string` | n/a | yes |
+| qualys\_cloud\_agent\_fedramp | Whether or not the Qualys Cloud Agent should be concerned about FEDRAMP. | `bool` | `true` | no |
+| qualys\_cloud\_agent\_install\_path | The install path of the Qualys Cloud Agent (e.g. /usr/local/qualys/cloud-agent). | `string` | `"/usr/local/qualys/cloud-agent"` | no |
+| qualys\_cloud\_agent\_server\_uri\_key | The SSM Parameter Store key whose corresponding value contains the server URI for Qualys Cloud Agent (e.g. /cdm/qualys/server\_uri). | `string` | n/a | yes |
 | realm | The realm for the IPA server (e.g. EXAMPLE.COM).  Only used if this IPA server IS NOT intended to be a replica. | `string` | `"EXAMPLE.COM"` | no |
 | root\_disk\_size | The size of the IPA instance's root disk in GiB. | `number` | `8` | no |
 | security\_group\_ids | A list of IDs corresponding to security groups to which the server should belong (e.g. ["sg-51530134", "sg-51530245"]).  Note that these security groups must exist in the same VPC as the server. | `list(string)` | `[]` | no |
